@@ -1,0 +1,10 @@
+- alias: 'Lamp: Turn off after sunrise'
+  trigger:
+  - event: sunrise
+    offset: +00:45:00
+    platform: sun
+  action:
+    - service: switch.turn_off
+      entity_id:
+      - group.bedroom
+      - light.livingroom_ambient_lights

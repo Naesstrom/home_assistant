@@ -1,0 +1,25 @@
+- alias: Octoprint:Fail
+  trigger:
+  - entity_id: binary_sensor.octoprint_printing_error
+    from: 'off'
+    platform: state
+    to: 'on'
+  action:
+  - data:
+      message: Något blev fel med din 3d utskrift.
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+
+- alias: 'Octoprint: Done'
+  trigger:
+  - entity_id: binary_sensor.octoprint_printing
+    from: 'on'
+    platform: state
+    to: 'off'
+  action:
+  - data:
+      message: Din 3d utskrift är klar.
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund

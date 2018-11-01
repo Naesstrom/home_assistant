@@ -1,0 +1,18 @@
+#- alias: kitchen movement
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.kitchen_movement
+#    to: 'on'
+#  condition:
+#   condition: and
+#   conditions:
+#    - condition: time
+#      after: 03:00
+#      before: 05:00
+#    - condition: template
+#      value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.kitchen_movement.attributes.last_triggered) | int > 180 }}'
+#  action:
+#    service: tts.google_say
+#    entity_id: media_player.googlehome0719
+#    data:
+#      message: 'Movement detected in the Kitchen'

@@ -1,0 +1,2 @@
+#  - platform: rest
+#    resource: https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/14.938817/lat/56.826237/data.json

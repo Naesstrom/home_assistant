@@ -1,0 +1,7 @@
+  - platform: workday
+    country: SE
+    name: arbetsdag
+  - platform: workday
+    country: SE
+    name: arbetsdag_imorgon
+    days_offset: 1

@@ -1,0 +1,10 @@
+- alias: 'Lamp: Turn on at sun set'
+  trigger:
+    platform: sun
+    event: sunset
+    offset: '-00:45:00'
+  action:
+  - service: light.turn_on
+    entity_id:
+      - group.bedroom
+      - light.livingroom_ambient_lights

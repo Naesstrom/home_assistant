@@ -1,0 +1,25 @@
+############################################################
+#
+# Logger  You can filter anything betwen the []'s in the logger.
+#
+############################################################
+
+# Log Severities: notset, debug, info, warn, warning, error, fatal, critical
+
+default: warn
+logs:
+  homeassistant.core: error
+  homeassistant.components.automation: warn
+  homeassistant.components.binary_sensor: error
+  homeassistant.components.device_tracker: error
+  homeassistant.components.discovery: warn
+  homeassistant.components.http: warn
+  homeassistant.components.media_player: warn
+  homeassistant.components.recorder: error
+  homeassistant.components.sensor.darksky: warn
+  homeassistant.helpers.script: warn
+  homeassistant.helpers.entity: critical
+  homeassistant.exceptions: info
+  root: warn
+  rflink: warn
+  homeassistant.components.rflink: warn

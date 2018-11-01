@@ -1,0 +1,8 @@
+sensor.tanka_station:
+  icon: mdi:fuel
+sensor.tanka_plats:
+  icon: mdi:map-marker
+sensor.tanka_pris:
+  icon: mdi:cash-multiple
+sensor.tanka_uppdaterad:
+  icon: mdi:update

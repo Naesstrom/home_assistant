@@ -1,0 +1,9 @@
+System info:
+- sensor.disk_use_percent_home
+- sensor.memory_free
+- sensor.memory_use_percent
+- sensor.processor_use
+- sensor.load_1m
+- sensor.load_5m
+- sensor.load_15m
+- sensor.since_last_boot

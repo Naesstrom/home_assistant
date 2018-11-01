@@ -1,0 +1,29 @@
+# Weather Prediction
+#sensor 1:
+  - platform: yr
+    monitored_conditions:
+    - temperature
+    - symbol
+    - precipitation
+    - windSpeed
+    - windDirection
+    - humidity
+    - cloudiness
+  - platform: darksky
+    api_key: 2a27230b2223e19dbcc6453b659609b6
+    monitored_conditions:
+      - summary
+      - temperature
+      - humidity
+      - precip_probability
+      - precip_intensity
+      - wind_speed
+      - pressure
+      - wind_bearing
+      - apparent_temperature
+      - icon
+      - hourly_summary
+      - temperature_high
+      - temperature_low
+#  - platform: tellstick
+#    temperature_scale: "°C"

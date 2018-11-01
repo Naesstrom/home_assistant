@@ -1,0 +1,6 @@
+Greenhouse_tab:
+  name: greenhouse
+  view: true
+  entities:
+  - group.greenhouse
+  - group.smhi

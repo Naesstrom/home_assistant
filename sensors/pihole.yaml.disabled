@@ -1,0 +1,6 @@
+  - platform: pi_hole
+    host: 192.168.1.119
+    monitored_conditions:
+      - ads_blocked_today
+      - dns_queries_today
+      - unique_clients

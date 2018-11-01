@@ -1,0 +1,6 @@
+sparsnas_old:
+- sensor.sparsnas_energy_consumption_momentary
+- sensor.sparsnas_energy_consumption_over_time
+- sensor.sparsnas_battery_remaining
+- sensor.sparsnas_template_kwh_sensor_day
+- sensor.sparsnas_template_kwh_sensor_month

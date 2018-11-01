@@ -1,0 +1,343 @@
+###################################################
+#                                                 #
+# Home Assistant Main Configuration File          #
+#                                                 #
+###################################################
+
+homeassistant:
+  name: !secret name
+  latitude: !secret latitude
+  longitude: !secret longitude
+  elevation: !secret elevation
+  unit_system: metric
+  customize: !include_dir_merge_named customize
+  time_zone: Europe/Stockholm
+  packages: !include_dir_named packages
+  auth_providers:
+   - type: homeassistant
+#   - type: legacy_api_password
+   - type: trusted_networks
+
+#  customize_glob:
+#    light.*:
+#      custom_ui_state_card: state-card-custom-ui
+#    cover.*:
+#      custom_ui_state_card: state-card-custom-ui
+
+http:
+  # Uncomment this to add a password (recommended!)
+#  api_password: !secret http_password
+  base_url: !secret base_url
+  ssl_certificate: !secret ssl_certificate
+  ssl_key: !secret ssl_key
+  trusted_networks:
+    - 192.168.1.0/24
+    - 172.30.32.2
+  ip_ban_enabled: True
+  login_attempts_threshold: 2
+
+
+# Enable the config screen
+config:
+
+#Enable Cloud service
+cloud:
+
+#Enable Map
+map:
+
+# Enables the frontend
+frontend:
+#  javascript_version: latest
+#  extra_html_url:
+#    - /local/custom_ui/state-card-custom-ui.html
+#  extra_html_url_es5:
+#    - /local/custom_ui/state-card-custom-ui-es5.html
+
+
+#Enable mqtt broker
+mqtt:
+   broker: !secret mqtt_broker
+   port: !secret mqtt_port
+   username: !secret mqtt_username
+   password: !secret mqtt_password
+   discovery: true
+   discovery_prefix: homeassistant
+weather:
+  - platform: met
+
+
+# Checks for available updates
+updater:
+
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time.
+history:
+logger: !include logger.yaml
+#recorder:
+recorder: !include recorder.yaml
+# View all events in a logbook
+logbook: !include loogbook.yaml
+
+# Track the sun
+sun:
+
+# Setup TTS
+tts:
+  - platform: google
+
+#Include Zones
+zone: !include zones.yaml
+
+#Include Cameras
+camera: !include cameras.yaml
+
+python_script:
+
+ifttt:
+  key: !secret iftttapi
+
+
+notify:
+  - name: katrinelund
+    platform: pushbullet
+    api_key: !secret pushbullet_api
+  - name: Ringvattnet
+    platform: smtp
+    server: !secret smtp_server
+    port: !secret smtp_port
+    timeout: !secret smtp_timeout
+    sender: !secret smtp_sender
+    encryption: !secret smtp_encryption
+    username: !secret smtp_username
+    password: !secret smtp_password
+    recipient:
+      - !secret smtp_recipient_erik
+      - !secret smtp_recipient_anders
+    sender_name: Din automatiska hjälpreda!
+  - name: html5
+    platform: html5
+    gcm_api_key: !secret gcm_api_key
+    gcm_sender_id: !secret gcm_sender_id
+  - name: Discord
+    platform: discord
+    token: !secret discord_token
+
+tradfri:
+  host: 192.168.1.7
+
+rflink:
+  port: /dev/serial/by-id/usb-Arduino__www.arduino.cc__Arduino_Mega_2560_55639313633351104170-if00
+# cd /dev/serial/by-id
+# ls
+# usb-Arduino__www.arduino.cc__Arduino_Mega_2560_85430353631351209040-if00
+# mqtt:
+#  broker: 127.0.0.1
+#  port: 1883
+#  client_id: home-assistant-1
+#  username: pi
+#  password: raspberry
+
+history_graph:
+  gr1:
+    name: Time Graph
+    entities:
+      - sensor.erik_at_work_week
+    hours_to_show: 240
+    refresh: 3600
+
+alarm_control_panel:
+  - platform: manual_mqtt
+    state_topic: home/alarm
+    command_topic: home/alarm/set
+    pending_time: 60
+    trigger_time: 1800
+    disarm_after_trigger: false
+    delay_time: 30
+    armed_home:
+      pending_time: 0
+      delay_time: 0
+    armed_away:
+      pending_time: 60
+      delay_time: 30
+
+device_tracker:
+  - platform: unifi
+    host: 192.168.1.23
+    username: !secret unifi_username
+    password: !secret unifi_password
+    verify_ssl: False
+#  - platform: nmap_tracker
+#    hosts: 192.168.1.1/24
+#    home_interval: 10
+#  - platform: owntracks_http
+#    max_gps_accuracy: 200
+  - platform: bluetooth_tracker
+    interval_seconds: 10
+  - platform: google_maps
+    username: !secret googlemaps_name
+    password: !secret googlemaps_pass
+
+####### ---- GROUPS ---- #######
+#Include groups
+#zwave:
+#  device_config: !include zwave_device_config.yaml
+
+climate:
+  - platform: broadlink
+    name: "Living Room AC"
+    host: 192.168.1.5
+    mac: '34:ea:34:40:78:ff'
+    ircodes_ini: 'broadlink_climate_codes/qlima.ini'
+    min_temp: 17
+    max_temp: 30
+    target_temp: 21
+    temp_sensor: sensor.livingroom_temperature
+    default_operation: off
+    default_fan_mode: auto
+    customize:
+      operations:
+        - 'off'
+        - on
+        - cool
+        - heat
+        - auto
+        - dry
+        - fan
+      fan_modes:
+        - low
+        - mid
+        - high
+        - auto
+
+influxdb:
+  host: 192.168.1.15
+  port: 8086
+  database: home_assistant
+  username: !secret influx_username
+  password: !secret influx_password
+  default_measurement: "units"
+  tags:
+    instance: prod
+    source: hass
+
+octoprint:
+  host: 192.168.1.19
+  api_key: !secret octoprint_api
+  bed: true
+  number_of_tools: 1
+
+#### Merged folders (named) ####
+group: !include_dir_merge_named groups
+script: !include_dir_merge_named scripts
+input_select: !include_dir_merge_named input_select
+
+  #### Merged folders (Lists) ####
+automation: !include_dir_merge_list automation
+scene: !include_dir_merge_list scenes
+sensor: !include_dir_merge_list sensors
+switch: !include_dir_merge_list switch
+light: !include_dir_merge_list light
+binary_sensor: !include_dir_merge_list binary_sensor
+#automation old: !include_dir_merge_list automation
+cover: !include_dir_merge_list covers
+# lock: !include_dir_merge_list locks
+
+
+cast:
+
+sabnzbd: !include sabnzb.yaml
+
+shopping_list:
+
+media_player:
+#  - platform: cast
+#Control the livingroom TV
+  - platform: broadlink
+    name: Livingroom Andersson
+    host: 192.168.1.5
+    mac: '34:ea:34:40:78:ff'
+    ircodes_ini: 'broadlink_media_codes/andersson.ini'
+    #retain: true
+#  - platform: plex
+#    entity_namespace: 'plex'
+#    include_non_clients: true
+#    scan_interval: 5
+#    show_all_controls: true
+#    use_custom_entity_ids: true
+#    use_episode_art: true
+#    remove_unavailable_clients: true
+#    client_remove_interval: 600
+#Control the livingroom Amplifier Sony STR DN-1040
+  - platform: broadlink
+    name: Livingroom Amplifier
+    host: 192.168.1.5
+    mac: '34:ea:34:40:78:ff'
+    ircodes_ini: 'broadlink_media_codes/sony_str_dn1040.ini'
+    ping_host: 192.168.1.62
+    #retain: true
+
+ffmpeg:
+
+input_boolean:
+  water_greenhouse:
+    name: Watering Greenhouse
+    initial: on
+    icon: mdi:water-pump
+  sussa_home:
+    name: sussa home
+    initial: on
+    icon: mdi:human-female
+  erik_home:
+    name: erik home
+    initial: on
+    icon: mdi:human-male
+  switch_ac_kitchen:
+    name: AC kitchen
+  switch_ac_livingroom:
+    name: AC living room
+  switch_tv:
+    name: TV
+  period_starts:
+    name: Sussas Period started
+  mail:
+    name: mail
+    initial: off
+    icon: mdi:mailbox
+remember_the_milk:
+  - name: naesstrom
+    api_key: !secret rtm_api_key
+    shared_secret: !secret rtm_secret
+panel_iframe:
+  mdiindex:
+    title: MDI Icon Index
+    icon: mdi:vector-square
+    url: https://cdn.rawgit.com/james-fry/home-assistant-mdi/efd95d7a/home-assistant-mdi.html
+  dashboard:
+    title: 'HADashboard'
+    url: !secret ha_dashboard_url
+    icon: mdi:apps
+  lightning:
+    title: 'Realtime Lightning'
+    url: 'https://lmaps.org/#15.14;56.76;9'
+    icon: mdi:weather-lightning
+  pihole:
+    title: 'Pi-Hole'
+    url: 'http://192.168.1.119/admin/index.php'
+    icon: mdi:block-helper
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: 'http://192.168.1.119:3218'
+  motioneye:
+    title: motionEye
+    icon: mdi:cctv
+    url: !secret motion_eye_url
+
+shell_command:
+  getbilladata: 'PATH=$PATH:/bin && rm -fr /home/hass/.homeassistant/billa.txt && curl -X GET https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/14.938817/lat/56.826237/data.json >> /home/hass/.homeassistant/billa.txt'
+  lovelace_migrate: 'python3 /config/lovelace_migrate.py -c /config'

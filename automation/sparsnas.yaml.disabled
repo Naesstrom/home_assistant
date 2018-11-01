@@ -1,0 +1,69 @@
+- alias: Sparsnäs monthly consumption
+  trigger:
+    platform: time
+    at: '00:00:01'
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ now().day | string == "1" }}'
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: '{{ now().month | string == "1" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "2" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "3" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "4" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "5" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "6" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "7" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "8" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "9" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "10" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "11" }}'
+          - condition: template
+            value_template: '{{ now().month | string == "12" }}'
+  action:
+  - data:
+      payload_template: '{{ states(''sensor.sparsnas_energy_consumption_over_time'') }}'
+      retain: 'true'
+      topic: template/kwh/month
+    service: mqtt.publish
+
+- alias: Sparsnäs daily consumption
+  trigger:
+  - at: 00:00:02
+    platform: time
+  action:
+  - data:
+      payload_template: "{{ states('sensor.sparsnas_energy_consumption_over_time')}}"
+      retain: 'true'
+      topic: template/kwh/day
+    service: mqtt.publish
+
+- alias: trigger-sparsnas-if-unknown
+  trigger:
+  - entity_id: sensor.sparsnas_energy_consumption_over_time
+    from: unknown
+    platform: state
+  condition:
+  - condition: state
+    entity_id: sensor.sparsnas_template_kwh_sensor_month
+    state: Unknown
+  action:
+  - data:
+      entity_id: automation.sparsnas_daily_consumption
+    service: automation.trigger
+  - data:
+      entity_id: automation.sparsnas_monthly_consumption
+    service: automation.trigger

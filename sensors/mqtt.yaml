@@ -1,0 +1,77 @@
+#sensor 4:
+  - platform: mqtt
+    name: "kitchen_temp"
+    state_topic: "/ESP01/temp/Temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+
+#sensor 5:
+  - platform: mqtt
+    name: "temp2"
+    state_topic: "/ESP02/temp2/Temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+
+#sensor 6:
+  - platform: mqtt
+    name: "hum2"
+    state_topic: "/ESP02/temp2/Humidity"
+    qos: 0
+    unit_of_measurement: "%"
+
+#sensor 7:
+  - platform: mqtt
+    name: "Lux"
+    state_topic: "/Climate/BH1750/Lux"
+    qos: 0
+    unit_of_measurement: "Lx"
+
+#sensor 8:
+  - platform: mqtt
+    name: "Outside Temperature"
+    state_topic: "/Climate/BME280/Temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+
+#sensor 9:
+  - platform: mqtt
+    name: "Outside Humidity"
+    state_topic: "/Climate/BME280/Humidity"
+    qos: 0
+    unit_of_measurement: "%"
+
+#sensor 10:
+  - platform: mqtt
+    name: "Outside Pressure"
+    state_topic: "/Climate/BME280/Pressure"
+    qos: 0
+    unit_of_measurement: "hPa"
+
+  - platform: mqtt
+    name: "Greenhouse Temperature"
+    state_topic: "/greenhouse/DHT22/Temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Greenhouse Humidity"
+    state_topic: "/greenhouse/DHT22/Humidity"
+    qos: 0
+    unit_of_measurement: "%"
+
+### Sparsnäs sensors###
+  - platform: mqtt
+    state_topic: "home/sparsnas"
+    name: "Sparsnäs energy consumption momentary"
+    unit_of_measurement: "W"
+    value_template: '{{ value_json.Watt | round(1) }}'
+  - platform: mqtt
+    state_topic: "home/sparsnas"
+    name: "Sparsnäs energy consumption over time"
+    unit_of_measurement: "kWh"
+    value_template: '{{ value_json.kWh | round(1) }}'
+  - platform: mqtt
+    state_topic: "home/sparsnas"
+    name: "Sparsnäs Battery remaining"
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.battery | round(1) }}'

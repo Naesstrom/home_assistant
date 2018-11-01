@@ -1,0 +1,21 @@
+######################################################################
+##  Managing the magnetic door Locks
+######################################################################
+
+# Old version, using only GPIO commands
+#- platform: command_line
+#  switches:
+#    front_door_lock:
+#      command_on: "/usr/bin/curl -X GET http://192.168.0.6/control?cmd=GPIO,5,1"
+#      command_off: "/usr/bin/curl -X GET http://192.168.0.6/control?cmd=GPIO,5,0"
+#      value_template: '{{ state == "1" }}'
+#      friendly_name: Front Door Lock
+
+- platform: mqtt
+  name: "Front Door Lock"
+  state_topic: "/front_door/door_lock/switch"
+  command_topic: "/front_door/gpio/5"
+  payload_on: "1"
+  payload_off: "0"
+  optimistic: true
+  qos: 0

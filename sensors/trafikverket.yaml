@@ -1,0 +1,12 @@
+  - platform: trafikverket_weatherstation
+    name: Trafikverket Tegnaby
+    api_key: !secret trafikverket
+    station: Tegnaby
+    monitored_conditions:
+        - air_temp
+        - road_temp
+        - humidity
+        - precipitation
+        - wind_direction
+        - wind_direction_text
+        - wind_speed

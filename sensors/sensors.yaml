@@ -1,0 +1,61 @@
+### sensors.yaml
+#Time and Date Sensor
+  - platform: time_date
+    display_options:
+      - 'time_date'
+      - 'time'
+      - 'time_utc'
+      - 'date'
+# Track the sun
+  - platform: moon
+#  - platform: sun
+# Weather Prediction
+#sensor 1:
+#  - platform: yr
+#    monitored_conditions:
+#    - temperature
+#    - symbol
+#    - precipitation
+#    - windSpeed
+#    - windDirection
+#    - humidity
+#    - cloudiness
+#sensor 2:
+  - platform: speedtest
+    monitored_conditions:
+    - ping
+    - download
+    - upload
+
+#sensor 3:
+#  - platform: steam_online
+#    api_key: 5216AC2F257127E4F3315428B17C856C
+#    accounts:
+#      - 76561198003750218
+#      - 76561198126756526
+
+#  - platform: darksky
+#    api_key: 2a27230b2223e19dbcc6453b659609b6
+#    monitored_conditions:
+#      - summary
+#      - temperature
+#      - humidity
+#      - precip_probability
+#      - precip_intensity
+#      - wind_speed
+#      - pressure
+#      - wind_bearing
+#      - apparent_temperature
+#      - icon
+
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: memory_free
+      - type: memory_use_percent
+      - type: since_last_boot
+      - type: load_1m
+      - type: load_5m
+      - type: load_15m
+      - type: processor_use

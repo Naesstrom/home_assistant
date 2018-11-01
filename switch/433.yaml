@@ -1,0 +1,9 @@
+#- platform: rflink
+#  device_defaults:
+#    fire_event: true
+#    signal_repetitions: 2
+#  devices:
+#    newkaku_0000c6c2_1:
+#      name: Ceiling fan
+#    conrad_00785c_0a:
+#      name: Motion sensor kitchen

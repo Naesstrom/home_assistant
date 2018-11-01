@@ -1,0 +1,7 @@
+erik_device_trackers:
+  name: Erik
+  icon: mdi:account
+  entities:
+    - device_tracker.xperia_xz2
+    - device_tracker.xperia_xz2_bt
+    - device_tracker.google_maps_110812454925350234140

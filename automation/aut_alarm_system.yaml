@@ -1,0 +1,87 @@
+- alias: 'Trigger alarm while armed home'
+  trigger:
+    - platform: state
+      entity_id: sensor.front_door
+      to: 'open'
+    - platform: state
+      entity_id: sensor.patio_door
+      to: 'open'
+    - platform: state
+      entity_id: sensor.side_door
+      to: 'open'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.ha_alarm
+      state: armed_home
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.ha_alarm
+
+##Triggered while armed away
+- alias: 'Trigger alarm while armed away'
+  trigger:
+    - platform: state
+      entity_id: sensor.front_door
+      to: 'open'
+    - platform: state
+      entity_id: sensor.patio_door
+      to: 'open'
+    - platform: state
+      entity_id: sensor.side_door
+      to: 'open'
+    ### Movement sensors ###
+    - platform: state
+      entity_id: binary_sensor.kitchen_movement
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.livingroom_movement
+      to: 'On'
+    - platform: state
+      entity_id: binary_sensor.bedroom_movement
+      to: 'On'
+    - platform: state
+      entity_id: binary_sensor.office_movement
+      to: 'On'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.ha_alarm
+      state: armed_away
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.ha_alarm
+
+#### Send Notification ####
+- alias: 'Send notification when alarm triggered'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.ha_alarm
+      to: 'triggered'
+  action:
+    - service: notify.discord
+      data:
+        message: "Alarm has been triggered and police have been contacted."
+        target: 476413377623752704
+    ### Bedroom Google Mini ###
+    - service: tts.google_say
+      entity_id: media_player.googlehome0719
+      data_template:
+        message: "Alarm has been triggered and police have been contacted."
+        cache: false
+    ### Office Google Mini ###
+    - service: tts.google_say
+      entity_id: media_player.googlehome4544
+      data_template:
+        message: "Alarm has been triggered and police have been contacted."
+        cache: false
+    ### Office Google Mini ###
+    - service: tts.google_say
+      entity_id: media_player.kitchen
+      data_template:
+        message: "Alarm has been triggered and police have been contacted."
+        cache: false
+    ### Office Google Mini ###
+    - service: tts.google_say
+      entity_id: media_player.livingroom
+      data_template:
+        message: "Alarm has been triggered and police have been contacted."
+        cache: false

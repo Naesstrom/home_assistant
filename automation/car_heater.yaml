@@ -1,0 +1,41 @@
+### Turn on carheater on weekdays if temp is below 5
+- alias: Turn on car heater at 04:00
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: time
+    at: 04:00:00
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.termometer_temperature
+      below: '5'
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+    service: homeassistant.turn_on
+    entity_id: switch.motorvarmare
+
+
+### Turn off car heater at 0900
+- alias: Turn off car heater at 09:00
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: time
+    at: 09:00:00
+  condition:
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.motorvarmare

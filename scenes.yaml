@@ -1,0 +1,33 @@
+############################################################
+#
+# Scenes
+#
+############################################################
+
+- name: Livingroom normal
+  entities:
+    switch.vardagsrum_1: on
+    switch.vardagsrum_2: on
+    switch.vardagsrum3: on
+- name: Livingroom off
+  entities:
+    switch.vardagsrum_1: off
+    switch.vardagsrum_2: off
+    switch.vardagsrum3: off
+#- name: Normal_lys
+#  entities:
+#    light.Lys_stue:
+#      state: on
+#      brightness: 170
+#    light.Lys_TV:
+#      state: on
+#      brightness: 170
+
+#- name: Mye lys
+#  entities:
+#    light.Lys_stue:
+#      state: on
+#      brightness: 220
+#    light.Lys_TV:
+#      state: on
+#      brightness: 180

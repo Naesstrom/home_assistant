@@ -1,0 +1,15 @@
+- alias: Time to water beds
+  trigger:
+  - platform: time
+    at: '19:00'
+  condition:
+  - condition: state
+    entity_id: input_boolean.water_greenhouse
+    state: 'off'
+    for:
+      hours: 47
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.water_greenhouse
+  - service: script.turn_on
+    entity_id: script.water_greenhouse

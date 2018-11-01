@@ -1,0 +1,5 @@
+Tanka:
+- sensor.tanka_station
+- sensor.tanka_plats
+- sensor.tanka_pris
+- sensor.tanka_uppdaterad

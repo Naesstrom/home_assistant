@@ -1,0 +1,20 @@
+- alias: 'Brevlådan'
+  trigger:
+  - entity_id: switch.brevladan
+    from: 'off'
+    platform: state
+    to: 'on'
+    for:
+      minutes: 10
+  action:
+    - service: notify.katrinelund
+      data:
+        message: Brevlådan öppnades
+        target:
+        - channel/katrinelund
+    - service: notify.discord
+      data:
+        message: Brevlådan öppnades
+        target: 476413377623752704
+    - service: input_boolean.toggle
+      entity_id: input_boolean.mail

@@ -1,0 +1,74 @@
+radio_station:
+    name: 'Select Radio Station:'
+    options:
+      - Radio 538
+      - Q-Music
+      - 3FM
+      - 100% NL
+      - Veronica
+      - Sky Radio
+      - Arrow Classic Rock
+      - Classic FM
+      - BNR Nieuwsradio
+      - SLAM! Hardstyle
+      - Sleep Radio
+      - Ambient Sleeping Pill
+      - Radio Art - Sleep
+      - Ambi Nature Radio
+      - Calm Radio - Sleep
+      - Dinamo.FM Sleep
+      - Mix Megapol
+      - NRJ
+      - Rockklassiker
+      - Svensk Pop
+      - Vinyl FM
+      - Lugna Favoriter
+      - Rix FM
+      - The Voice
+      - Bandit Rock
+      - Dansbandskanalen
+      - East FM
+      - Gold 102.4
+      - 102.6 Guldkanalen
+      - Guldkanalen 60-tal
+      - Guldkanalen 70-tal
+      - Guldkanalen 80-tal
+      - Guldkanalen 90-tal
+      - Hitcity 94.5
+      - Lite FM
+      - MRS
+      - SR P1
+      - SR P2
+      - SR P2 Världen
+      - SR P2 Musik
+      - SR P3
+      - SR P4 Plus
+      - SR P4 Blekinge
+      - SR P4 Dalarna
+      - SR P4 Gotland
+      - SR P4 Gävleborg
+      - SR P4 Göteborg
+      - SR P4 Halland
+      - SR P4 Jämtland
+      - SR P4 Jönköping
+      - SR P4 Kalmar
+      - SR P4 Kristianstad
+      - SR P4 Kronoberg
+      - SR P4 Malmöhus
+      - SR P4 Norrbotten
+      - SR P4 Sjuhärad
+      - SR P4 Skaraborg
+      - SR P4 Stockholm
+      - SR P4 Sörmland
+      - SR P4 Uppland
+      - SR P4 Värmland
+      - SR P4 Väst
+      - SR P4 Västerbotten
+      - SR P4 Västernorrland
+      - SR P4 Västmanland
+      - SR P4 Örebro
+      - SR P4 ÖStergötland
+      - SR Sisuradio
+      - SR Klassiskt
+      - SR Din gata
+      - SR Metropol

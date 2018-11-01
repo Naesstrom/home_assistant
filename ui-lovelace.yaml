@@ -1,0 +1,134 @@
+title: Katrinelund
+# Exclude entities from "Unused entities" view
+excluded_entities:
+  - weblink.router
+views:
+    # View tab title.
+  - title: Example
+    # Optional unique id for direct access /lovelace/${id}
+    id: example
+    # Each view can have a different theme applied.
+    theme: dark-mode
+    # The cards to show on this view.
+    cards:
+        # The filter card will filter entities for their state
+      - type: entity-filter
+        entities:
+          - device_tracker.erik
+          - device_tracker.sussa
+        state_filter:
+          - 'Home'
+        card_config:
+          type: glance
+          title: People that are home
+
+        # The picture entity card will represent an entity with a picture
+      - type: picture-entity
+        image: https://www.home-assistant.io/images/default-social.png
+        entity: light.bed_light
+
+    # Specify a tab icon if you want the view tab to be an icon.
+  - icon: mdi:home-assistant
+    # Title of the view. Will be used as the tooltip for tab icon
+    title: Second view
+    cards:
+      - type: weather-forecast
+        entity: weather.yweather
+        # Entities card will take list of entities and show their state.
+      - type: entities
+        # Title of the entities card
+        title: Example
+        # The entities here will be shown in the same order as specified.
+        # Each entriy is an entity ID or a map with extra options.
+        entities:
+          - light.bathroom
+          - switch.brevladan
+          - entity: light.livingroom_ambient_lights
+            # Override the name to use
+            name: LR Lights
+      - type: map
+        aspect_ratio: 50%
+        entities:
+        - entity: device_tracker.erik
+        - entity: device_tracker.sussa
+        - zone.home
+
+        # The markdown card will render markdown text.
+      - type: markdown
+        title: Lovelace
+        content: >
+          Welcome to your **Lovelace UI**.
+
+
+  - icon: mdi:security-home
+    title: Security
+    id: security
+    type: vertical-stack
+    cards:
+      - type: glance
+        # Title of the entities card
+        title: Front Door
+        entities:
+          - sensor.front_door
+          - switch.front_door_lock
+          - sensor.front_door_lock
+          - lock.frontdoor2
+          - sensor.front_door_opens_today
+          - sensor.front_door_open_time_today
+      - type: glance
+        # Title of the entities card
+        title: Side Door
+        entities:
+          - sensor.side_door
+          - switch.side_door_lock
+          - sensor.side_door_lock
+          - sensor.side_door_opens_today
+          - sensor.side_door_open_time_today
+      - type: glance
+        # Title of the entities card
+        title: Patio Door
+        entities:
+          - sensor.patio_door
+          - sensor.patio_door_opens_today
+          - sensor.patio_door_open_time_today
+      - type: glance
+        # Title of the entities card
+        title: Bathroom Door
+        entities:
+          - sensor.bathroomdoor
+
+  - icon: mdi:cctv
+    title: Cameras
+    id: cameras
+    cards:
+      #Livingroom Camera
+    - type: picture-glance
+      camera_image: camera.livingroom
+      title: Livingroom
+      entities:
+        - light.livingroom_ambient_lights
+      # Bedroom Camera
+    - type: picture-glance
+      camera_image: camera.bedroom
+      title: Bedroom
+      entities:
+        - switch.sovrum_1
+        - switch.sovrum_2
+### Kitchen Camera
+    - type: picture-glance
+      camera_image: camera.kitchen
+      title: Kitchen
+      entities:
+        - light.kitchen_lights
+### Office Camera
+    - type: picture-glance
+      camera_image: camera.office
+      title: Office
+      entities:
+        - light.livingroom_ambient_lights
+### Foodstation Camera
+    - type: picture-glance
+      camera_image: camera.foodstation
+      title: Foodstation
+      entities:
+        - light.livingroom_ambient_lights

@@ -1,0 +1,16 @@
+sensor.speedtest_download:
+  friendly_name: Download speed
+  icon: mdi:network-download
+sensor.speedtest_upload:
+  friendly_name: Upload speed
+  icon: mdi:network-upload
+script.radio:
+    friendly_name: Start Playing
+    icon: mdi:play
+
+sensor.average_load_1m:
+  unit_of_measurement: "%"
+sensor.average_load_5m:
+  unit_of_measurement: "%"
+sensor.average_load_15m:
+  unit_of_measurement: "%"

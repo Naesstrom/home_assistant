@@ -1,0 +1,23 @@
+- platform: influxdb
+  host: 192.168.1.15
+  username: !secret infludb_name
+  password: !secret infludb_pass
+  queries:
+    ## Show the lowest value for last week
+    - name: Min for last week
+      unit_of_measurement: °C
+      value_template: '{{ value | round(1) }}'
+      group_function: min
+      where: '"entity_id" = ''dark_sky_temperature'' and time > now() - 1w'
+      measurement: '"°C"'
+      field: value
+      database: home_assistant
+    ## Show the highest value for last week
+    - name: Max for last week
+      unit_of_measurement: °C
+      value_template: '{{ value | round(1) }}'
+      group_function: max
+      where: '"entity_id" = ''dark_sky_temperature'' and time > now() - 1w'
+      measurement: '"°C"'
+      field: value
+      database: home_assistant

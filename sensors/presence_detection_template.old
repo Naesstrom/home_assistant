@@ -1,0 +1,46 @@
+  - platform: template
+    sensors:
+      erik:
+        friendly_name: "Erik"
+        value_template: >-
+          {% if is_state("device_tracker.erik_6p", "home") or is_state("device_tracker.xperia_xz2", "home") or is_state("device_tracker.xperia_xz2_bt", "home") %}
+            Hemma
+          {% else %}
+          {% if is_state("device_tracker.erik_6p", "not_home") %}
+            Borta
+          {% else %} {{ states("device_tracker.erik_6p") }}
+          {% endif %}
+          {% endif %}
+        icon_template: >-
+          {% if is_state("device_tracker.erik_6p", "home") or is_state("device_tracker.xperia_xz2", "home") or is_state("device_tracker.xperia_xz2_bt", "home") %}
+            mdi:home-circle
+          {% else %}
+          {% if is_state("device_tracker.erik_6p", "not_home") %}
+            mdi:close-circle-outline
+          {% else %}
+            {% set zone = states.device_tracker.erik_6p.state %}
+            {{ states.zone[zone].attributes.icon }}
+          {% endif %}
+          {% endif %}
+      sussa:
+        friendly_name: "Sussa"
+        value_template: >-
+          {% if is_state("device_tracker.galaxy_s9", "home") or is_state("device_tracker.sussa_s9_bt", "home") or is_state("device_tracker.sussa_s9", "home") %}
+            Hemma
+          {% else %}
+          {% if is_state("device_tracker.galaxy_s9", "not_home") %}
+            Borta
+          {% else %} {{ states("device_tracker.galaxy_s9") }}
+          {% endif %}
+          {% endif %}
+        icon_template: >-
+          {% if is_state("device_tracker.galaxy_s9", "home") or is_state("device_tracker.sussa_s9_bt", "home") or is_state("device_tracker.sussa_s9", "home") %}
+            mdi:home-circle
+          {% else %}
+          {% if is_state("device_tracker.galaxy_s9", "not_home") %}
+            mdi:close-circle-outline
+          {% else %}
+            {% set zone = states.device_tracker.galaxy_s9.state %}
+            {{ states.zone[zone].attributes.icon }}
+          {% endif %}
+          {% endif %}

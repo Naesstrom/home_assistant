@@ -1,0 +1,17 @@
+SMHI:
+- sensor.smhi_temperatur
+- sensor.smhi_chans_for_aska
+- sensor.smhi_luftfuktighet
+- sensor.smhi_lufttryck
+- sensor.smhi_max_nederbord
+- sensor.smhi_snittnederbord
+- sensor.smhi_min_nederbord
+- sensor.smhi_sikt
+- sensor.smhi_vindbyar
+- sensor.smhi_vindhastighet
+- sensor.smhi_vindriktning
+- sensor.smhi_nederbordstyp_text
+- sensor.smhi_vindriktning_text
+- sensor.smhi_sno_max
+- sensor.smhi_sno_min
+- sensor.smhi_vadersymboler_text

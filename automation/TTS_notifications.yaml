@@ -1,0 +1,67 @@
+- alias: 'Erik is Home TTS'
+  trigger:
+  - entity_id: device_tracker.erik
+    from: 'Away'
+    platform: state
+    to: 'Just Arrived'
+  action:
+    service: tts.google_say
+    entity_id: media_player.google_home_group
+    data:
+      message: Erik kom just hem!
+      language: 'sv'
+
+- alias: 'Sussa is Home TTS'
+  trigger:
+  - entity_id: device_tracker.sussa
+    from: 'Away'
+    platform: state
+    to: 'Just Arrived'
+  action:
+    service: tts.google_say
+    entity_id: media_player.google_home_group
+    data:
+      message: The queen just arrived!
+#      language: 'sv'
+
+- alias: Octoprint:Fail (TTS)
+  trigger:
+  - entity_id: binary_sensor.octoprint_printing_error
+    from: 'off'
+    platform: state
+    to: 'on'
+  action:
+    service: tts.google_say
+    entity_id: media_player.google_home_group
+    data:
+      message: Något gick fel med din 3d utskrift.
+      language: 'sv'
+
+- alias: Test TTS
+  trigger:
+    platform: time
+    # When 'at' is used, you cannot also match on hour, minute, seconds.
+    # Military time format.
+    at: '16:05:00'
+  action:
+    service: tts.google_say
+    data_template:
+      message: "Temperature is {{states('sensor.office_temperature')}}."
+      cache: false
+
+- alias: mailbox TTS
+  trigger:
+  - entity_id: switch.brevladan
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+    - after: '11:00'
+      before: '15:00'
+      condition: time
+  action:
+    service: tts.google_say
+    entity_id: media_player.google_home_group
+    data_template:
+      message: "The mail just arrived."
+      cache: false

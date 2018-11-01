@@ -1,0 +1,100 @@
+## Add Luftdaten sensors to HASS
+#  - platform: luftdaten
+#    sensorid: 10234
+#    monitored_conditions:
+#      - P1
+#      - P2
+#  - platform: luftdaten
+#    sensorid: 7276
+#    monitored_conditions:
+#      - temperature
+#      - humidity
+
+## Getting local values instead (src: https://hastebin.com/kixedeyoje.scala)
+#  - platform: command_line
+#    name: "Luftdata PM10"
+#    command: "curl http://192.168.1.236/data.json"
+#    scan_interval: "120"
+#    value_template: "{{ value_json.sensordatavalues[0].value | round(2) }}"
+#    unit_of_measurement: "µg/m³"
+#  - platform: command_line
+#    name: "Luftdata PM2.5"
+#    command: "curl http://192.168.1.236/data.json"
+#    scan_interval: "120"
+#    value_template: "{{ value_json.sensordatavalues[1].value | round(2) }}"
+#    unit_of_measurement: "µg/m³"
+#  - platform: command_line
+#    name: "Luftdata Temperature"
+#    command: "curl http://192.168.1.236/data.json"
+#    scan_interval: "120"
+#    value_template: "{{ value_json.sensordatavalues[2].value | round(1) }}"
+#    unit_of_measurement: "°C"
+#  - platform: command_line
+#    name: "Luftdata Humidity"
+#    command: "curl http://192.168.1.236/data.json"
+#    scan_interval: "120"
+#    value_template: "{{ value_json.sensordatavalues[3].value | round(1) }}"
+#    unit_of_measurement: "%"
+
+  - platform: mqtt
+    state_topic: "/sds011/values/temp/"
+    name: "Luftdata Temperature"
+    unit_of_measurement: "ºC"
+#    value_template: '{{ value_json.Watt | round(1) }}'
+  - platform: mqtt
+    state_topic: "/sds011/values/hum/"
+    name: "Luftdata Humidity"
+    unit_of_measurement: "% Rh"
+#    value_template: '{{ value_json.Watt | round(1) }}'
+  - platform: mqtt
+    state_topic: "/sds011/values/P1/"
+    name: "Luftdata PM10"
+    unit_of_measurement: "µg/m³"
+#    value_template: '{{ value_json.Watt | round(1) }}'
+  - platform: mqtt
+    state_topic: "/sds011/values/P2/"
+    name: "Luftdata PM2.5"
+    unit_of_measurement: "µg/m³"
+#    value_template: '{{ value_json.Watt | round(1) }}'
+  - platform: mqtt
+    state_topic: "/sds011/values/signal/"
+    name: "Luftdata Signalstrength"
+    unit_of_measurement: "dBm"
+#    value_template: '{{ value_json.Watt | round(1) }}'
+
+
+## Get statistics from the Luftdaten sensor
+  - platform: statistics
+    name: pm10 stats
+    entity_id: sensor.luftdata_pm10
+    max_age:
+      minutes: 60
+  - platform: statistics
+    name: pm25 stats
+    entity_id: sensor.luftdata_pm25
+    max_age:
+      minutes: 60
+
+## Template for Air Quality based on CAQI https://goo.gl/MqWPuz
+  - platform: template
+    sensors:
+      air_quality_pm10:
+        friendly_name: "Air quality PM10"
+        value_template: >-
+          {%if states.sensor.pm10_stats_mean.state | float<=25 %}EXCELLENT
+          {% elif states.sensor.pm10_stats_mean.state | float<=50 | float>25 %}GOOD
+          {% elif states.sensor.pm10_stats_mean.state | float<=90 | float>25 %}FAIR
+          {% elif states.sensor.pm10_stats_mean.state | float<=180 | float>90 %}INFERIOR
+          {% elif states.sensor.pm10_stats_mean.state | float>180 %}POOR
+          {%- endif %}
+  - platform: template
+    sensors:
+      air_quality_pm25:
+        friendly_name: "Air quality PM2.5"
+        value_template: >-
+          {%if states.sensor.pm25_stats_mean.state | float<=15 %}EXCELLENT
+          {% elif states.sensor.pm25_stats_mean.state | float<=30 | float>15 %}GOOD
+          {% elif states.sensor.pm25_stats_mean.state | float<=55 | float>30 %}FAIR
+          {% elif states.sensor.pm25_stats_mean.state | float<=110 | float>55 %}INFERIOR
+          {% elif states.sensor.pm25_stats_mean.state | float>110 %}POOR
+          {%- endif %}

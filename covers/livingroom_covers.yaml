@@ -1,0 +1,16 @@
+  - platform: mqtt
+    name: "Livingroom Cover 1"
+    command_topic: "/raw/esp8266/14046208/in"
+    state_topic: "/raw/esp8266/14046208/out"
+#    availability_topic: "home-assistant/cover/availability"
+    qos: 0
+    retain: true
+    payload_open: "-1"
+    payload_close: "1"
+    payload_stop: "0"
+    state_open: "open"
+    state_closed: "closed"
+    payload_available: "online"
+    payload_not_available: "offline"
+    optimistic: false
+    value_template: '{{ value.x }}'

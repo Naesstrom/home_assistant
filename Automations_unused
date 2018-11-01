@@ -1,0 +1,280 @@
+- id: turn on lights at evening
+  alias: 'Lamp: Turn on at sun set'
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:45:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  action:
+    service: switch.turn_on
+    entity_id:
+    - group.bedroom
+    - group.living_room
+- id: Turn off bedroom lights at evening
+  alias: 'Lamp: Turn off at 2200'
+  trigger:
+  - platform: time
+    hours: 22
+    minutes: 0
+    seconds: 0
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+    service: switch.turn_off
+    entity_id: group.bedroom
+- id: Turn off livingroom lights at evening
+  alias: 'Lamp: Turn off at midnight'
+  trigger:
+  - platform: time
+    hours: 23
+    minutes: 59
+    seconds: 59
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+    service: switch.turn_off
+    entity_id: group.living_room
+- id: turn on lights at morning
+  alias: 'Lamp: Turn on at 0615'
+  trigger:
+  - platform: time
+    hours: 6
+    minutes: 15
+    seconds: 0
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+    service: switch.turn_on
+    entity_id:
+    - group.bedroom
+    - group.living_room
+- id: turn off lights after sunrise
+  alias: 'Lamp: Turn off after sunrise'
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: +00:45:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+    service: switch.turn_on
+    entity_id:
+    - group.bedroom
+    - group.living_room
+- id: CAR HEATER ON
+  alias: Turn on car heater at 04:00
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: time
+    at: 04:00:00
+  condition:
+    condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.termometer_temperature
+      below: '5'
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+    service: homeassistant.turn_on
+    entity_id: switch.motorvarmare
+- id: CAR HEATER OFF
+  alias: Turn off car heater at 09:00
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: time
+    at: 09:00:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.motorvarmare
+- id: water_greenhouse
+  alias: Time to water beds
+  trigger:
+  - platform: time
+    at: '19:00'
+  condition:
+  - condition: state
+    entity_id: input_boolean.water_greenhouse
+    state: 'off'
+    for:
+      hours: 47
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.water_greenhouse
+  - service: script.turn_on
+    entity_id: script.water_greenhouse
+- action:
+  - data:
+      message: Dörren på framsidan öppnades
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+  alias: 'Dörr: Framsidan'
+  condition: []
+  id: '1513168578491'
+  trigger:
+  - entity_id: switch.dorr_framsidan
+    from: 'off'
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      payload_template: '{{states(''sensor.total_kwh'')}}'
+      retain: 'true'
+      topic: template/kwh/month
+    service: mqtt.publish
+  alias: Sparsnäs Månadsförbrukning
+  condition:
+  - condition: template
+    value_template: '{{ now().month() | string == "1" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "2" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "3" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "4" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "5" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "6" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "7" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "8" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "9" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "10" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "11" }}'
+  - condition: template
+    value_template: '{{ now().month() | string == "12" }}'
+  id: '1514639867322'
+  trigger:
+  - at: 00:00:01
+    platform: time
+- action:
+  - data:
+      payload_template: '{{ states(''sensor.sparsnas_energy_consumption_over_time'')}}'
+      retain: 'true'
+      topic: template/kwh/day
+    service: mqtt.publish
+  alias: Sparsnäs dag
+  condition: []
+  id: '1516725437764'
+  trigger:
+  - at: 00:00:01
+    platform: time
+- action:
+  - service: shell_command.getbilladata
+  alias: Get SMHI
+  condition: []
+  id: '1516731513355'
+  trigger:
+  - platform: time
+    minutes: /60
+    seconds: 0
+- action:
+  - data:
+      message: Groventrén öppnades
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+  alias: 'Dörr: Groventré'
+  condition: []
+  id: '1516801971091'
+  trigger:
+  - entity_id: switch.dorr_groventre
+    from: 'off'
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      message: Altandörren öppnades
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+  alias: 'Dörr: Altanen'
+  condition: []
+  id: '1516802033880'
+  trigger:
+  - entity_id: switch.dorr_altan
+    from: 'off'
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      message: Något blev fel med din 3d utskrift.
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+  alias: Octoprint:Fail
+  condition: []
+  id: '1517242048809'
+  trigger:
+  - entity_id: binary_sensor.octoprint_printing_error
+    from: 'off'
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      message: Din 3d utskrift är klar.
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+  alias: 'Octoprint: Done'
+  condition: []
+  id: '1517242129908'
+  trigger:
+  - entity_id: binary_sensor.octoprint_printing
+    from: 'on'
+    platform: state
+    to: 'off'

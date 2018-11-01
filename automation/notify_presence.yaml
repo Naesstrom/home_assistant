@@ -1,0 +1,25 @@
+- alias: 'Erik is Home'
+  trigger:
+  - entity_id: device_tracker.erik
+    from: 'Away'
+    platform: state
+    to: 'Just Arrived'
+  action:
+  - data:
+      message: Erik kom just hem
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+
+- alias: 'Sussa is Home'
+  trigger:
+  - entity_id: device_tracker.sussa
+    from: 'Away'
+    platform: state
+    to: 'Just Arrived'
+  action:
+  - data:
+      message: Sussa kom just hem
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
