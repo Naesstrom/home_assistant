@@ -250,7 +250,7 @@ cover: !include_dir_merge_list covers
 
 cast:
 
-sabnzbd: !include sabnzb.yaml
+#sabnzbd: !include sabnzb.yaml
 
 shopping_list:
 
