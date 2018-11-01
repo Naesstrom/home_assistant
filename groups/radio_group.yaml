@@ -1,6 +1,1 @@
-Radio:
-  name: Radio
-  entities:
-  - input_select.radio_station
-  - input_select.chromecast_radio
-  - script.radio
+

@@ -1,7 +1,7 @@
   - platform: group
     name: Livingroom ambient lights
     entities:
-      - light.tradfri_bulb_e14_ws_opal_400lm
+      - light.tradfri_bulb_e14_ws_opal_400lm_2
       - light.tradfri_transformer_10w
 
   - platform: group

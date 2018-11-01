@@ -1,10 +1,1 @@
-chromecast_radio:
-    name: 'Select Speakers:'
-    options:
-      - Livingroom
-      - Bedroom
-      - Bathroom
-      - Hall
-      - Everywhere
-    initial: Everywhere
-    icon: mdi:speaker-wireless
+
