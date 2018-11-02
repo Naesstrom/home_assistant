@@ -6,7 +6,6 @@ default_view:
   - sensor.sussa
   - sensor.erik
   - sensor.waze_travel_time
-  - weather.openweathermap
   - climate.living_room_ac
   - group.living_room
   - group.doors
@@ -34,5 +33,4 @@ default_view:
   - group.tanka
   - switch.brevladan
   - sensor.pihole_ads_blocked_today
-  - climate.thermodemo
   - weather.smhi_home
