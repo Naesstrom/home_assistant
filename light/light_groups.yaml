@@ -1,0 +1,19 @@
+  - platform: group
+    name: Livingroom ambient lights
+    entities:
+      - light.tradfri_bulb_e14_ws_opal_400lm_2
+      - light.tradfri_transformer_10w
+
+  - platform: group
+    name: Bathroom Lights
+    entities:
+      - light.tradfri_bulb_e27_w_opal_1000lm
+      - light.tradfri_bulb_e27_w_opal_1000lm_2
+      - light.bathroom
+
+  - platform: group
+    name: Kitchen Lights
+    entities:
+      - light.tradfri_bulb_gu10_w_400lm_2_2
+      - light.tradfri_bulb_gu10_w_400lm_3_2
+      - light.tradfri_bulb_gu10_w_400lm_4

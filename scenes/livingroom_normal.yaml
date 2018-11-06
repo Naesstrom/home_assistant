@@ -1,0 +1,6 @@
+  - name: Livingroom normal
+    entities:
+        light.livingroom_ambient_lights:
+            state: on
+            transition: 3
+            brightness_pct: 80
