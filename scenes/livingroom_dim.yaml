@@ -1,6 +1,0 @@
-  - name: Livingroom dim
-    entities:
-        light.tradfri_transformer_10w:
-            state: on
-            transition: 2
-            brightness_pct: 30
