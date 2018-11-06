@@ -1,0 +1,23 @@
+    # Rain is cumulative forever - collect it and subtract yesterday for todays rain
+  - platform: mqtt
+    name: "Total rain"
+    state_topic: "Climate/Rain/Total"
+    qos: 0
+    unit_of_measurement: "mm"
+  - platform: mqtt
+    state_topic: 'Climate/Rain/Count'
+    name: 'rain_cum'
+    icon: mdi:weather-rainy
+    unit_of_measurement: 'mm'
+    value_template: '{{ value_json.RAIN }}'
+  - platform: mqtt
+    state_topic: 'hass/cum_rain_prior'
+    name: 'rain_cum_prior'
+    unit_of_measurement: 'mm'
+    value_template: '{{ value_json.day_1 }}'
+  - platform: template
+    sensors:
+      rain:
+        value_template: '{%- if not (is_state("sensor.rain_cum","unknown") or is_state("sensor.rain_cum_prior","unknown") )-%}  {{ ((states.sensor.rain_cum.state | float) - (states.sensor.rain_cum_prior.state | float)) | max (0) | round(1) }} {%- endif -%}' ## ensure calc is no lower than zero!
+        friendly_name: 'Rain Today'
+        unit_of_measurement: 'mm'

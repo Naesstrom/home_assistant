@@ -1,0 +1,4 @@
+sensor.yr_humidity:
+  friendly_name: YR Humidity
+sensor.yr_temperature:
+  friendly_name: YR Temperature

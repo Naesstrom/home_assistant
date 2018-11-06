@@ -1,0 +1,11 @@
+Weather_tab:
+  name: weather
+  view: true
+  icon: mdi:thermometer
+  entities:
+  - group.luftdata
+  - group.weather
+  - group.smhi
+  - group.climate
+  - group.trafikverket
+  - weather.smhi_home

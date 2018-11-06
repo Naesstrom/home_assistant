@@ -1,0 +1,16 @@
+switch.brevladan:
+  assumed_state: true
+  friendly_name: Brevlådan
+  icon: mdi:mailbox
+  sensor_class: 'opening'
+
+switch.front_door_lock:
+  assumed_state: False
+  icon: mdi:lock
+  senmsor_class: "lock"
+
+group.door_sensors:
+  assumed_state: true
+  friendly_name: Doorsensors
+  icon: mdi:glassdoor
+  sensor_class: 'opening'

@@ -1,0 +1,38 @@
+- alias: 'Dörr: Framsidan'
+  trigger:
+  - entity_id: switch.dorr_framsidan
+    from: 'off'
+    platform: state
+    to: 'on'
+  action:
+  - data:
+      message: Dörren på framsidan öppnades
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+
+- alias: 'Dörr: Groventré'
+  trigger:
+  - entity_id: switch.dorr_groventre
+    from: 'off'
+    platform: state
+    to: 'on'
+  action:
+  - data:
+      message: Groventrén öppnades
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund
+
+- alias: 'Dörr: Altanen'
+  trigger:
+  - entity_id: switch.dorr_altan
+    from: 'off'
+    platform: state
+    to: 'on'
+  action:
+  - data:
+      message: Altandörren öppnades
+      target:
+      - channel/katrinelund
+    service: notify.katrinelund

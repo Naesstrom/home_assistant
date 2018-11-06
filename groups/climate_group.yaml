@@ -1,0 +1,9 @@
+Climate:
+- sensor.outside_temperature
+- sensor.outside_pressure
+- sensor.outside_humidity
+- sensor.lux
+- sensor.rain
+- sensor.total_rain
+- sensor.rain_cum
+- sensor.rain_cum_prior

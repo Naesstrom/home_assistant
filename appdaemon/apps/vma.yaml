@@ -1,0 +1,4 @@
+vma:
+  module: vma
+  class: VMA
+  # areas: Stockholm

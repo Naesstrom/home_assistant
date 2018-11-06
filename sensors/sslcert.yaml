@@ -1,0 +1,4 @@
+# Certificate LetsEncrypt
+  - platform: cert_expiry
+    host: https://katrinelund.duckdns.org
+    port: 8123

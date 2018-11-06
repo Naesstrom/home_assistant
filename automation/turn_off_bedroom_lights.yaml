@@ -1,0 +1,12 @@
+- alias: 'Lamp: Turn off at 2200'
+  trigger:
+  - at: '22:00:00'
+    hours: 22
+    minutes: 0
+    platform: time
+    seconds: 0
+  action:
+    - service: switch.turn_off
+      entity_id:
+        - switch.sovrum_1
+        - switch.sovrum_2

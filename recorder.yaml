@@ -1,0 +1,23 @@
+############################################################
+# recorder
+############################################################
+#db_url: sqlite:///data/home-assistant_v2.db
+#purge_interval: 7
+#purge_keep_days: 7
+purge_interval: 14
+db_url: !secret db_url
+include:
+  domains:
+    - sensor
+    - switch
+    - media_player
+    - device_tracker
+    - weather
+    - binary_sensor
+#  entities:
+#    - device_tracker.google_maps_110812454925350234140
+#    - device_tracker.google_maps_114557479077035215629
+exclude:
+  entities:
+   - sensor.last_boot
+   - sensor.date

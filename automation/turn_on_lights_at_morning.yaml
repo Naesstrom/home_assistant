@@ -1,0 +1,17 @@
+- alias: 'Lamp: Turn on at 0615'
+  trigger:
+    platform: time
+    at: 06:15:00
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.arbetsdag
+      state: 'on'
+    - condition: sun
+      before: sunrise
+  action:
+  - service: switch.turn_on
+    entity_id:
+    - group.bedroom
+    - light.livingroom_ambient_lights

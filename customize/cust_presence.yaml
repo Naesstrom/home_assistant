@@ -1,0 +1,34 @@
+#input_boolean.sussa_home:
+#  homebridge_visible: true
+#  confirm_controls_show_lock: true
+#  homebridge_name: sussa home
+#input_boolean.erik_home:
+#  homebridge_visible: true
+#  confirm_controls_show_lock: true
+#  homebridge_name: erik home
+
+### Sussas cells ###
+device_tracker.sussa:
+  icon: mdi:cellphone-android
+  entity_picture: /local/sussa.jpg
+device_tracker.galaxy_s9:
+  icon: mdi:cellphone-android
+device_tracker.galaxy_s9_bt:
+  icon: mdi:bluetooth
+device_tracker.sussas_mobil:
+  icon: mdi:cellphone-android
+device_tracker.google_maps_114557479077035215629:
+  icon: mdi:cellphone-android
+
+### Eriks Cells ###
+device_tracker.erik:
+  icon: mdi:cellphone-android
+  entity_picture: /local/erik.png
+device_tracker.xperia_xz2_bt:
+  icon: mdi:bluetooth
+device_tracker.xperia_xz2:
+  icon: mdi:cellphone-android
+device_tracker.erik_xz2:
+  icon: mdi:cellphone-android
+device_tracker.google_maps_110812454925350234140:
+  icon: mdi:cellphone-android

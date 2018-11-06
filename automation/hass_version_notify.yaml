@@ -1,0 +1,11 @@
+- alias: Update notifications
+  trigger:
+    - platform: state
+      entity_id: updater.updater
+  action:
+    service: notify.katrinelund
+    data_template:
+      title: 'New Home Assistant Release'
+      target:
+      - channel/katrinelund
+      message: "Home Assistant  {{ states.updater.updater.state }}  is now available."

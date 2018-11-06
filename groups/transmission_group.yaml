@@ -1,0 +1,7 @@
+Transmission:
+- sensor.transmission_status
+- sensor.transmission_down_speed
+- sensor.transmission_up_speed
+- sensor.transmission_active_torrents
+- sensor.transmission_paused_torrents
+- sensor.transmission_total_torrents

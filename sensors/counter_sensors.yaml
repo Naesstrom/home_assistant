@@ -1,0 +1,58 @@
+  - platform: history_stats
+    name: Front door opens today
+    entity_id: sensor.front_door
+    state: 'Open'
+    type: count
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Side door opens today
+    entity_id: sensor.side_door
+    state: 'Open'
+    type: count
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Patio door opens today
+    entity_id: sensor.patio_door
+    state: 'Open'
+    type: count
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+### Door open time###
+  - platform: history_stats
+    name: Front door open time today
+    entity_id: sensor.front_door
+    state: 'Open'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Side door open time today
+    entity_id: sensor.side_door
+    state: 'Open'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Patio door open time today
+    entity_id: sensor.patio_door
+    state: 'Open'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+### At work counter###
+
+  - platform: history_stats
+    name: Erik at work (week)
+    entity_id: device_tracker.google_maps_110812454925350234140
+    state: 'ProCivitas'
+    type: time
+    start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}'
+    end: '{{ now() }}'

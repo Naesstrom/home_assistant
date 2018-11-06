@@ -1,0 +1,7 @@
+Octoprint_tab:
+  name: Octoprint
+  view: true
+  icon: mdi:printer-3d
+  entities:
+  - camera.octoprint
+  - group.octoprint_group

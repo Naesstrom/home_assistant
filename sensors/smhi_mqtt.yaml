@@ -1,0 +1,90 @@
+#Fri sikt
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI sikt
+  unit_of_measurement: "km"
+  value_template: "{{ value_json['vis'] }}"
+
+# Lufftryck
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI lufttryck
+  unit_of_measurement: "hPa"
+  value_template: "{{ value_json['msl'] | round(1) }}"
+
+#Luftfuktighet
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI luftfuktighet
+  unit_of_measurement: "%"
+  value_template: "{{ value_json['r'] | round(1) }}"
+
+#Temperatur
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI temperatur
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json['t'] | round(1) }}"
+
+#Vindriktning
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI vindriktning
+  unit_of_measurement: "°"
+  value_template: "{{ value_json['wd'] }}"
+
+#Vindhastighet
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI vindhastighet
+  unit_of_measurement: "m/s"
+  value_template: "{{ value_json['ws'] }}"
+
+#Vindbyar
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI vindbyar
+  unit_of_measurement: "m/s"
+  value_template: "{{ value_json['gust'] | round(1) }}"
+
+#Chans för åska
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI chans för åska
+  unit_of_measurement: "%"
+  value_template: "{{ value_json['tstm'] }}"
+
+#Min Nederbörd
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI min nederbörd
+  unit_of_measurement: "mm"
+  value_template: "{{ value_json['pmin'] | round(1) }}"
+
+#Snittnederbörd
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI snittnederbörd
+  unit_of_measurement: "mm"
+  value_template: "{{ value_json['pmedian'] | round(1) }}"
+
+#Max Nederbörd
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI max nederbörd
+  unit_of_measurement: "mm"
+  value_template: "{{ value_json['pmax'] | round(1) }}"
+
+#Typ av nederbörd
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI typ av nederbörd
+  unit_of_measurement: "typ"
+  value_template: "{{ value_json['pcat'] }}"
+
+#Vädersymboler
+- platform: mqtt
+  state_topic: 'SMHI/values'
+  name: SMHI vädersymboler
+  unit_of_measurement: "typ"
+  value_template: "{{ value_json['Wsymb2'] }}"

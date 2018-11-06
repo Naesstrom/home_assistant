@@ -1,0 +1,11 @@
+- platform: rflink
+  automatic_add: true
+  devices:
+    fineoffset_0087_temp:
+      sensor_type: temperature
+      unit_of_measurement: "°C"
+      name: "Temperature Outside"
+    fineoffset_0087_hum:
+      sensor_type: humidity
+      unit_of_measurement: "%rH"
+      name: "Humidity Outside"

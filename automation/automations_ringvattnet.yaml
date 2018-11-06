@@ -1,0 +1,10 @@
+- alias: 'Pumphuset'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.pumphus_temperature
+    below: 2
+  action:
+    service: notify.Ringvattnet
+    data:
+      message: "Temperaturen i pumphuset är {{ states.sensor.pumphus_temperature.state }}ºC och utetemperaturen är {{ states.sensor.ute_temperature.state }}ºC"
+      title: "Varning: Pumphuset"

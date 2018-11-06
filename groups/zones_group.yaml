@@ -1,0 +1,4 @@
+  zones:
+    name: Zones
+    entities:
+      - binary_sensor.floorplan

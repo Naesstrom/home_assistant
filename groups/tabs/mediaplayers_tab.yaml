@@ -1,0 +1,18 @@
+Mediaplayers_tab:
+  name: Mediaplayers
+  view: true
+  icon: mdi:movie
+  entities:
+  - media_player.livingroom_amplifier
+  - media_player.livingroom_andersson
+  - media_player.all_rooms
+  - media_player.googlehome0719
+  - media_player.kitchen_speaker
+  - media_player.plex_web_chrome
+  - media_player.plex_web_chrome_2
+  - media_player.rasplex
+  - media_player.rasplexsovrum
+  - media_player.sovrum
+  - media_player.vardagsrum
+  - media_player.kitchen
+  - media_player.living_room_tv

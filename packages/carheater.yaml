@@ -1,0 +1,180 @@
+#-------------------------------------------
+#  Package to manage your carheater at winter
+# Packaged by @Naesstrom
+# Original Repo : https://github.com/gribber/ha
+# Required components etc.
+#  - SMHI weather component (or any other weather component that gives a upcoming low value)
+#  - Either a single device tracker for you or even better a group of trackers.
+#-------------------------------------------
+
+#----------- BINARY SENSOR -----------#
+# We first need to be able to tell home-assistant if it's a workday (change country as needed)
+binary_sensor:
+  - platform: workday
+    country: SE
+    name: Arbetsdag
+
+#----------- SENSOR -----------#
+# First off some sensors. required components is the SMHI weather addon.
+# If you don't use that replace the correct sensors below to someone that you use.
+sensor:
+- platform: template
+  sensors:
+    heater_departuretime:
+      friendly_name: 'Departure time'
+      value_template: '{% if states.input_number.heater_hour.state|round(0)|string|length == 1 %}0{% endif %}{{ states.input_number.heater_hour.state|round(0)|string }}:{% if states.input_number.heater_minute.state|round(0)|string|length == 1 %}0{% endif %}{{ states.input_number.heater_minute.state|round(0)|string }}'
+
+    heater_activationtime:
+      friendly_name: 'Calculated activation time'
+      value_template: >-
+        {% set atime = (states.sensor.heater_temptime.state|round(0) * 60) %}
+        {% if states.input_number.heater_hour.state|round(0)|string|length == 1 %} {% set time = 0 %} {% endif %}
+        {% set time = time|string + states.input_number.heater_hour.state|round(0)|string + ':' %}
+        {% if states.input_number.heater_minute.state|round(0)|string|length == 1 %} {% set time = time|string + '0' %} {% endif %}
+        {% set time = time|string + states.input_number.heater_minute.state|round(0)|string %}
+        {{ (as_timestamp(now().strftime("%Y-%m-%d") + ' ' + time) - atime) | timestamp_custom("%H:%M")|string }}
+
+    heater_temptime:
+      friendly_name: 'Temperature adjusted time'
+      value_template: >-
+        {% set temp = states.sensor.heater_forecast.state|int %}
+        {% if temp <= -15 %} {% set t = 1 %}
+        {% elif temp > 5 %} {% set t = 20 %}
+        {% else %} {% set t = (15 + temp) %} {% endif %}
+        {{ (states.input_number.heater_maxmin.state|round(0)/(t**0.3))|int }}
+
+    heater_forecast:
+      friendly_name: 'Temperature forecast'
+      value_template: >-
+        {% if states.sensor.time.state < states.sensor.heater_departuretime.state and states.sensor.time.state > '00:00' %}
+        {% set forecast = states.weather.smhi_home.attributes.forecast[0].templow %}
+        {% else %}
+        {% set forecast = states.weather.smhi_home.attributes.temperature %}
+        {% endif %}
+        {{ forecast }}
+
+- platform: time_date
+  display_options:
+    - 'time'
+
+#----------- AUTOMATION -----------#
+
+# Here are the automations needed (make sure you replace relevant parts)
+automation:
+  - alias: "Engine heater activate"
+    trigger:
+      platform: template
+      value_template: '{{ states.sensor.heater_activationtime.state == states.sensor.time.state }}'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          # replace entity_id below with your own tracker (group or single)
+          entity_id: group.erik_device_trackers
+          # if your home zone is called home
+          state: home
+        - condition: or
+          # Below checks if it's a workday or not
+          conditions:
+            - condition: state
+              entity_id: input_boolean.workdays_only
+              state: 'off'
+            - condition: and
+              conditions:
+                - condition: state
+                  entity_id: binary_sensor.arbetsdag
+                  state: 'on'
+                - condition: state
+                  entity_id: input_boolean.workdays_only
+                  state: 'on'
+    # If the above conditions are fulfilled, ie. you are home and it's a workday
+    # then activate the heater on your selected time
+    action:
+      - service: switch.turn_on
+        # Don't forget to select the correct switch
+        entity_id: switch.switch_engine_heater
+
+  # Automation 2 turns off the car heater at the set delay.
+  - alias: "Engine heater deactivate"
+    trigger:
+      platform: template
+      value_template: '{{ states.sensor.heater_departuretime.state == states.sensor.time.state }}'
+    action:
+      - delay:
+          minutes: "{{ states('input_number.heater_delay') | int }}"
+      - service: switch.turn_off
+        # Don't forget to select the correct switch
+        entity_id: switch.switch_engine_heater
+
+#----------- INPUT BOOLEAN -----------#
+# Creates a input boolean so that the heater is only active on workdays
+input_boolean:
+  workdays_only:
+    name: Only active on workdays
+    initial: true
+
+#----------- INPUT NUMBER -----------#
+# Input numbers to set the time
+input_number:
+  heater_hour:
+    name: Hour
+    icon: mdi:timer
+    initial: 07
+    min: 0
+    max: 23
+    step: 1
+
+  heater_minute:
+    name: Minute
+    icon: mdi:timer
+    initial: 00
+    min: 0
+    max: 55
+    step: 5
+
+  heater_delay:
+    name: Time to overrun
+    icon: mdi:timer
+    initial: 30
+    min: 0
+    max: 59
+    step: 1
+    unit_of_measurement: min
+
+  heater_maxmin:
+    name: Maximum runtime
+    icon: mdi:timer
+    initial: 120
+    min: 30
+    max: 240
+    step: 10
+    unit_of_measurement: min
+
+#----------- GROUP -----------#
+# Creates a group with all sensors, sliders etc.
+group:
+  engine_heater:
+    name: Engine heater
+    control: hidden
+    entities:
+      - sensor.heater_departuretime
+      - sensor.heater_activationtime
+      - sensor.heater_temptime
+      - sensor.heater_forecast
+      - input_number.heater_hour
+      - input_number.heater_minute
+      - input_number.heater_delay
+      - input_number.heater_maxmin
+      - input_boolean.workdays_only
+      - switch.switch_engine_heater
+
+#----------- CUSTOMIZE -----------#
+# Just some small polishing moves!
+homeassistant:
+  customize:
+    sensor.heater_forecast:
+      unit_of_measurement: C
+      icon: mdi:temperature-celsius
+    sensor.heater_temptime:
+      unit_of_measurement: min
+      icon: mdi:timer

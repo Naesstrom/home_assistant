@@ -1,0 +1,4 @@
+#  - platform: waze_travel_time
+#    origin: "56.826246, 14.938855"
+#    destination: "56.872497, 14.802252"
+#    region: 'EU'

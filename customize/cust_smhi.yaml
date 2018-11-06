@@ -1,0 +1,28 @@
+sensor.billa_temperatur:
+    icon: mdi:temperature-celsius
+sensor.billa_luftfuktighet:
+    icon: mdi:water-percent
+sensor.billa_lufttryck:
+    icon: mdi:gauge
+sensor.billa_sikt:
+    icon: mdi:mixcloud
+sensor.billa_vindhastighet:
+    icon: mdi:weather-windy
+sensor.billa_vindbyar:
+    icon: mdi:weather-windy
+sensor.billa_vindriktning:
+    icon: mdi:sign-direction
+sensor.billa_chans_for_aska:
+    icon: mdi:weather-lightning
+sensor.billa_vindriktning_text:
+    icon: mdi:sign-direction
+sensor.billa_vadersymboler_text:
+    icon: mdi:weather-partlycloudy
+sensor.billa_nederbordstyp_text:
+    icon: mdi:weather-partlycloudy
+sensor.billa_min_nederbord:
+    icon: mdi:weather-fog
+sensor.billa_snittnederbord:
+    icon: mdi:weather-fog
+sensor.billa_max_nederbord:
+    icon: mdi:weather-fog
