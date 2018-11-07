@@ -4,10 +4,6 @@ switch.brevladan:
   icon: mdi:mailbox
   sensor_class: 'opening'
 
-switch.front_door_lock:
-  assumed_state: False
-  icon: mdi:lock
-  senmsor_class: "lock"
 
 group.door_sensors:
   assumed_state: true

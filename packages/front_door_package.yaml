@@ -1,0 +1,111 @@
+sensor:
+  - platform: template
+    sensors:
+      front_door:
+        friendly_name: "Dörr: Framsidan"
+        value_template: >-
+          {% if is_state('switch.dorr_framsidan', 'on') %}
+            Open
+          {% else %}
+            Closed
+          {% endif %}
+        icon_template: >
+          {% if is_state('switch.dorr_framsidan', 'on') %}
+            mdi:door-open
+          {% else %}
+            mdi:door-closed
+          {% endif %}
+      front_door_lock:
+        friendly_name: "Lock: Framsidan"
+        value_template: >-
+          {% if is_state('switch.front_door_lock', 'on') %}
+            Locked
+          {% else %}
+            Unlocked
+          {% endif %}
+        icon_template: >
+          {% if is_state('switch.front_door_lock', 'on') %}
+            mdi:lock
+          {% else %}
+            mdi:lock-open
+          {% endif %}
+
+  - platform: history_stats
+    name: Front door opens today
+    entity_id: sensor.front_door
+    state: 'Open'
+    type: count
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Front door open time today
+    entity_id: sensor.front_door
+    state: 'Open'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+######################################################################
+##  Managing the magnetic door Locks
+######################################################################
+
+# Old version, using only GPIO commands
+#- platform: command_line
+#  switches:
+#    front_door_lock:
+#      command_on: "/usr/bin/curl -X GET http://192.168.0.6/control?cmd=GPIO,5,1"
+#      command_off: "/usr/bin/curl -X GET http://192.168.0.6/control?cmd=GPIO,5,0"
+#      value_template: '{{ state == "1" }}'
+#      friendly_name: Front Door Lock
+switch:
+  - platform: mqtt
+    name: "Front Door Lock"
+    state_topic: "/front_door/door_lock/switch"
+    command_topic: "/front_door/gpio/5"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: true
+    qos: 0
+
+homeassistant:
+  customize:
+    switch.front_door_lock:
+      assumed_state: False
+      icon: mdi:lock
+      senmsor_class: "lock"
+
+automation:
+  - alias: "Lock front door at night"
+    trigger:
+      platform: time
+      at: '22:00:00'
+    condition:
+      condition: state
+      entity_id: sensor.front_door_lock
+      state: "Unlocked"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.front_door_lock
+
+  - alias: "Lock front door when away"
+    trigger:
+      platform: state
+      entity_id: group.erik, group.sussa
+      # Optional
+      from: 'home'
+      # Optional
+      to: 'not_home'
+    condition:
+      - condition: state
+        entity_id: input_boolean.guestmode
+        state: "off"
+      - condition: state
+        entity_id: group.erik_device_trackers
+        state: "not_home"
+      - condition: state
+        entity_id: group.sussa
+        state: "not_home"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.front_door_lock

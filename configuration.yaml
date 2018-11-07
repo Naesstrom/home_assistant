@@ -245,7 +245,7 @@ light: !include_dir_merge_list light
 binary_sensor: !include_dir_merge_list binary_sensor
 #automation old: !include_dir_merge_list automation
 cover: !include_dir_merge_list covers
-# lock: !include_dir_merge_list locks
+lock: !include_dir_merge_list locks
 
 
 cast:
@@ -308,6 +308,12 @@ input_boolean:
     name: mail
     initial: off
     icon: mdi:mailbox
+  guestmode:
+    name: Guest Mode
+    initial: off
+    icon: mdi:account-plus
+
+
 remember_the_milk:
   - name: naesstrom
     api_key: !secret rtm_api_key

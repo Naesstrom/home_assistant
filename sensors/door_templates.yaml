@@ -1,19 +1,5 @@
 - platform: template
   sensors:
-    front_door:
-      friendly_name: "Dörr: Framsidan"
-      value_template: >-
-        {% if is_state('switch.dorr_framsidan', 'on') %}
-          Open
-        {% else %}
-          Closed
-        {% endif %}
-      icon_template: >
-        {% if is_state('switch.dorr_framsidan', 'on') %}
-          mdi:door-open
-        {% else %}
-          mdi:door-closed
-        {% endif %}
     side_door:
       friendly_name: "Dörr: Groventré"
       value_template: >-

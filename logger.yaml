@@ -20,6 +20,8 @@ logs:
   homeassistant.helpers.script: warn
   homeassistant.helpers.entity: critical
   homeassistant.exceptions: info
+  homeassistant.components.http.view: warn
+  homeassistant.components.sensor: error
   root: warn
   rflink: warn
   homeassistant.components.rflink: warn

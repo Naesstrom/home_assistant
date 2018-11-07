@@ -1,19 +1,5 @@
 - platform: template
   sensors:
-    front_door_lock:
-      friendly_name: "Lock: Framsidan"
-      value_template: >-
-        {% if is_state('switch.front_door_lock', 'on') %}
-          Locked
-        {% else %}
-          Unlocked
-        {% endif %}
-      icon_template: >
-        {% if is_state('switch.front_door_lock', 'on') %}
-          mdi:lock
-        {% else %}
-          mdi:lock-open
-        {% endif %}
     side_door_lock:
       friendly_name: "Lock: Groventré"
       value_template: >-

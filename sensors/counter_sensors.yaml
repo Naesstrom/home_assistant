@@ -1,10 +1,3 @@
-  - platform: history_stats
-    name: Front door opens today
-    entity_id: sensor.front_door
-    state: 'Open'
-    type: count
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
 
   - platform: history_stats
     name: Side door opens today
@@ -23,13 +16,6 @@
     end: '{{ now() }}'
 
 ### Door open time###
-  - platform: history_stats
-    name: Front door open time today
-    entity_id: sensor.front_door
-    state: 'Open'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
 
   - platform: history_stats
     name: Side door open time today

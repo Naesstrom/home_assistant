@@ -1,12 +1,10 @@
 default_view:
   view: true
   entities:
-  - weather.metno
   - sensor.mailbox
   - sensor.sussa
   - sensor.erik
   - sensor.waze_travel_time
-  - climate.living_room_ac
   - group.living_room
   - group.doors
   - group.bedroom
