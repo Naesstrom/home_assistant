@@ -1,10 +1,9 @@
   - platform: mqtt
     name: Frontdoor2
-    state_topic: "/front_door/door_lock/switch"
+    state_topic: "/front_door/gpio/5"
     command_topic: "/front_door/gpio/5"
     payload_lock: "1"
     payload_unlock: "0"
-    optimistic: false
-    qos: 1
+    qos: 0
     retain: true
-    value_template: '{{ value.x }}'
+#    value_template: '{{ value.x }}'

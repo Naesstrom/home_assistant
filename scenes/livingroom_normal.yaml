@@ -1,6 +1,10 @@
   - name: Livingroom normal
     entities:
-        light.livingroom_ambient_lights:
+        light.tradfri_transformer_10w:
             state: on
             transition: 3
             brightness_pct: 80
+        light.tradfri_bulb_e14_ws_opal_400lm_2:
+            state: on
+            transition: 3
+            brightness_pct: 30

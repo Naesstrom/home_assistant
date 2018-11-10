@@ -61,12 +61,13 @@ sensor:
 switch:
   - platform: mqtt
     name: "Front Door Lock"
-    state_topic: "/front_door/door_lock/switch"
+    state_topic: "/front_door/gpio/5"
     command_topic: "/front_door/gpio/5"
     payload_on: "1"
     payload_off: "0"
-    optimistic: true
+    optimistic: false
     qos: 0
+    retain: true
 
 homeassistant:
   customize:

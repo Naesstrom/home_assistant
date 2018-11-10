@@ -7,4 +7,5 @@
   - service: light.turn_on
     entity_id:
       - group.bedroom
-      - light.livingroom_ambient_lights
+  - service: scene.turn_on
+    entity_id: scene.livingroom_normal
