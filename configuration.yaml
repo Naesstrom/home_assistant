@@ -135,12 +135,6 @@ rflink:
 # cd /dev/serial/by-id
 # ls
 # usb-Arduino__www.arduino.cc__Arduino_Mega_2560_85430353631351209040-if00
-# mqtt:
-#  broker: 127.0.0.1
-#  port: 1883
-#  client_id: home-assistant-1
-#  username: pi
-#  password: raspberry
 
 history_graph:
   gr1:
@@ -182,8 +176,6 @@ device_tracker:
     username: !secret googlemaps_name
     password: !secret googlemaps_pass
 
-####### ---- GROUPS ---- #######
-#Include groups
 #zwave:
 #  device_config: !include zwave_device_config.yaml
 
@@ -263,15 +255,15 @@ media_player:
     mac: '34:ea:34:40:78:ff'
     ircodes_ini: 'broadlink_media_codes/andersson.ini'
     #retain: true
-#  - platform: plex
-#    entity_namespace: 'plex'
-#    include_non_clients: true
-#    scan_interval: 5
-#    show_all_controls: true
-#    use_custom_entity_ids: true
-#    use_episode_art: true
-#    remove_unavailable_clients: true
-#    client_remove_interval: 600
+  - platform: plex
+    entity_namespace: 'plex'
+    include_non_clients: true
+    scan_interval: 5
+    show_all_controls: true
+    use_custom_entity_ids: true
+    use_episode_art: true
+    remove_unavailable_clients: true
+    client_remove_interval: 600
 #Control the livingroom Amplifier Sony STR DN-1040
   - platform: broadlink
     name: Livingroom Amplifier
