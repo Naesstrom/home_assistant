@@ -1,0 +1,7 @@
+  - platform: broadlink
+    name: Livingroom Amplifier
+    host: 192.168.1.5
+    mac: '34:ea:34:40:78:ff'
+    ircodes_ini: 'broadlink_media_codes/sony_str_dn1040.ini'
+    ping_host: 192.168.1.62
+    #retain: true

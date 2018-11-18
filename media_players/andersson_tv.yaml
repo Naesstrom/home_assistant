@@ -1,0 +1,6 @@
+  - platform: broadlink
+    name: Livingroom Andersson
+    host: 192.168.1.5
+    mac: '34:ea:34:40:78:ff'
+    ircodes_ini: 'broadlink_media_codes/andersson.ini'
+    #retain: true

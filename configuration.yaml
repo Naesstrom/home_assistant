@@ -238,7 +238,7 @@ binary_sensor: !include_dir_merge_list binary_sensor
 #automation old: !include_dir_merge_list automation
 cover: !include_dir_merge_list covers
 lock: !include_dir_merge_list locks
-
+# media_player: include_dir_merge_list media_players
 
 cast:
 
@@ -258,9 +258,9 @@ media_player:
   - platform: plex
     entity_namespace: 'plex'
     include_non_clients: true
-    scan_interval: 5
+    scan_interval: 10
     show_all_controls: true
-    use_custom_entity_ids: true
+#    use_custom_entity_ids: true
     use_episode_art: true
     remove_unavailable_clients: true
     client_remove_interval: 600
