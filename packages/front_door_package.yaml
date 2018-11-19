@@ -80,7 +80,7 @@ automation:
   - alias: "Lock front door at night"
     trigger:
       platform: time
-      at: '22:00:00'
+      at: '23:00:00'
     condition:
       condition: state
       entity_id: sensor.front_door_lock
@@ -109,4 +109,27 @@ automation:
         state: "not_home"
     action:
       - service: switch.turn_on
+        entity_id: switch.front_door_lock
+
+  - alias: "Unlock front door when home"
+    trigger:
+      - platform: template
+        value_template: "{% if is_state('group.erik', 'home') %}true{% endif %}"
+      - platform: template
+        value_template: "{% if is_state('group.sussa', 'home') %}true{% endif %}"
+    condition:
+      - condition: state
+        entity_id: input_boolean.guestmode
+        state: "off"
+      - condition: state
+        entity_id: "group.erik"
+        state: "home"
+      - condition: state
+        entity_id: "group.sussa"
+        state: "home"
+      - condition: time
+        after: "06:00:00"
+        before: "23:00:00"
+    action:
+      - service: switch.turn_off
         entity_id: switch.front_door_lock

@@ -1,7 +1,7 @@
-- alias: 'Lamp: Turn on at 0615'
+- alias: 'Lamp: Turn on at 0600'
   trigger:
     platform: time
-    at: 06:15:00
+    at: 06:00:00
   condition:
     condition: and
     conditions:
