@@ -122,10 +122,10 @@ automation:
         entity_id: input_boolean.guestmode
         state: "off"
       - condition: state
-        entity_id: "group.erik"
+        entity_id: group.erik
         state: "home"
       - condition: state
-        entity_id: "group.sussa"
+        entity_id: group.sussa
         state: "home"
       - condition: time
         after: "06:00:00"
