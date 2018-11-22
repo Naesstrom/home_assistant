@@ -133,3 +133,25 @@ automation:
     action:
       - service: switch.turn_off
         entity_id: switch.front_door_lock
+
+  - alias: Unlock front door
+    trigger:
+      - platform: mqtt
+        topic: "/front_door/code/CODE"
+        payload: "1"
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "/front_door/gpio/5"
+          payload: "0"
+
+  - alias: Relock front door
+    trigger:
+      - platform: mqtt
+        topic: "/front_door/code/CODE"
+        payload: "0"
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "/front_door/gpio/5"
+          payload: "1"

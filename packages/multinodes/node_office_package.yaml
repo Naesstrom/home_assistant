@@ -1,0 +1,27 @@
+#homeassistant:
+#  customize:
+#    -
+  sensor:
+    - platform: mqtt
+      name: "Office Temperature"
+      state_topic: "/Node_Office/DHT22/Temperature"
+      qos: 0
+      unit_of_measurement: "°C"
+
+    - platform: mqtt
+      name: "Office Humidity"
+      state_topic: "/Node_Office/DHT22/Humidity"
+      qos: 0
+      unit_of_measurement: "%"
+#  group:
+#    -
+  binary_sensor:
+    - platform: mqtt
+      name: "Office Movement"
+      state_topic: "/Node_Office/PIR/Switch"
+      payload_on: "1"
+      payload_off: "0"
+      payload_available: "on"
+      payload_not_available: "off"
+      qos: 0
+      device_class: moving

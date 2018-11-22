@@ -1,49 +1,49 @@
-  - platform: mqtt
-    name: "Kitchen Movement"
-    state_topic: "/Node_Kitchen/PIR/Switch"
-    payload_on: "1"
-    payload_off: "0"
-    payload_available: "on"
-    payload_not_available: "off"
-    qos: 0
-    device_class: moving
+#  - platform: mqtt
+#    name: "Kitchen Movement"
+#    state_topic: "/Node_Kitchen/PIR/Switch"
+#    payload_on: "1"
+#    payload_off: "0"
+#    payload_available: "on"
+#    payload_not_available: "off"
+#    qos: 0
+#    device_class: moving
 
-  - platform: mqtt
-    name: "Bedroom Movement"
-    state_topic: "/Node_Bedroom/PIR/Switch"
-    payload_on: "1"
-    payload_off: "0"
-    payload_available: "on"
-    payload_not_available: "off"
-    qos: 0
-    device_class: moving
+#  - platform: mqtt
+#    name: "Bedroom Movement"
+#    state_topic: "/Node_Bedroom/PIR/Switch"
+#    payload_on: "1"
+#    payload_off: "0"
+#    payload_available: "on"
+#    payload_not_available: "off"
+#    qos: 0
+#    device_class: moving
 
-  - platform: mqtt
-    name: "Livingroom Movement"
-    state_topic: "/Node_Livingroom/PIR/Switch"
-    payload_on: "1"
-    payload_off: "0"
-    payload_available: "on"
-    payload_not_available: "off"
-    qos: 0
-    device_class: moving
+#  - platform: mqtt
+#    name: "Livingroom Movement"
+#    state_topic: "/Node_Livingroom/PIR/Switch"
+#    payload_on: "1"
+#    payload_off: "0"
+#    payload_available: "on"
+#    payload_not_available: "off"
+#    qos: 0
+#    device_class: moving
 
-  - platform: mqtt
-    name: "Office Movement"
-    state_topic: "/Node_Office/PIR/Switch"
-    payload_on: "1"
-    payload_off: "0"
-    payload_available: "on"
-    payload_not_available: "off"
-    qos: 0
-    device_class: moving
+# - platform: mqtt
+#    name: "Office Movement"
+#    state_topic: "/Node_Office/PIR/Switch"
+#    payload_on: "1"
+#    payload_off: "0"
+#    payload_available: "on"
+#    payload_not_available: "off"
+#    qos: 0
+#    device_class: moving
 
-  - platform: mqtt
-    name: "Bathroom Movement"
-    state_topic: "/Node_Bathroom/PIR/Switch"
-    payload_on: "1"
-    payload_off: "0"
-    payload_available: "on"
-    payload_not_available: "off"
-    qos: 0
-    device_class: moving
+#  - platform: mqtt
+#    name: "Bathroom Movement"
+#    state_topic: "/Node_Bathroom/PIR/Switch"
+#    payload_on: "1"
+#    payload_off: "0"
+#    payload_available: "on"
+#    payload_not_available: "off"
+#    qos: 0
+#    device_class: moving
