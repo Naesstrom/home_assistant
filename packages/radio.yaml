@@ -3,8 +3,10 @@ group:
     name: Radio
     entities:
     - input_select.radio_station
-    - input_select.chromecast_radio
-    - script.radio
+    - input_select.chromecast_radio_speakers
+    - input_number.volume_radio
+    - script.play_chromecast_radio
+    - script.stop_chromecast_radio
 
 input_select:
   radio_station:
@@ -81,7 +83,7 @@ input_select:
         - SR Klassiskt
         - SR Din gata
         - SR Metropol
-  chromecast_radio:
+  chromecast_radio_speakers:
       name: 'Select Speakers:'
       options:
         - Livingroom
@@ -92,8 +94,18 @@ input_select:
       initial: Everywhere
       icon: mdi:speaker-wireless
 
+input_number:
+  volume_radio:
+    name: Volume
+    icon: mdi:volume-high
+    initial: 0.3
+    min: 0
+    max: 1
+    step: 0.05
+
+
 script:
-  radio:
+  play_chromecast_radio:
       alias: Play Radio on Chromecast Audio
       sequence:
         - service: media_player.volume_set
@@ -197,3 +209,15 @@ script:
               {% elif is_state("input_select.radio_station", "SR Metropol") %} http://sverigesradio.se/topsy/direkt/2842-hi-mp3.pls
               {% endif %}
              media_content_type: 'audio/mp4'
+  stop_chromecast_radio:
+    alias: Stop Playing Radio on ChromeCast
+    sequence:
+      - service: media_player.turn_off
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.vardagsrum
+            {% elif is_state("input_select.chromecast_radio", "Office") %} media_player.googlehome4544
+            {% elif is_state("input_select.chromecast_radio", "Bedroom") %} media_player.googlehome0719
+            {% elif is_state("input_select.chromecast_radio", "Kitchen") %} media_player.kitchen_speaker
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.all_rooms
+            {% endif %}
