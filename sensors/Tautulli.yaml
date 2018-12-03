@@ -1,12 +1,18 @@
-    - platform: tautulli
-      host: 192.168.1.14:8181
-      ssl: true
-      verify_ssl: false
-      token: !secret tautulli_token
-      monitored_conditions:
-        - stream_count
-### Below are only compatible with Tautulli - if you are still on PlexPy, remove them.
-        - stream_count_transcode
-        - stream_count_direct_play
-        - stream_count_direct_stream
-        - total_bandwidth
+  - platform: tautulli
+    api_key: !secret tautulli_token
+    host: !secret tautulli_host
+    ssl: true
+    verify_ssl: false
+
+#  - platform: tautulli
+#    host: 192.168.1.14:8181
+#    ssl: true
+#    verify_ssl: false
+#    token: !secret tautulli_token
+#    monitored_conditions:
+#      - stream_count
+## Below are only compatible with Tautulli - if you are still on PlexPy, remove them.
+#      - stream_count_transcode
+#      - stream_count_direct_play
+#      - stream_count_direct_stream
+#      - total_bandwidth

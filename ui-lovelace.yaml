@@ -4,28 +4,28 @@ excluded_entities:
   - weblink.router
 views:
     # View tab title.
-  - title: Example
+#  - title: Example
     # Optional unique id for direct access /lovelace/${id}
-    id: example
+#    id: example
     # Each view can have a different theme applied.
-    theme: dark-mode
+#    theme: dark-mode
     # The cards to show on this view.
-    cards:
+#    cards:
         # The filter card will filter entities for their state
-      - type: entity-filter
-        entities:
-          - device_tracker.erik
-          - device_tracker.sussa
-        state_filter:
-          - 'Home'
-        card_config:
-          type: glance
-          title: People that are home
+#      - type: entity-filter
+#        entities:
+#          - device_tracker.erik
+#          - device_tracker.sussa
+#        state_filter:
+#          - 'Home'
+#        card_config:
+#          type: glance
+#          title: People that are home
 
         # The picture entity card will represent an entity with a picture
-      - type: picture-entity
-        image: https://www.home-assistant.io/images/default-social.png
-        entity: light.bed_light
+#      - type: picture-entity
+#        image: https://www.home-assistant.io/images/default-social.png
+#        entity: light.bed_light
 
     # Specify a tab icon if you want the view tab to be an icon.
   - icon: mdi:home-assistant
@@ -33,7 +33,7 @@ views:
     title: Second view
     cards:
       - type: weather-forecast
-        entity: weather.yweather
+        entity: weather.smhi_home
         # Entities card will take list of entities and show their state.
       - type: entities
         # Title of the entities card
@@ -49,9 +49,15 @@ views:
       - type: map
         aspect_ratio: 50%
         entities:
-        - entity: device_tracker.erik
-        - entity: device_tracker.sussa
-        - zone.home
+        - entity: device_tracker.google_maps_110812454925350234140
+          name: Erik
+        - entity: device_tracker.google_maps_114557479077035215629
+          name: sussa
+
+      - type: light
+        entity: light.kitchen_lights
+      - type: light
+        entity: light.livingroom_ambient_lights
 
         # The markdown card will render markdown text.
       - type: markdown
@@ -59,6 +65,57 @@ views:
         content: >
           Welcome to your **Lovelace UI**.
 
+  - icon: mdi:car-multiple
+    # Title of the view. Will be used as the tooltip for tab icon
+    title: Car view
+    cards:
+      - type: entities
+        # Title of the entities card
+        title: Sussas Motorvärmare
+        # The entities here will be shown in the same order as specified.
+        # Each entriy is an entity ID or a map with extra options.
+        entities:
+          - sensor.wife_heater_departuretime
+          - sensor.wife_heater_activationtime
+          - sensor.wife_heater_temptime
+          - sensor.wife_heater_forecast
+#The following 3 are from the sonoff POW
+          - sensor.carheater_1_current
+          - sensor.carheater_1_power
+          - sensor.carheater_1_voltage
+#these are for the automations
+          - input_number.heater_hour_wife
+          - input_number.heater_minute_wife
+          - input_number.heater_delay_wife
+          - input_number.heater_maxmin_wife
+          - input_boolean.wife_workdays_only
+          - entity: switch.engine_heater_wife
+            name: Sussas Carheater
+            icon: mdi:radiator
+
+      - type: entities
+        # Title of the entities card
+        title: Eriks Motorvärmare
+        # The entities here will be shown in the same order as specified.
+        # Each entriy is an entity ID or a map with extra options.
+        entities:
+          - sensor.heater_departuretime
+          - sensor.heater_activationtime
+          - sensor.heater_temptime
+          - sensor.heater_forecast
+#The following 3 are from the sonoff POW
+          - sensor.carheater_2_current
+          - sensor.carheater_2_power
+          - sensor.carheater_2_voltage
+#these are for the automations
+          - input_number.heater_hour
+          - input_number.heater_minute
+          - input_number.heater_delay
+          - input_number.heater_maxmin
+          - input_boolean.workdays_only
+          - entity: switch.engine_heater
+            name: Eriks Carheater
+            icon: mdi:radiator
 
   - icon: mdi:security-home
     title: Security
@@ -96,6 +153,9 @@ views:
         title: Bathroom Door
         entities:
           - sensor.bathroomdoor
+      - type: alarm-panel
+        entity: alarm_control_panel.ha_alarm
+
 
   - icon: mdi:cctv
     title: Cameras

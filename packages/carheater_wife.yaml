@@ -7,6 +7,19 @@
 #  - Either a single device tracker for you or even better a group of trackers.
 #-------------------------------------------
 
+#----------- SWITCHES -----------#
+#This my configuration for a sonoff POW r2 with tasmota on it, change accordingly to what switch you are using
+switch:
+  platform: mqtt
+  name: "engine heater wife"
+  command_topic: "cmnd/carheater_1/power"
+  state_topic: "stat/carheater_1/POWER"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  retain: true
+
+
 #----------- BINARY SENSOR -----------#
 # We first need to be able to tell home-assistant if it's a workday (change country as needed)
 binary_sensor:
@@ -53,6 +66,30 @@ sensor:
         {% endif %}
         {{ forecast }}
 
+# these sensors are optional and only works if you are using a sonoff POW r2, otherwise delete them
+- platform: mqtt
+  name: "Carheater 1 Todays Energy"
+  state_topic: "tele/carheater_1/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Today"] }}'
+  unit_of_measurement: "kWh"
+- platform: mqtt
+  name: "Carheater 1 Power"
+  state_topic: "tele/carheater_1/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Power"] }}'
+  unit_of_measurement: "W"
+- platform: mqtt
+  name: "Carheater 1 Voltage"
+  state_topic: "tele/carheater_1/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+  unit_of_measurement: "V"
+- platform: mqtt
+  name: "Carheater 1 Current"
+  state_topic: "tele/carheater_1/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Current"] }}'
+  unit_of_measurement: "A"
+
+
+
 #----------- AUTOMATION -----------#
 
 # Here are the automations needed (make sure you replace relevant parts)
@@ -60,7 +97,7 @@ automation:
   - alias: "Engine heater activate (wife)"
     trigger:
       platform: template
-      value_template: '{{ states.sensor.wife_heater_activationtime_(wife).state == states.sensor.time.state }}'
+      value_template: '{{ states.sensor.wife_heater_activationtime.state == states.sensor.time.state }}'
     condition:
       condition: and
       conditions:
@@ -88,19 +125,19 @@ automation:
     action:
       - service: switch.turn_on
         # Don't forget to select the correct switch
-        entity_id: switch.switch_engine_heater_wife
+        entity_id: switch.engine_heater_wife
 
   # Automation 2 turns off the car heater at the set delay.
   - alias: "Engine heater deactivate"
     trigger:
       platform: template
-      value_template: '{{ states.sensor.heater_departuretime_(wife).state == states.sensor.time.state }}'
+      value_template: '{{ states.sensor.wife_heater_activationtime.state == states.sensor.time.state }}'
     action:
       - delay:
           minutes: "{{ states('input_number.heater_delay_(wife)') | int }}"
       - service: switch.turn_off
         # Don't forget to select the correct switch
-        entity_id: switch.switch_engine_heater_wife
+        entity_id: switch.engine_heater_wife
 
 #----------- INPUT BOOLEAN -----------#
 # Creates a input boolean so that the heater is only active on workdays
@@ -157,6 +194,11 @@ group:
       - sensor.wife_heater_activationtime
       - sensor.wife_heater_temptime
       - sensor.wife_heater_forecast
+#The following 3 are from the sonoff POW
+      - sensor.carheater_1_current
+      - sensor.carheater_1_power
+      - sensor.carheater_1_voltage
+#these are for the automations
       - input_number.heater_hour_wife
       - input_number.heater_minute_wife
       - input_number.heater_delay_wife
@@ -168,9 +210,9 @@ group:
 # Just some small polishing moves!
 homeassistant:
   customize:
-    sensor.heater_forecast:
-      unit_of_measurement: C
+    sensor.wife_heater_forecast:
+      unit_of_measurement: ºC
       icon: mdi:temperature-celsius
-    sensor.heater_temptime:
+    sensor.wife_heater_temptime:
       unit_of_measurement: min
       icon: mdi:timer
