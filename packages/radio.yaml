@@ -1,3 +1,4 @@
+# Creates a nice group to add to the UI
 group:
   Radio:
     name: Radio
@@ -8,7 +9,9 @@ group:
     - script.play_chromecast_radio
     - script.stop_chromecast_radio
 
+# There are some things we need to be able to select.
 input_select:
+# Match this list of station names to URL's below.
   radio_station:
       name: 'Select Radio Station:'
       options:
@@ -83,6 +86,8 @@ input_select:
         - SR Klassiskt
         - SR Din gata
         - SR Metropol
+
+# This list is the name of your speakers, match this to the list below.
   chromecast_radio_speakers:
       name: 'Select Speakers:'
       options:
@@ -94,6 +99,7 @@ input_select:
       initial: Everywhere
       icon: mdi:speaker-wireless
 
+# Always nice to be able to set the volume.
 input_number:
   volume_radio:
     name: Volume
@@ -103,32 +109,36 @@ input_number:
     max: 1
     step: 0.05
 
-
+# And now we start the script to play the radio
 script:
   play_chromecast_radio:
       alias: Play Radio on Chromecast Audio
       sequence:
+# set the volume
         - service: media_player.volume_set
-          data:
-            entity_id: media_player.vardagsrum
-            volume_level: '0.35'
-        -  service: media_player.volume_set
-           data:
-             entity_id: media_player.ca_bathroom
-             volume_level: '0.20'
-        -  service: media_player.volume_set
-           data:
-             entity_id: media_player.ca_livingroom
-             volume_level: '0.30'
+          data_template:
+# this list has to be the same as the other 2 places.
+            entity_id: >
+              {% if is_state("input_select.chromecast_radio_speakers", "Livingroom") %} media_player.vardagsrum
+              {% elif is_state("input_select.chromecast_radio_speakers", "Office") %} media_player.googlehome4544
+              {% elif is_state("input_select.chromecast_radio_speakers", "Bedroom") %} media_player.googlehome0719
+              {% elif is_state("input_select.chromecast_radio_speakers", "Kitchen") %} media_player.kitchen_speaker
+              {% elif is_state("input_select.chromecast_radio_speakers", "Everywhere") %} media_player.all_rooms
+              {% endif %}
+# And finally we set the volume from the input number
+            volume_level: '{{  states.input_number.volume_radio.state  }}'
+# Time to start the radio
         -  service: media_player.play_media
            data_template:
+# Same list of media players as above
              entity_id: >
-              {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.vardagsrum
-              {% elif is_state("input_select.chromecast_radio", "Office") %} media_player.googlehome4544
-              {% elif is_state("input_select.chromecast_radio", "Bedroom") %} media_player.googlehome0719
-              {% elif is_state("input_select.chromecast_radio", "Kitchen") %} media_player.kitchen_speaker
-              {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.all_rooms
+              {% if is_state("input_select.chromecast_radio_speakers", "Livingroom") %} media_player.vardagsrum
+              {% elif is_state("input_select.chromecast_radio_speakers", "Office") %} media_player.googlehome4544
+              {% elif is_state("input_select.chromecast_radio_speakers", "Bedroom") %} media_player.googlehome0719
+              {% elif is_state("input_select.chromecast_radio_speakers", "Kitchen") %} media_player.kitchen_speaker
+              {% elif is_state("input_select.chromecast_radio_speakers", "Everywhere") %} media_player.all_rooms
               {% endif %}
+# This is the list of radiostations that you could select above.
              media_content_id: >
               {% if is_state("input_select.radio_station", "Radio 538") %} http://vip-icecast.538.lw.triple-it.nl:80/RADIO538_MP3
               {% elif is_state("input_select.radio_station", "Q-Music") %} http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_96.mp3
@@ -209,11 +219,14 @@ script:
               {% elif is_state("input_select.radio_station", "SR Metropol") %} http://sverigesradio.se/topsy/direkt/2842-hi-mp3.pls
               {% endif %}
              media_content_type: 'audio/mp4'
+
+# This script is if you want to stop your radio from playing.
   stop_chromecast_radio:
     alias: Stop Playing Radio on ChromeCast
     sequence:
       - service: media_player.turn_off
         data_template:
+# The third and last place where this list is.
           entity_id: >
             {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.vardagsrum
             {% elif is_state("input_select.chromecast_radio", "Office") %} media_player.googlehome4544
