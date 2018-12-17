@@ -54,17 +54,26 @@ frontend:
 #  extra_html_url_es5:
 #    - /local/custom_ui/state-card-custom-ui-es5.html
 
-
+custom_updater:
+  track:
+    - components
+    - python_scripts
+  component_urls:
+    - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/custom_components.json
+  python_script_urls:
+    - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/python_scripts.json
 #Enable mqtt broker
-mqtt:
-   broker: !secret mqtt_broker
-   port: !secret mqtt_port
-   username: !secret mqtt_username
-   password: !secret mqtt_password
-   discovery: true
-   discovery_prefix: homeassistant
-weather:
-  - platform: met
+#mqtt:
+#   broker: !secret mqtt_broker
+#   port: !secret mqtt_port
+#   username: !secret mqtt_username
+#   password: !secret mqtt_password
+#   discovery: true
+#   discovery_prefix: homeassistant
+
+
+#weather:
+#  - platform: met
 
 
 # Checks for available updates
@@ -175,36 +184,52 @@ device_tracker:
   - platform: google_maps
     username: !secret googlemaps_name
     password: !secret googlemaps_pass
-
+  - platform: life360
+    username: !secret life360_username
+    password: !secret life360_password
+    prefix: life360
+    show_as_state: driving, moving, places
+    driving_speed: 18
+    max_gps_accuracy: 200
+    max_update_wait:
+      minutes: 45
+  - platform: googlehome
+    host: 192.168.1.218
+  - platform: googlehome
+    host: 192.168.1.216
+  - platform: googlehome
+    host: 192.168.1.237
+  - platform: googlehome
+    host: 192.168.1.183
 #zwave:
 #  device_config: !include zwave_device_config.yaml
 
-climate:
-  - platform: broadlink
-    name: "Living Room AC"
-    host: 192.168.1.5
-    mac: '34:ea:34:40:78:ff'
-    ircodes_ini: 'broadlink_climate_codes/qlima.ini'
-    min_temp: 17
-    max_temp: 30
-    target_temp: 21
-    temp_sensor: sensor.livingroom_temperature
-    default_operation: off
-    default_fan_mode: auto
-    customize:
-      operations:
-        - 'off'
-        - on
-        - cool
-        - heat
-        - auto
-        - dry
-        - fan
-      fan_modes:
-        - low
-        - mid
-        - high
-        - auto
+#climate:
+#  - platform: broadlink
+#    name: "Living Room AC"
+#    host: 192.168.1.5
+#    mac: '34:ea:34:40:78:ff'
+#    ircodes_ini: 'broadlink_climate_codes/qlima.ini'
+#    min_temp: 17
+#    max_temp: 30
+#    target_temp: 21
+#    temp_sensor: sensor.livingroom_temperature
+#    default_operation: off
+#    default_fan_mode: auto
+#    customize:
+#      operations:
+#        - 'off'
+#        - on
+#        - cool
+#        - heat
+#        - auto
+#        - dry
+#        - fan
+#      fan_modes:
+#        - low
+#        - mid
+#        - high
+#        - auto
 
 influxdb:
   host: 192.168.1.15
@@ -249,11 +274,11 @@ shopping_list:
 media_player:
 #  - platform: cast
 #Control the livingroom TV
-  - platform: broadlink
-    name: Livingroom Andersson
-    host: 192.168.1.5
-    mac: '34:ea:34:40:78:ff'
-    ircodes_ini: 'broadlink_media_codes/andersson.ini'
+#  - platform: broadlink
+#    name: Livingroom Andersson
+#    host: 192.168.1.5
+#    mac: '34:ea:34:40:78:ff'
+#    ircodes_ini: 'broadlink_media_codes/andersson.ini'
     #retain: true
   - platform: plex
     entity_namespace: 'plex'
@@ -265,12 +290,12 @@ media_player:
     remove_unavailable_clients: true
     client_remove_interval: 600
 #Control the livingroom Amplifier Sony STR DN-1040
-  - platform: broadlink
-    name: Livingroom Amplifier
-    host: 192.168.1.5
-    mac: '34:ea:34:40:78:ff'
-    ircodes_ini: 'broadlink_media_codes/sony_str_dn1040.ini'
-    ping_host: 192.168.1.62
+#  - platform: broadlink
+#    name: Livingroom Amplifier
+#    host: 192.168.1.5
+#    mac: '34:ea:34:40:78:ff'
+#    ircodes_ini: 'broadlink_media_codes/sony_str_dn1040.ini'
+#    ping_host: 192.168.1.62
     #retain: true
 
 ffmpeg:

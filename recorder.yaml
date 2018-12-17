@@ -14,6 +14,11 @@ include:
     - device_tracker
     - weather
     - binary_sensor
+  entities:
+    - automation.engine_heater_activate_erik
+    - automation.engine_heater_activate_sussa
+    - automation.engine_heater_deactivate_erik
+    - automation.engine_heater_deactivate_sussa
 #  entities:
 #    - device_tracker.google_maps_110812454925350234140
 #    - device_tracker.google_maps_114557479077035215629

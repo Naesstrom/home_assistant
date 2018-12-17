@@ -1,3 +1,7 @@
+resources:
+  - url: /local/tracker-card.js?v=0
+    type: js
+
 title: Katrinelund
 # Exclude entities from "Unused entities" view
 excluded_entities:
@@ -64,7 +68,11 @@ views:
         title: Lovelace
         content: >
           Welcome to your **Lovelace UI**.
-
+      - type: custom:tracker-card
+        title:
+        trackers:
+        - sensor.custom_card_tracker
+        - sensor.custom_component_tracker
   - icon: mdi:car-multiple
     # Title of the view. Will be used as the tooltip for tab icon
     title: Car view
@@ -75,45 +83,44 @@ views:
         # The entities here will be shown in the same order as specified.
         # Each entriy is an entity ID or a map with extra options.
         entities:
-          - sensor.wife_heater_departuretime
-          - sensor.wife_heater_activationtime
-          - sensor.wife_heater_temptime
-          - sensor.wife_heater_forecast
+          - sensor.heater_departuretime_sussa
+          - sensor.heater_activationtime_sussa
+          - sensor.heater_temptime_sussa
+          - sensor.heater_forecast_sussa
 #The following 3 are from the sonoff POW
           - sensor.carheater_1_current
           - sensor.carheater_1_power
           - sensor.carheater_1_voltage
 #these are for the automations
-          - input_number.heater_hour_wife
-          - input_number.heater_minute_wife
-          - input_number.heater_delay_wife
-          - input_number.heater_maxmin_wife
-          - input_boolean.wife_workdays_only
-          - entity: switch.engine_heater_wife
+          - input_number.heater_hour_sussa
+          - input_number.heater_minute_sussa
+          - input_number.heater_delay_sussa
+          - input_number.heater_maxmin_sussa
+          - input_boolean.workdays_only_sussa
+          - entity: switch.engine_heater_sussa
             name: Sussas Carheater
             icon: mdi:radiator
-
       - type: entities
         # Title of the entities card
         title: Eriks Motorvärmare
         # The entities here will be shown in the same order as specified.
         # Each entriy is an entity ID or a map with extra options.
         entities:
-          - sensor.heater_departuretime
-          - sensor.heater_activationtime
-          - sensor.heater_temptime
-          - sensor.heater_forecast
+          - sensor.heater_departuretime_erik
+          - sensor.heater_activationtime_erik
+          - sensor.heater_temptime_erik
+          - sensor.heater_forecast_erik
 #The following 3 are from the sonoff POW
           - sensor.carheater_2_current
           - sensor.carheater_2_power
           - sensor.carheater_2_voltage
 #these are for the automations
-          - input_number.heater_hour
-          - input_number.heater_minute
-          - input_number.heater_delay
-          - input_number.heater_maxmin
-          - input_boolean.workdays_only
-          - entity: switch.engine_heater
+          - input_number.heater_hour_erik
+          - input_number.heater_minute_erik
+          - input_number.heater_delay_erik
+          - input_number.heater_maxmin_erik
+          - input_boolean.workdays_only_erik
+          - entity: switch.engine_heater_erik
             name: Eriks Carheater
             icon: mdi:radiator
 

@@ -1,4 +1,8 @@
 vma:
   module: vma
   class: VMA
-  # areas: Stockholm
+  notify_service: "notify/ios_isabellas_iphone_x"
+  countries: "Sverige"
+  home_lat: !secret latitude
+  home_long: !secret longitude
+  range_km: 7000

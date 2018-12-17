@@ -54,7 +54,6 @@
         arg: /home
       - type: memory_free
       - type: memory_use_percent
-      - type: since_last_boot
       - type: load_1m
       - type: load_5m
       - type: load_15m
