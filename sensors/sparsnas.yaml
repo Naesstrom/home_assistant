@@ -1,21 +1,21 @@
   - platform: mqtt
-    state_topic: "home/sparsnas"
+    state_topic: "/npg5/energy"
     name: "Sparsnäs energy consumption momentary"
     unit_of_measurement: "W"
-    value_template: '{{ value_json.Watt | round(1) }}'
+    value_template: '{{ value_json.power | round(1) }}'
 # Note that the sensor below will be resetted if you remove/reinstall the batteries in the Sparsnäs transmitter
   - platform: mqtt
-    state_topic: "home/sparsnas"
+    state_topic: "/npg5/energy"
     name: "Sparsnäs energy consumption over time"
     unit_of_measurement: "kWh"
-    value_template: '{{ value_json.kWh | round(1) }}'
+    value_template: '{{ value_json.total | round(1) }}'
   - platform: mqtt
-    state_topic: "home/sparsnas"
+    state_topic: "/npg5/energy"
     name: "Sparsnäs Battery remaining"
     unit_of_measurement: "%"
     value_template: '{{ value_json.battery | round(1) }}'
   - platform: mqtt
-    state_topic: "home/sparsnas"
+    state_topic: "/npg5/energy"
     name: "Sparsnäs Frequency Error"
     unit_of_measurement: "%"
     value_template: '{{ value_json.FreqErr }}'

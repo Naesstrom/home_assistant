@@ -179,7 +179,6 @@ views:
       camera_image: camera.bedroom
       title: Bedroom
       entities:
-        - switch.sovrum_1
         - switch.sovrum_2
 ### Kitchen Camera
     - type: picture-glance

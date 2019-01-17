@@ -26,13 +26,15 @@ homeassistant:
 
 http:
   # Uncomment this to add a password (recommended!)
-#  api_password: !secret http_password
+  api_password: !secret http_password
   base_url: !secret base_url
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
   trusted_networks:
     - 192.168.1.0/24
+    - 192.168.0.0/16
     - 172.30.32.2
+    - 192.168.1.1
   ip_ban_enabled: True
   login_attempts_threshold: 2
 
@@ -360,6 +362,10 @@ panel_iframe:
     title: motionEye
     icon: mdi:cctv
     url: !secret motion_eye_url
+  jupyterlab:
+    title: JupyterLab
+    icon: mdi:flask
+    url: !secret jupyter_url
 
 shell_command:
   getbilladata: 'PATH=$PATH:/bin && rm -fr /home/hass/.homeassistant/billa.txt && curl -X GET https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/14.938817/lat/56.826237/data.json >> /home/hass/.homeassistant/billa.txt'

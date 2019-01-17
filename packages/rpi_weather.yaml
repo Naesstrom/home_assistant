@@ -1,0 +1,59 @@
+sensor:
+  - platform: rest
+    resource: https://apex.oracle.com/pls/apex/raspberrypi/weatherstation/getlatestmeasurements/5841293
+    name: RPI Weather 3
+    json_attributes:
+      - items
+    value_template: '{{ value_json["items"]["ambient_temp"] }}'
+
+  - platform: template
+    sensors:
+      rpi_temp:
+        friendly_name: 'Outside temp'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["ambient_temp"] }}'
+        unit_of_measurement: "°C"
+        entity_id: sensor.rpi_weather_3
+      rpi_ground_temp:
+        friendly_name: 'Ground temp'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["ground_temp"] }}'
+        unit_of_measurement: "°C"
+        entity_id: sensor.rpi_weather_3
+      rpi_air_qual:
+        friendly_name: 'Air quality'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["air_quality"] }}'
+        unit_of_measurement: "%"
+        entity_id: sensor.rpi_weather_3
+      rpi_pressure:
+        friendly_name: 'Air pressure'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["air_pressure"] }}'
+        unit_of_measurement: "Hp"
+        entity_id: sensor.rpi_weather_3
+      rpi_humidity:
+        friendly_name: 'Humidity'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["humidity"] }}'
+        unit_of_measurement: "°C"
+        entity_id: sensor.rpi_weather_3
+      rpi_wind_direction:
+        friendly_name: 'Wind direction'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["wind_direction"] }}'
+        unit_of_measurement: "°"
+        entity_id: sensor.rpi_weather_3
+      rpi_wind_speed:
+        friendly_name: 'Wind speed'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["wind_speed"] }}'
+        unit_of_measurement: "m/s"
+        entity_id: sensor.rpi_weather_3
+      rpi_wind_gust_speed:
+        friendly_name: 'Wind gust speed'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["wind_gust_speed"] }}'
+        unit_of_measurement: "m/s"
+        entity_id: sensor.rpi_weather_3
+      rpi_rain:
+        friendly_name: 'Rainfall'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["rainfall"] }}'
+        unit_of_measurement: "mm"
+        entity_id: sensor.rpi_weather_3
+      rpi_timestamp:
+        friendly_name: 'Timestamp'
+        value_template: '{{ state_attr("sensor.rpi_weather_3", "items")[0]["reading_timestamp"] }}'
+        entity_id: sensor.rpi_weather_3

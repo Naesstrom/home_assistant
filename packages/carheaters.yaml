@@ -1,0 +1,120 @@
+binary_sensor:
+  - platform: mqtt
+    name: "sonoff-sussas_heater lwt"
+    state_topic: "tele/carheater_1/LWT"
+    value_template: "{{ value }}"
+    payload_on: "Online"
+    payload_off: "Offline"
+    device_class: connectivity
+
+  - platform: mqtt
+    name: "sonoff-eriks_heater lwt"
+    state_topic: "tele/carheater_2/LWT"
+    value_template: "{{ value }}"
+    payload_on: "Online"
+    payload_off: "Offline"
+    device_class: connectivity
+
+sensor:
+- platform: mqtt
+  name: "Eriks Carheater 2 Todays Energy"
+  state_topic: "tele/carheater_2/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Today"] }}'
+  unit_of_measurement: "Carheater 2 kWh"
+- platform: mqtt
+  name: "Eriks Carheater 2 Power"
+  state_topic: "tele/carheater_2/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Power"] }}'
+  unit_of_measurement: "W"
+- platform: mqtt
+  name: "Eriks Carheater 2 Voltage"
+  state_topic: "tele/carheater_2/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+  unit_of_measurement: "V"
+- platform: mqtt
+  name: "Eriks Carheater 2 Current"
+  state_topic: "tele/carheater_2/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Current"] }}'
+  unit_of_measurement: "A"
+- platform: mqtt
+  name: "Sussas Carheater 1 Todays Energy"
+  state_topic: "tele/carheater_1/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Today"] }}'
+  unit_of_measurement: "kWh"
+- platform: mqtt
+  name: "Sussas Carheater 1 Power"
+  state_topic: "tele/carheater_1/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Power"] }}'
+  unit_of_measurement: "W"
+- platform: mqtt
+  name: "Sussas Carheater 1 Voltage"
+  state_topic: "tele/carheater_1/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+  unit_of_measurement: "V"
+- platform: mqtt
+  name: "Sussas Carheater 1 Current"
+  state_topic: "tele/carheater_1/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Current"] }}'
+  unit_of_measurement: "A"
+
+input_boolean:
+  workdays_only_sussa:
+    name: Only active on workdays sussa
+    initial: true
+  workdays_only_erik:
+    name: Only active on workdays erik
+    initial: true
+
+automation:
+  - alias: "Engine heater activate erik"
+    trigger:
+      platform: time
+      at: '04:00:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.arbetsdag
+          state: 'on'
+        - condition: numeric_state
+          entity_id: 'sensor.outside_temperature'
+          below: 5
+    # If the above conditions are fulfilled, ie. you are home and it's a workday
+    # then activate the heater on your selected time
+    action:
+      - service: switch.turn_on
+        # Don't forget to select the correct switch
+        entity_id: switch.carheater_erik_sonoff
+
+  - alias: "Engine heater activate sussa"
+    trigger:
+      platform: time
+      at: '04:00:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.arbetsdag
+          state: 'on'
+        - condition: numeric_state
+          entity_id: 'sensor.outside_temperature'
+          below: 5
+    # If the above conditions are fulfilled, ie. you are home and it's a workday
+    # then activate the heater on your selected time
+    action:
+      - service: switch.turn_on
+        # Don't forget to select the correct switch
+        entity_id: switch.carheater_sussa_sonoff
+
+
+  # Automation 2 turns off the car heater at the set delay.
+  - alias: "Engine heater deactivate erik"
+    trigger:
+      platform: time
+      at: '07:30:00'
+    action:
+      - service: switch.turn_off
+        # Don't forget to select the correct switch
+        entity_id:
+          - switch.carheater_erik_sonoff
+          - switch.carheater_sussa_sonoff

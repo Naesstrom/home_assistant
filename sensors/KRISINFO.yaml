@@ -1,0 +1,5 @@
+  - platform: krisinformation
+    name: Krisinformation Växjö
+    latitude: !secret latitude
+    longitude: !secret longitude
+    radius: 100
