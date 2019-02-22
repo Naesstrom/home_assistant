@@ -1,11 +1,9 @@
 - alias: 'Lamp: Turn off at 2200'
+  initial_state: true
   trigger:
   - at: '22:00:00'
-    hours: 22
-    minutes: 0
     platform: time
-    seconds: 0
   action:
     - service: switch.turn_off
       entity_id:
-        - switch.sovrum_2
+        - switch.vagglampa

@@ -1,6 +1,7 @@
 ### Turn on light when movement is detected
 # Between 22:00-07:00 lights will be dimmed
 - alias: bathroom light on
+  initial_state: true
   trigger:
     platform: state
     entity_id: binary_sensor.bathroom_movement
@@ -19,6 +20,7 @@
         {%- endif %}
 ### Turn off lights 10 minutes after last movement.
 - alias: bathroom light off 10min
+  initial_state: true
   trigger:
     platform: state
     entity_id: binary_sensor.bathroom_movement

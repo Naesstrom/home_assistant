@@ -21,11 +21,11 @@
 #    - humidity
 #    - cloudiness
 #sensor 2:
-  - platform: speedtest
-    monitored_conditions:
-    - ping
-    - download
-    - upload
+#  - platform: speedtest
+#    monitored_conditions:
+#    - ping
+#    - download
+#    - upload
 
 #sensor 3:
 #  - platform: steam_online

@@ -1,0 +1,4 @@
+switch.siren_1:
+  friendly_name: Vägglampa Sovrum
+sensor.matsedel_mandag:
+  friendly_name: Måndag

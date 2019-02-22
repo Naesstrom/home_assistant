@@ -1,4 +1,5 @@
 - alias: Doorbell ringing
+  initial_state: true
   trigger:
     platform: mqtt
     topic: /front_door/doorbell/Doorbell

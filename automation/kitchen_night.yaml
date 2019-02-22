@@ -1,4 +1,5 @@
 - alias: Turn on kitchen light when there is movement
+  initial_state: true
   trigger:
     platform: state
     entity_id: binary_sensor.kitchen_movement
@@ -14,6 +15,7 @@
         brightness: 25
 
 - alias: Turn off kitchen light 10 minutes after last movement
+  initial_state: true
   trigger:
     platform: state
     entity_id: binary_sensor.kitchen_movement

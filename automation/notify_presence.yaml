@@ -1,4 +1,5 @@
 - alias: 'Erik is Home'
+  initial_state: true
   trigger:
   - entity_id: device_tracker.erik
     from: 'Away'
@@ -12,6 +13,7 @@
     service: notify.katrinelund
 
 - alias: 'Sussa is Home'
+  initial_state: true
   trigger:
   - entity_id: device_tracker.sussa
     from: 'Away'

@@ -1,4 +1,5 @@
 - alias: Presence just arrived
+  initial_state: true
   trigger:
     - platform: state
       entity_id: group.erik
@@ -34,6 +35,7 @@
 
 
 - alias: Presence home
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_select.erik_status_dropdown
@@ -65,6 +67,7 @@
         option: Home
 
 - alias: Presence just left
+  initial_state: true
   trigger:
     - platform: state
       entity_id: group.erik
@@ -86,6 +89,7 @@
         option: Just Left
 
 - alias: Presence away
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_select.erik_status_dropdown
@@ -109,6 +113,7 @@
         option: Away
 
 - alias: Presence extended away
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_select.erik_status_dropdown
@@ -133,6 +138,7 @@
 
 
 - alias: Presence update tracker
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_select.erik_status_dropdown

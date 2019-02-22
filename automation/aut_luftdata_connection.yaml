@@ -1,4 +1,5 @@
 - alias: 'Luftdata Lost Connection'
+  initial_state: true
   trigger:
   - entity_id: device_tracker.luftdata
     from: 'home'
@@ -12,6 +13,7 @@
     service: notify.katrinelund
 
 - alias: 'Luftdata Regained Connection'
+  initial_state: true
   trigger:
   - entity_id: device_tracker.luftdata
     from: 'not_home'

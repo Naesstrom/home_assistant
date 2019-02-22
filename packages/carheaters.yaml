@@ -16,11 +16,12 @@ binary_sensor:
     device_class: connectivity
 
 sensor:
+## Eriks Sensorer
 - platform: mqtt
   name: "Eriks Carheater 2 Todays Energy"
   state_topic: "tele/carheater_2/SENSOR"
   value_template: '{{ value_json["ENERGY"]["Today"] }}'
-  unit_of_measurement: "Carheater 2 kWh"
+  unit_of_measurement: "kWh"
 - platform: mqtt
   name: "Eriks Carheater 2 Power"
   state_topic: "tele/carheater_2/SENSOR"
@@ -36,6 +37,14 @@ sensor:
   state_topic: "tele/carheater_2/SENSOR"
   value_template: '{{ value_json["ENERGY"]["Current"] }}'
   unit_of_measurement: "A"
+- platform: template
+  sensors:
+    eriks_carheater_cost:
+      friendly_name: "Eriks Carheater daily cost"
+      unit_of_measurement: ' kr'
+      value_template: "{{ states.sensor.eriks_carheater_2_todays_energy.state | multiply(2.2478) | round(2)}}"
+
+## Sussas sensorer
 - platform: mqtt
   name: "Sussas Carheater 1 Todays Energy"
   state_topic: "tele/carheater_1/SENSOR"
@@ -56,7 +65,14 @@ sensor:
   state_topic: "tele/carheater_1/SENSOR"
   value_template: '{{ value_json["ENERGY"]["Current"] }}'
   unit_of_measurement: "A"
+- platform: template
+  sensors:
+    sussas_carheater_cost:
+      friendly_name: "Sussas Carheater daily cost"
+      unit_of_measurement: ' kr'
+      value_template: "{{ states.sensor.sussas_carheater_1_todays_energy.state | multiply(2.2478) | round(2)}}"
 
+## Input switches
 input_boolean:
   workdays_only_sussa:
     name: Only active on workdays sussa
@@ -67,6 +83,7 @@ input_boolean:
 
 automation:
   - alias: "Engine heater activate erik"
+    initial_state: true
     trigger:
       platform: time
       at: '04:00:00'
@@ -76,9 +93,11 @@ automation:
         - condition: state
           entity_id: binary_sensor.arbetsdag
           state: 'on'
-        - condition: numeric_state
-          entity_id: 'sensor.outside_temperature'
-          below: 5
+        - condition: template
+          value_template: "{{states.weather.smhi_home.attributes.temperature < 5}}"
+#        - condition: numeric_state
+#          entity_id: 'sensor.outside_temperature'
+#          below: 5
     # If the above conditions are fulfilled, ie. you are home and it's a workday
     # then activate the heater on your selected time
     action:
@@ -87,6 +106,7 @@ automation:
         entity_id: switch.carheater_erik_sonoff
 
   - alias: "Engine heater activate sussa"
+    initial_state: true
     trigger:
       platform: time
       at: '04:00:00'
@@ -96,9 +116,8 @@ automation:
         - condition: state
           entity_id: binary_sensor.arbetsdag
           state: 'on'
-        - condition: numeric_state
-          entity_id: 'sensor.outside_temperature'
-          below: 5
+        - condition: template
+          value_template: "{{states.weather.smhi_home.attributes.temperature < 5}}"
     # If the above conditions are fulfilled, ie. you are home and it's a workday
     # then activate the heater on your selected time
     action:
@@ -108,7 +127,8 @@ automation:
 
 
   # Automation 2 turns off the car heater at the set delay.
-  - alias: "Engine heater deactivate erik"
+  - alias: "Engine heater deactivate both"
+    initial_state: true
     trigger:
       platform: time
       at: '07:30:00'

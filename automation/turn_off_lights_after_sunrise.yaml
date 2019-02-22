@@ -1,4 +1,5 @@
 - alias: 'Lamp: Turn off after sunrise'
+  initial_state: true
   trigger:
   - event: sunrise
     offset: +00:45:00

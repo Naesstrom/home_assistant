@@ -1,4 +1,5 @@
 - alias: 'Dörr: Framsidan'
+  initial_state: true
   trigger:
   - entity_id: switch.dorr_framsidan
     from: 'off'
@@ -12,6 +13,7 @@
     service: notify.katrinelund
 
 - alias: 'Dörr: Groventré'
+  initial_state: true
   trigger:
   - entity_id: switch.dorr_groventre
     from: 'off'
@@ -25,6 +27,7 @@
     service: notify.katrinelund
 
 - alias: 'Dörr: Altanen'
+  initial_state: true
   trigger:
   - entity_id: switch.dorr_altan
     from: 'off'

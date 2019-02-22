@@ -1,0 +1,10 @@
+  - platform: sonarr
+    api_key: !secret sonarr_api
+    host: 192.168.1.16
+    monitored_conditions:
+      - upcoming
+      - series
+      - wanted
+      - diskspace
+    days: 2
+    unit: TB

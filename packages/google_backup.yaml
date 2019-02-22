@@ -5,7 +5,7 @@ rest_command:
 
 automation:
   - alias: "Weekly Backup Friday at 3 AM"
-    initial_state: 'on'
+    initial_state: true
     trigger:
       platform: time
       at: '3:00:00'
@@ -22,7 +22,7 @@ automation:
         message: Creating backup named "Automated Backup {{ now().strftime('%Y-%m-%d') }}"
 
   - alias: "Weekly Backup to Google Friday at 3:30 AM"
-    initial_state: 'on'
+    initial_state: true
     trigger:
       platform: time
       at: '3:30:00'

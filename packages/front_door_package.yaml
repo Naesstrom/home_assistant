@@ -78,6 +78,7 @@ homeassistant:
 
 automation:
   - alias: "Lock front door at night"
+    initial_state: true
     trigger:
       platform: time
       at: '23:00:00'
@@ -90,6 +91,7 @@ automation:
         entity_id: switch.front_door_lock
 
   - alias: "Lock front door when away"
+    initial_state: true
     trigger:
       platform: state
       entity_id: group.erik, group.sussa
@@ -112,6 +114,7 @@ automation:
         entity_id: switch.front_door_lock
 
   - alias: "Unlock front door when home"
+    initial_state: true
     trigger:
       - platform: template
         value_template: "{% if is_state('group.erik', 'home') %}true{% endif %}"
@@ -135,6 +138,7 @@ automation:
         entity_id: switch.front_door_lock
 
   - alias: Unlock front door
+    initial_state: true
     trigger:
       - platform: mqtt
         topic: "/front_door/code/CODE"
@@ -146,6 +150,7 @@ automation:
           payload: "0"
 
   - alias: Relock front door
+    initial_state: true
     trigger:
       - platform: mqtt
         topic: "/front_door/code/CODE"

@@ -1,6 +1,6 @@
 sensor:
   - platform: rest
-    resource: https://apex.oracle.com/pls/apex/raspberrypi/weatherstation/getlatestmeasurements/5841293
+    resource: https://apex.oracle.com/pls/apex/raspberrypi/weatherstation/getlatestmeasurements/667858
     name: RPI Weather 3
     json_attributes:
       - items

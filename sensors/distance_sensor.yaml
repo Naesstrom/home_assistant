@@ -1,0 +1,10 @@
+- platform: template
+  sensors:
+    distance_erik:
+      friendly_name: "Eriks distans från hemmet"
+      value_template: "{{ state_attr('sensor.erik_presence', 'distance') }}"
+#- platform: template
+#  sensors:
+    distance_sussa:
+      friendly_name: "Sussas distans från hemmet"
+      value_template: "{{ state_attr('sensor.sussa_presence', 'distance') }}"

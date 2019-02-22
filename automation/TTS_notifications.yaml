@@ -25,6 +25,7 @@
 #      language: 'sv'
 
 - alias: Octoprint:Fail (TTS)
+  initial_state: true
   trigger:
   - entity_id: binary_sensor.octoprint_printing_error
     from: 'off'
@@ -38,6 +39,7 @@
       language: 'sv'
 
 - alias: Test TTS
+  initial_state: true
   trigger:
     platform: time
     # When 'at' is used, you cannot also match on hour, minute, seconds.
@@ -50,6 +52,7 @@
       cache: false
 
 - alias: mailbox TTS
+  initial_state: true
   trigger:
   - entity_id: switch.brevladan
     from: 'off'

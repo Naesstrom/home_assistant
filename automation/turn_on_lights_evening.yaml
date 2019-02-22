@@ -1,11 +1,13 @@
 - alias: 'Lamp: Turn on at sun set'
+  initial_state: true
   trigger:
     platform: sun
     event: sunset
     offset: '-00:45:00'
   action:
-  - service: light.turn_on
+  - service: switch.turn_on
     entity_id:
-      - group.bedroom
+      - switch.vagglampa
+      - switch.skapsbelysning
   - service: scene.turn_on
     entity_id: scene.livingroom_normal

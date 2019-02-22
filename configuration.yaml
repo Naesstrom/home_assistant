@@ -25,8 +25,8 @@ homeassistant:
 #      custom_ui_state_card: state-card-custom-ui
 
 http:
-  # Uncomment this to add a password (recommended!)
-  api_password: !secret http_password
+# Uncomment this to add a password (recommended!)
+#  api_password: !secret http_password
   base_url: !secret base_url
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
@@ -40,7 +40,13 @@ http:
 
 
 # Enable the config screen
-config:
+default_config:
+
+#Added in 0.87
+system_health:
+
+#added in 0.88
+person:
 
 #Enable Cloud service
 cloud:
@@ -100,6 +106,10 @@ sun:
 # Setup TTS
 tts:
   - platform: google
+    cache: true
+    cache_dir: /config/tts
+    time_memory: 300
+#    base_url: http://192.168.1.119:8123
 
 #Include Zones
 zone: !include zones.yaml
@@ -130,8 +140,8 @@ notify:
       - !secret smtp_recipient_erik
       - !secret smtp_recipient_anders
     sender_name: Din automatiska hjälpreda!
-  - name: html5
-    platform: html5
+  - platform: html5
+    name: html5
     gcm_api_key: !secret gcm_api_key
     gcm_sender_id: !secret gcm_sender_id
   - name: Discord
@@ -195,14 +205,14 @@ device_tracker:
     max_gps_accuracy: 200
     max_update_wait:
       minutes: 45
-  - platform: googlehome
-    host: 192.168.1.218
-  - platform: googlehome
-    host: 192.168.1.216
-  - platform: googlehome
-    host: 192.168.1.237
-  - platform: googlehome
-    host: 192.168.1.183
+#  - platform: googlehome
+#    host: 192.168.1.218
+#  - platform: googlehome
+#    host: 192.168.1.216
+#  - platform: googlehome
+#    host: 192.168.1.237
+#  - platform: googlehome
+#    host: 192.168.1.183
 #zwave:
 #  device_config: !include zwave_device_config.yaml
 
@@ -269,7 +279,7 @@ lock: !include_dir_merge_list locks
 
 cast:
 
-#sabnzbd: !include sabnzb.yaml
+sabnzbd: !include sabnzb.yaml
 
 shopping_list:
 
@@ -286,7 +296,7 @@ media_player:
     entity_namespace: 'plex'
     include_non_clients: true
     scan_interval: 10
-    show_all_controls: true
+#    show_all_controls: true
 #    use_custom_entity_ids: true
     use_episode_art: true
     remove_unavailable_clients: true

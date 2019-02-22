@@ -1,4 +1,5 @@
 - alias: 'Lamp: Turn on at 0600'
+  initial_state: true
   trigger:
     platform: time
     at: 06:00:00
@@ -13,6 +14,7 @@
   action:
   - service: switch.turn_on
     entity_id:
-    - group.bedroom
+    - switch.vagglampa
+    - switch.skapsbelysning
   - service: scene.turn_on
     entity_id: scene.livingroom_normal

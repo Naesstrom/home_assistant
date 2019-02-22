@@ -1,4 +1,5 @@
 - alias: Octoprint:Fail
+  initial_state: true
   trigger:
   - entity_id: binary_sensor.octoprint_printing_error
     from: 'off'
@@ -12,6 +13,7 @@
     service: notify.katrinelund
 
 - alias: 'Octoprint: Done'
+  initial_state: true
   trigger:
   - entity_id: binary_sensor.octoprint_printing
     from: 'on'

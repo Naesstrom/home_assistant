@@ -1,4 +1,5 @@
 - alias: 'Lamp: Turn off at midnight'
+  initial_state: true
   trigger:
     platform: time
     at: '23:59:59'

@@ -1,4 +1,5 @@
 - alias: 'Brevlådan'
+  initial_state: true
   trigger:
   - entity_id: switch.brevladan
     from: 'off'

@@ -1,5 +1,6 @@
 ### Turn on carheater on weekdays if temp is below 5
 - alias: Period starts
+  initial_state: true
   trigger:
     platform: state
     entity_id: input_boolean.period_starts

@@ -25,10 +25,11 @@
     payload_available: "on"
     payload_not_available: "off"
     qos: 0
-    device_class: moving
+    device_class: motion
 
   automation:
     - alias: "BRB pressed"
+      initial_state: true
       trigger:
         platform: mqtt
         topic: /Node_Bathroom/BRB/BRB

@@ -1,7 +1,7 @@
   - platform: transmission
     host: 192.168.1.12
-    username: !secret transmission_name
-    password: !secret transmission_pass
+#    username: !secret transmission_name
+#    password: !secret transmission_pass
     monitored_variables:
       - 'current_status'
       - 'download_speed'
