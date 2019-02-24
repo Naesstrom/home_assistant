@@ -15,60 +15,83 @@ from requests import HTTPError, ConnectionError, Timeout
 import voluptuous as vol
 
 from homeassistant.components.device_tracker import (
-    CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL,
+    CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, DOMAIN,
     ENTITY_ID_FORMAT as DT_ENTITY_ID_FORMAT, PLATFORM_SCHEMA)
 from homeassistant.components.zone import (
-    DEFAULT_PASSIVE, ENTITY_ID_FORMAT as ZN_ENTITY_ID_FORMAT, HOME_ZONE, Zone)
+    DEFAULT_PASSIVE, ENTITY_ID_FORMAT as ZN_ENTITY_ID_FORMAT, ENTITY_ID_HOME,
+    Zone)
 from homeassistant.components.zone.zone import active_zone
 from homeassistant.const import (
-    ATTR_BATTERY_CHARGING, CONF_FILENAME, CONF_PASSWORD, CONF_PREFIX,
-    CONF_USERNAME, LENGTH_FEET, LENGTH_KILOMETERS, LENGTH_METERS, LENGTH_MILES,
-    STATE_HOME, STATE_UNKNOWN)
+    ATTR_BATTERY_CHARGING, ATTR_FRIENDLY_NAME, ATTR_LATITUDE, ATTR_LONGITUDE,
+    ATTR_NAME, CONF_FILENAME, CONF_PASSWORD, CONF_PREFIX, CONF_USERNAME,
+    LENGTH_FEET, LENGTH_KILOMETERS, LENGTH_METERS, LENGTH_MILES, STATE_HOME,
+    STATE_UNKNOWN)
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.event import track_time_interval
 from homeassistant.util import slugify
+from homeassistant.util.async_ import run_coroutine_threadsafe
 from homeassistant.util.distance import convert
 import homeassistant.util.dt as dt_util
 
 
-__version__ = '2.3.1'
+__version__ = '2.8.0'
 
 _LOGGER = logging.getLogger(__name__)
 
 DEPENDENCIES = ['zone']
-REQUIREMENTS = ['life360==2.*']
+REQUIREMENTS = ['life360==2.2.0', 'timezonefinderL==2.0.1']
 
 DEFAULT_FILENAME = 'life360.conf'
 DEFAULT_HOME_PLACE = 'Home'
 SPEED_FACTOR_MPH = 2.25
 MIN_ZONE_INTERVAL = timedelta(minutes=1)
+EVENT_DELAY = timedelta(seconds=30)
+
+DATA_LIFE360 = 'life360'
 
 _AUTHORIZATION_TOKEN = 'cFJFcXVnYWJSZXRyZTRFc3RldGhlcnVmcmVQdW1hbUV4dWNyRU'\
                        'h1YzptM2ZydXBSZXRSZXN3ZXJFQ2hBUHJFOTZxYWtFZHI0Vg=='
 
 CONF_ADD_ZONES = 'add_zones'
 CONF_DRIVING_SPEED = 'driving_speed'
+CONF_ERROR_THRESHOLD = 'error_threshold'
 CONF_HOME_PLACE = 'home_place'
 CONF_MAX_GPS_ACCURACY = 'max_gps_accuracy'
 CONF_MAX_UPDATE_WAIT = 'max_update_wait'
 CONF_MEMBERS = 'members'
 CONF_SHOW_AS_STATE = 'show_as_state'
+CONF_TIME_AS = 'time_as'
+CONF_WARNING_THRESHOLD = 'warning_threshold'
 CONF_ZONE_INTERVAL = 'zone_interval'
 
+AZ_EXCEPT_HOME = 'except_home' # Same as True
+AZ_ONLY_HOME = 'only_home'
+AZ_ALL = 'all'
+AZ_OPTS = [AZ_EXCEPT_HOME, AZ_ONLY_HOME, AZ_ALL]
 SHOW_DRIVING = 'driving'
 SHOW_MOVING = 'moving'
 SHOW_PLACES = 'places'
 SHOW_AS_STATE_OPTS = [SHOW_DRIVING, SHOW_MOVING, SHOW_PLACES]
+TZ_UTC = 'utc'
+TZ_LOCAL = 'local'
+TZ_DEVICE_UTC = 'device_or_utc'
+TZ_DEVICE_LOCAL = 'device_or_local'
+# First item in list is default.
+TIME_AS_OPTS = [TZ_UTC, TZ_LOCAL, TZ_DEVICE_UTC, TZ_DEVICE_LOCAL]
 
 ATTR_ADDRESS = 'address'
 ATTR_AT_LOC_SINCE = 'at_loc_since'
 ATTR_DRIVING = SHOW_DRIVING
 ATTR_LAST_SEEN = 'last_seen'
 ATTR_MOVING = SHOW_MOVING
+ATTR_RADIUS = 'radius'
 ATTR_RAW_SPEED = 'raw_speed'
 ATTR_SPEED = 'speed'
+ATTR_TIME_ZONE = 'time_zone'
 ATTR_WIFI_ON = 'wifi_on'
+
+SERVICE_ZONES_FROM_PLACES = 'life360_zones_from_places'
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_USERNAME): cv.string,
@@ -84,9 +107,14 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_MEMBERS): vol.All(
         cv.ensure_list, [cv.string]),
     vol.Optional(CONF_DRIVING_SPEED): vol.Coerce(float),
-    vol.Optional(CONF_ADD_ZONES): cv.boolean,
+    vol.Optional(CONF_ADD_ZONES):
+        vol.Any(vol.In(AZ_OPTS), cv.boolean),
     vol.Optional(CONF_ZONE_INTERVAL):
         vol.All(cv.time_period, vol.Range(min=MIN_ZONE_INTERVAL)),
+    vol.Optional(CONF_TIME_AS, default=TIME_AS_OPTS[0]):
+        vol.In(TIME_AS_OPTS),
+    vol.Optional(CONF_WARNING_THRESHOLD): cv.positive_int,
+    vol.Optional(CONF_ERROR_THRESHOLD, default = 0): cv.positive_int,
 })
 
 _API_EXCS = (HTTPError, ConnectionError, Timeout, JSONDecodeError)
@@ -100,10 +128,6 @@ def utc_from_ts(val):
         return dt_util.utc_from_timestamp(float(val))
     except (TypeError, ValueError):
         return None
-
-def utc_attr_from_ts(val):
-    res = utc_from_ts(val)
-    return res if res else STATE_UNKNOWN
 
 def bool_attr_from_int(val):
     try:
@@ -123,36 +147,30 @@ def m_name(first, last=None):
     return first or last
 
 def setup_scanner(hass, config, see, discovery_info=None):
-    from life360 import life360
-
     def auth_info_callback():
-        _LOGGER.debug('Authenticating')
+        _LOGGER.info('Authorizing')
         return (_AUTHORIZATION_TOKEN,
                 config[CONF_USERNAME],
                 config[CONF_PASSWORD])
 
     interval = config.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
-    ok = False
     try:
+        from life360 import life360, LoginError
         api = life360(auth_info_callback, interval.total_seconds()-1,
                       hass.config.path(config[CONF_FILENAME]))
-        if api.get_circles():
-            ok = True
-    except Exception as exc:
+        api.get_circles()
+    except LoginError as exc:
         _LOGGER.error(exc_msg(exc))
-    if not ok:
-        _LOGGER.error('Life360 communication failed!')
+        _LOGGER.error('Aborting setup!')
         return False
-    _LOGGER.debug('Life360 communication successful!')
+    # Ignore other errors at this time. Hopefully they're temporary.
+    except Exception as exc:
+        _LOGGER.warning('Ignoring: {}'.format(exc_msg(exc)))
+    _LOGGER.debug('Setup successful!')
 
-    show_as_state = config[CONF_SHOW_AS_STATE]
-    home_place = config[CONF_HOME_PLACE].lower()
-    max_gps_accuracy = config.get(CONF_MAX_GPS_ACCURACY)
-    max_update_wait = config.get(CONF_MAX_UPDATE_WAIT)
-    prefix = config.get(CONF_PREFIX)
     members = config.get(CONF_MEMBERS)
-    driving_speed = config.get(CONF_DRIVING_SPEED)
-    _LOGGER.debug('Configured members = {}'.format(members))
+    _LOGGER.debug('Configured members = {}'.format(
+        members if members else 'None specified; will include all'))
 
     if members:
         _members = []
@@ -170,19 +188,27 @@ def setup_scanner(hass, config, see, discovery_info=None):
             _LOGGER.error('No listed member names were valid')
             return False
 
-    Place = namedtuple('Place', ['name', 'latitude', 'longitude', 'radius'])
+    home_place_name = config[CONF_HOME_PLACE].lower()
+    zone_interval = config.get(CONF_ZONE_INTERVAL)
+    # add_zones can be False or one of the values in AZ_OPTS.
+    # Default depends on zone_interval.
+    # For legacy reasons, allow True, but treat it the same as AZ_EXCEPT_HOME.
+    add_zones = config.get(CONF_ADD_ZONES, zone_interval != None)
+    if add_zones is True:
+        add_zones = AZ_EXCEPT_HOME
+    zones = {}
 
-    def get_places():
+    Place = namedtuple(
+        'Place', [ATTR_NAME, ATTR_LATITUDE, ATTR_LONGITUDE, ATTR_RADIUS])
+
+    def get_places(api):
         errs = 0
         while True:
             places = set()
             try:
                 for circle in api.get_circles():
                     for place in api.get_circle_places(circle['id']):
-                        name = place['name']
-                        if name.lower() in [HOME_ZONE, home_place]:
-                            continue
-                        places.add(Place(name,
+                        places.add(Place(place['name'],
                                          float(place['latitude']),
                                          float(place['longitude']),
                                          float(place['radius'])))
@@ -194,68 +220,122 @@ def setup_scanner(hass, config, see, discovery_info=None):
             else:
                 return places
 
-    def zone_from_place(place):
+    def zone_from_place(place, entity_id=None):
         zone = Zone(hass, *place, None, DEFAULT_PASSIVE)
-        zone.entity_id = generate_entity_id(ZN_ENTITY_ID_FORMAT, place.name,
-                                            None, hass)
+        zone.entity_id = (
+            entity_id or
+            generate_entity_id(ZN_ENTITY_ID_FORMAT, place.name, None, hass))
         zone.schedule_update_ha_state()
         return zone
 
     def log_places(msg, places):
-        _LOGGER.debug('{} zones for Places: {}'.format(
-            msg,
+        s = 's' if len(places) > 1 else ''
+        _LOGGER.debug('{} zone{} for Place{}: {}'.format(
+            msg, s, s,
             '; '.join(['{}: {}, {}, {}'.format(*place) for place
                        in sorted(places, key=lambda x: x.name.lower())])))
 
-    def zones_from_places(now=None):
-        places = get_places()
+    def zones_from_places(api, home_place_name, add_zones, zones):
+        _LOGGER.debug('Checking Places')
+        places = get_places(api)
         if places is None:
             return
-        remove_places = set(zones.keys()) - places
-        if remove_places:
-            log_places('Removing', remove_places)
-            for remove_place in remove_places:
-                hass.add_job(zones.pop(remove_place).async_remove())
-        add_places = places - set(zones.keys())
-        if add_places:
-            log_places('Adding', add_places)
-            for add_place in add_places:
-                zone = zone_from_place(add_place)
-                zones[add_place] = zone
 
-    add_zones = config.get(CONF_ADD_ZONES)
-    zone_interval = config.get(CONF_ZONE_INTERVAL)
-    if add_zones or zone_interval and add_zones != False:
-        _LOGGER.debug('Checking Places')
-        zones = {}
-        zones_from_places()
+        # See if there is a Life360 Place whose name matches CONF_HOME_PLACE.
+        # If there is, remove it from set and handle it specially.
+        home_place = None
+        for place in places.copy():
+            if place.name.lower() == home_place_name:
+                home_place = place
+                places.discard(place)
+
+        # If a "Home Place" was found, and user wants to update zone.home with
+        # it, and if it is indeed different, then update zone.home.
+        if home_place and add_zones in (AZ_ONLY_HOME, AZ_ALL):
+            hz_attrs = hass.states.get(ENTITY_ID_HOME).attributes
+            if home_place != Place(hz_attrs[ATTR_FRIENDLY_NAME],
+                                   hz_attrs[ATTR_LATITUDE],
+                                   hz_attrs[ATTR_LONGITUDE],
+                                   hz_attrs[ATTR_RADIUS]):
+                log_places('Updating', [home_place])
+                zone_from_place(home_place, ENTITY_ID_HOME)
+
+        if add_zones in (AZ_EXCEPT_HOME, AZ_ALL):
+            # Do any of the Life360 Places that we created HA zones from no longer
+            # exist? If so, remove the corresponding zones.
+            remove_places = set(zones.keys()) - places
+            if remove_places:
+                log_places('Removing', remove_places)
+                for remove_place in remove_places:
+                    run_coroutine_threadsafe(
+                        zones.pop(remove_place).async_remove(),
+                        hass.loop).result()
+
+            # Are there any newly defined Life360 Places since the last time we
+            # checked? If so, create HA zones for them.
+            add_places = places - set(zones.keys())
+            if add_places:
+                log_places('Adding', add_places)
+                for add_place in add_places:
+                    zones[add_place] = zone_from_place(add_place)
+
+    def zones_from_places_interval(now=None):
+        zones_from_places(api, home_place_name, add_zones, zones)
+
+    def zones_from_places_service(service):
+        # Note: Although another thread may append the list while we're
+        #       iterating through it, that's ok. We'll just process the new
+        #       entry, which will be valid.
+        for params in hass.data[DATA_LIFE360]:
+            zones_from_places(*params)
+
+    if add_zones:
+        zones_from_places_interval()
         if zone_interval:
             _LOGGER.debug('Will check Places every: {}'.format(zone_interval))
-            track_time_interval(hass, zones_from_places, zone_interval)
+            track_time_interval(hass, zones_from_places_interval,
+                                zone_interval)
+        # Note: dict.setdefault and list.append are both thread-safe, so no
+        #       lock required.
+        hass.data.setdefault(DATA_LIFE360, []).append(
+            (api, home_place_name, add_zones, zones))
+        if not hass.services.has_service(DOMAIN, SERVICE_ZONES_FROM_PLACES):
+            hass.services.register(
+                DOMAIN, SERVICE_ZONES_FROM_PLACES, zones_from_places_service)
 
-    Life360Scanner(hass, see, interval, show_as_state, home_place,
-                   max_gps_accuracy, max_update_wait, prefix, members,
-                   driving_speed, api)
+    Life360Scanner(hass, config, see, interval, home_place_name, members, api)
     return True
 
 class Life360Scanner:
-    def __init__(self, hass, see, interval, show_as_state, home_place,
-                 max_gps_accuracy, max_update_wait, prefix, members,
-                 driving_speed, api):
+    def __init__(self, hass, config, see, interval, home_place_name, members,
+                 api):
         self._hass = hass
         self._see = see
-        self._show_as_state = show_as_state
-        self._home_place = home_place
-        self._max_gps_accuracy = max_gps_accuracy
-        self._max_update_wait = max_update_wait
+        self._show_as_state = config[CONF_SHOW_AS_STATE]
+        self._home_place_name = home_place_name
+        self._max_gps_accuracy = config.get(CONF_MAX_GPS_ACCURACY)
+        self._max_update_wait = config.get(CONF_MAX_UPDATE_WAIT)
+        prefix = config.get(CONF_PREFIX)
         self._prefix = '' if not prefix else prefix + '_'
         self._members = members
-        self._driving_speed = driving_speed
+        self._driving_speed = config.get(CONF_DRIVING_SPEED)
+        self._time_as = config[CONF_TIME_AS]
         self._api = api
 
         self._errs = {}
-        self._max_errs = 2
+        self._error_threshold = config[CONF_ERROR_THRESHOLD]
+        self._warning_threshold = config.get(
+            CONF_WARNING_THRESHOLD, self._error_threshold)
+        if self._warning_threshold > self._error_threshold:
+            _LOGGER.warning('Ignoring {}: ({}) > {} ({})'.format(
+                CONF_WARNING_THRESHOLD, self._warning_threshold,
+                CONF_ERROR_THRESHOLD, self._error_threshold))
+
+        self._max_errs = self._error_threshold + 2
         self._dev_data = {}
+        if self._time_as in [TZ_DEVICE_UTC, TZ_DEVICE_LOCAL]:
+            from timezonefinderL import TimezoneFinder
+            self._tf = TimezoneFinder()
         self._started = dt_util.utcnow()
 
         self._update_life360()
@@ -270,12 +350,29 @@ class Life360Scanner:
         _errs = self._errs.get(key, 0)
         if _errs < self._max_errs:
             self._errs[key] = _errs = _errs + 1
-            if _errs == self._max_errs:
-                err_msg = 'Suppressing further errors until OK: ' + err_msg
-            _LOGGER.error('{}: {}'.format(key, err_msg))
+            msg = '{}: {}'.format(key, err_msg)
+            if _errs > self._error_threshold:
+                if _errs == self._max_errs:
+                    msg = 'Suppressing further errors until OK: ' + msg
+                _LOGGER.error(msg)
+            elif _errs > self._warning_threshold:
+                _LOGGER.warning(msg)
 
     def _exc(self, key, exc):
         self._err(key, exc_msg(exc))
+
+    def _dt_attr_from_utc(self, utc, tz):
+        if self._time_as in [TZ_DEVICE_UTC, TZ_DEVICE_LOCAL] and tz:
+            return utc.astimezone(tz)
+        if self._time_as in [TZ_LOCAL, TZ_DEVICE_LOCAL]:
+            return dt_util.as_local(utc)
+        return utc
+
+    def _dt_attr_from_ts(self, ts, tz):
+        utc = utc_from_ts(ts)
+        if utc:
+            return self._dt_attr_from_utc(utc, tz)
+        return STATE_UNKNOWN
 
     def _update_member(self, m, name):
         name = name.replace(',', '_').replace('-', '_')
@@ -290,9 +387,10 @@ class Life360Scanner:
             last_seen = None
 
         if self._max_update_wait:
+            now = dt_util.utcnow()
             update = last_seen or prev_seen or self._started
-            overdue = dt_util.utcnow() - update > self._max_update_wait
-            if overdue and not reported:
+            overdue = now - update > self._max_update_wait
+            if overdue and not reported and now - self._started > EVENT_DELAY:
                 self._hass.bus.fire(
                     'life360_update_overdue',
                     {'entity_id': DT_ENTITY_ID_FORMAT.format(dev_id)})
@@ -357,7 +455,7 @@ class Life360Scanner:
                 loc_name = place_name
                 # Make sure Home Place is always seen exactly as home,
                 # which is the special device_tracker state for home.
-                if loc_name and loc_name.lower() == self._home_place:
+                if loc_name and loc_name.lower() == self._home_place_name:
                     loc_name = STATE_HOME
             else:
                 loc_name = None
@@ -390,17 +488,29 @@ class Life360Scanner:
                 driving = speed >= self._driving_speed
             moving = bool_attr_from_int(loc.get('inTransit'))
 
-            attrs = {
+            if self._time_as in [TZ_DEVICE_UTC, TZ_DEVICE_LOCAL]:
+                # timezone_at will return a string or None.
+                tzname = self._tf.timezone_at(lng=lon, lat=lat)
+                # get_time_zone will return a tzinfo or None.
+                tz = dt_util.get_time_zone(tzname)
+                attrs = {ATTR_TIME_ZONE: tzname or STATE_UNKNOWN}
+            else:
+                tz = None
+                attrs = {}
+
+            attrs.update({
                 ATTR_ADDRESS: address,
-                ATTR_AT_LOC_SINCE: utc_attr_from_ts(loc.get('since')),
+                ATTR_AT_LOC_SINCE:
+                    self._dt_attr_from_ts(loc.get('since'), tz),
                 ATTR_BATTERY_CHARGING: bool_attr_from_int(loc.get('charge')),
                 ATTR_DRIVING: driving,
-                ATTR_LAST_SEEN: last_seen,
+                ATTR_LAST_SEEN:
+                    self._dt_attr_from_utc(last_seen, tz),
                 ATTR_MOVING: moving,
                 ATTR_RAW_SPEED: raw_speed,
                 ATTR_SPEED: speed,
                 ATTR_WIFI_ON: bool_attr_from_int(loc.get('wifiState')),
-            }
+            })
 
             # If we don't have a location name yet and user wants driving or moving
             # to be shown as state, and current location is not in a HA zone,
@@ -423,7 +533,6 @@ class Life360Scanner:
     def _update_life360(self, now=None):
         checked_ids = []
 
-        #_LOGGER.debug('Checking members')
         err_key = 'get_circles'
         try:
             circles = self._api.get_circles()

@@ -23,52 +23,37 @@ homeassistant:
       icon: mdi:silverware-fork-knife
 
 sensor:
-  - platform: scrape
+  - platform: rest
+    resource: https://spreadsheets.google.com/feeds/list/1cEHjlTG8j4QpMZU6bAmqlf11e3vj7bh9hL5cNgHPoU4/default/public/values?alt=json
+    name: "Matsedel"
+#    value_template: '{{ value_json.feed }}'
+# nedan ger mig {'type': 'text', '$t': '_cokwr: Köttbullar och mos/broccoli + gräddsås'}
+    value_template: '{{ value_json.feed.entry[2].content }}'
+
+
+  - platform: mqtt
     name: "Matsedel: Måndag"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: ".waffle .s3"
+    state_topic: "/matsedel/monday"
 
-  - platform: scrape
-    name: "Måndag_2"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: "#67R7~ .s7"
-
-  - platform: scrape
-    name: "Måndag_3"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: "td:nth-of-type(5)"
-
-  - platform: scrape
-    name: "Måndag_4"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: ".waffle .td:nth-of-type(5)"
-
-  - platform: scrape
+  - platform: mqtt
     name: "Matsedel: Tisdag"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: ".waffle .s5"
-
-  - platform: scrape
+    state_topic: "/matsedel/tuesday"
+  - platform: mqtt
     name: "Matsedel: Onsdag"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: ".waffle .s6"
+    state_topic: "/matsedel/wednesday"
 
-  - platform: scrape
+  - platform: mqtt
     name: "Matsedel: Torsdag"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: ".waffle .s7"
+    state_topic: "/matsedel/thursday"
 
-  - platform: scrape
+  - platform: mqtt
     name: "Matsedel: Fredag"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: ".waffle .s3:nth-of-type(2)"
+    state_topic: "/matsedel/friday"
 
-  - platform: scrape
+  - platform: mqtt
     name: "Matsedel: Lördag"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: ".waffle .s7:nth-of-type(2)"
+    state_topic: "/matsedel/saturday"
 
-  - platform: scrape
+  - platform: mqtt
     name: "Matsedel: Söndag"
-    resource: https://docs.google.com/spreadsheets/d/e/2PACX-1vTu-7iqusFN7jReZI_8CbE1eQigFHBanT4VgQUQ8g7e8cDClt7s47-IazkQuPlGijUDh4aSr4NmrZ-f/pubhtml?gid=67&single=true
-    select: ".waffle .s3:nth-of-type(2)"
+    state_topic: "/matsedel/sunday"
