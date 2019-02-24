@@ -94,7 +94,7 @@ automation:
           entity_id: binary_sensor.arbetsdag
           state: 'on'
         - condition: template
-          value_template: "{{states.weather.smhi_home.attributes.temperature < 5}}"
+          value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
 #        - condition: numeric_state
 #          entity_id: 'sensor.outside_temperature'
 #          below: 5
@@ -117,7 +117,7 @@ automation:
           entity_id: binary_sensor.arbetsdag
           state: 'on'
         - condition: template
-          value_template: "{{states.weather.smhi_home.attributes.temperature < 5}}"
+          value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
     # If the above conditions are fulfilled, ie. you are home and it's a workday
     # then activate the heater on your selected time
     action:
