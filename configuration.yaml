@@ -72,7 +72,7 @@ custom_updater:
     - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/python_scripts.json
   card_urls:
     - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
-    
+
 #Enable mqtt broker
 #mqtt:
 #   broker: !secret mqtt_broker
@@ -295,15 +295,15 @@ media_player:
 #    mac: '34:ea:34:40:78:ff'
 #    ircodes_ini: 'broadlink_media_codes/andersson.ini'
     #retain: true
-  - platform: plex
-    entity_namespace: 'plex'
-    include_non_clients: true
-    scan_interval: 10
+##  - platform: plex
+##    entity_namespace: 'plex'
+##    include_non_clients: true
+##    scan_interval: 10
 #    show_all_controls: true
 #    use_custom_entity_ids: true
-    use_episode_art: true
-    remove_unavailable_clients: true
-    client_remove_interval: 600
+##    use_episode_art: true
+##    remove_unavailable_clients: true
+##    client_remove_interval: 600
 #Control the livingroom Amplifier Sony STR DN-1040
 #  - platform: broadlink
 #    name: Livingroom Amplifier
