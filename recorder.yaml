@@ -26,3 +26,4 @@ exclude:
   entities:
    - sensor.last_boot
    - sensor.date
+   - sensor.radarr_movies

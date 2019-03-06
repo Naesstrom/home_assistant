@@ -3,7 +3,6 @@
     host: 192.168.1.18
     monitored_conditions:
       - upcoming
-      - movies
       - status
       - diskspace
     days: 7
