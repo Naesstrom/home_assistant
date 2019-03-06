@@ -13,7 +13,7 @@
         message: Brevlådan öppnades
         target:
         - channel/katrinelund
-    - service: notify.discord
+    - service: notify.discord_webhook
       data:
         message: Brevlådan öppnades
         target: 476413377623752704

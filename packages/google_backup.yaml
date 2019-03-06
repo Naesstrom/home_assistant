@@ -17,7 +17,7 @@ automation:
     - service: hassio.snapshot_full
       data_template:
         name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
-    - service: notify.discord
+    - service: notify.discord_webhook
       data_template:
         message: Creating backup named "Automated Backup {{ now().strftime('%Y-%m-%d') }}"
 

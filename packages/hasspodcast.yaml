@@ -20,7 +20,7 @@ automation:
       event_type: feedreader
 
     action:
-      - service: notify.discord
+      - service: notify.discord_webhook
         data_template:
           title: "New RSS Item available"
           message: "New RSS Item - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }} {{trigger.event.data.title}}"

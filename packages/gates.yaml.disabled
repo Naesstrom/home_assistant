@@ -83,7 +83,7 @@ automation:
           message: "VARNING! Grinden på framsidan öppnades"
           target:
           - channel/katrinelund
-      - service: notify.discord
+      - service: notify.discord_webhook
         data:
           message: Grinden på framsidan öppnades
           target: 476413377623752704
@@ -99,7 +99,7 @@ automation:
           message: "Grinden på framsidan öppnades"
           target:
           - channel/katrinelund
-      - service: notify.discord
+      - service: notify.discord_webhook
         data:
           message: Grinden på framsidan öppnades
           target: 476413377623752704

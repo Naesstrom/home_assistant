@@ -60,7 +60,7 @@
       entity_id: alarm_control_panel.ha_alarm
       to: 'triggered'
   action:
-    - service: notify.discord
+    - service: notify.discord_webhook
       data:
         message: "Alarm has been triggered and police have been contacted."
         target: 476413377623752704
