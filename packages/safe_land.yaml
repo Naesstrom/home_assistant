@@ -1,0 +1,15 @@
+rest_command:
+  safe_land:
+    method: POST
+    url: !secret safeland_hook
+    verify_ssl: false
+    content_type:  'application/json; charset=utf-8'
+
+automation:
+- alias: 'Alarm triggered (send to safe.land)'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.ha_alarm
+      to: 'triggered'
+  action:
+    - service: rest_command.safe_land
