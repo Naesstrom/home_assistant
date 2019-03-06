@@ -125,32 +125,6 @@ python_script:
 ifttt:
   key: !secret iftttapi
 
-
-notify:
-  - name: katrinelund
-    platform: pushbullet
-    api_key: !secret pushbullet_api
-  - name: Ringvattnet
-    platform: smtp
-    server: !secret smtp_server
-    port: !secret smtp_port
-    timeout: !secret smtp_timeout
-    sender: !secret smtp_sender
-    encryption: !secret smtp_encryption
-    username: !secret smtp_username
-    password: !secret smtp_password
-    recipient:
-      - !secret smtp_recipient_erik
-      - !secret smtp_recipient_anders
-    sender_name: Din automatiska hjälpreda!
-  - platform: html5
-    name: html5
-    gcm_api_key: !secret gcm_api_key
-    gcm_sender_id: !secret gcm_sender_id
-  - name: Discord
-    platform: discord
-    token: !secret discord_token
-
 tradfri:
   host: 192.168.1.7
 
@@ -269,6 +243,7 @@ script: !include_dir_merge_named scripts
 input_select: !include_dir_merge_named input_select
 
   #### Merged folders (Lists) ####
+notify: !include_dir_merge_list notifications
 automation: !include_dir_merge_list automation
 scene: !include_dir_merge_list scenes
 sensor: !include_dir_merge_list sensors
