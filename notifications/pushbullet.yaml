@@ -1,0 +1,3 @@
+  - name: katrinelund
+    platform: pushbullet
+    api_key: !secret pushbullet_api
