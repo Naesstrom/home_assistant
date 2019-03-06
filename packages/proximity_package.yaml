@@ -1,0 +1,87 @@
+proximity:
+  home:
+    ignored_zones:
+      - LNU
+      - ProCivitas
+      - Grönkulla
+    devices:
+      - person.sussa
+      - person.erik
+    tolerance: 50
+    unit_of_measurement: km
+
+  home_erik:
+    ignored_zones:
+      - LNU
+      - ProCivitas
+      - Grönkulla
+    devices:
+      - person.erik
+    tolerance: 50
+    unit_of_measurement: km
+
+  home_sussa:
+    ignored_zones:
+      - LNU
+      - ProCivitas
+      - Grönkulla
+    devices:
+      - person.sussa
+    tolerance: 50
+    unit_of_measurement: km
+
+
+automation:
+  - alias: '[Presence] Presence Homebound'
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: proximity.home_erik
+        below: 6
+      - platform: numeric_state
+        entity_id: proximity.home_sussa
+        below: 6
+    condition:
+      condition: or
+      conditions:
+      - condition: template
+        value_template: '{{ states.proximity.home_erik.attributes.dir_of_travel == "towards" }}'
+      - condition: template
+        value_template: '{{ states.proximity.home_sussa.attributes.dir_of_travel == "towards" }}'
+    action:
+      - service: notify.katrinelund
+        data_template:
+          title: "{{ trigger.to_state.name | title }}"
+          message: "{{ trigger.to_state.state }}"
+
+  - alias: '[Presence] Sussa Homebound'
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: proximity.home_sussa
+        below: 5
+    condition:
+      condition: template
+      value_template: '{{ states.proximity.home_sussa.attributes.dir_of_travel == "towards" }}'
+    action:
+      - service: tts.google_say
+        entity_id: media_player.google_home_group
+        data:
+          message: "Susanne är hemma om cirka 5 minuter"
+          language: 'sv'
+
+  - alias: '[Presence] Erik Homebound'
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: proximity.home_erik
+        below: 5
+    condition:
+      condition: template
+      value_template: '{{ states.proximity.home_erik.attributes.dir_of_travel == "towards" }}'
+    action:
+      - service: tts.google_say
+        entity_id: media_player.google_home_group
+        data:
+          message: "Erik är hemma om cirka 5 minuter"
+          language: 'sv'
