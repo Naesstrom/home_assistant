@@ -1,0 +1,28 @@
+- platform: template
+  sensors:
+    wifi_attic_quality:
+      friendly_name: 'Attic Wifi Quality'
+      value_template: >-
+        {%if states.sensor.attic_wifi.state | float<=30 %} Amazing
+          mdi:wifi-strength-4
+        {% elif states.sensor.attic_wifi.state | float>81 %}Unusable
+          mdi:wifi-strength-0
+        {% elif states.sensor.attic_wifi.state | float<=66 | float>31 %}Very Good
+          mdi:wifi-strength-3
+        {% elif states.sensor.attic_wifi.state | float<=70 | float>67 %}Okay
+          mdi:wifi-strength-2
+        {% elif states.sensor.attic_wifi.state | float<=80 | float>71 %}Not good
+          mdi:wifi-strength-1
+        {%- endif %}
+      icon_template: >-
+        {%if states.sensor.attic_wifi.state | float<=30 %}
+          mdi:wifi-strength-4
+        {% elif states.sensor.attic_wifi.state | float>81 %}
+          mdi:wifi-strength-0
+        {% elif states.sensor.attic_wifi.state | float<=66 | float>31 %}
+          mdi:wifi-strength-3
+        {% elif states.sensor.attic_wifi.state | float<=70 | float>67 %}
+          mdi:wifi-strength-2
+        {% elif states.sensor.attic_wifi.state | float<=80 | float>71 %}
+          mdi:wifi-strength-1
+        {%- endif %}
