@@ -1,9 +1,8 @@
 homeassistant:
   customize_glob:
-    sensor.*wifi*:
-      # custom_ui_state_card: state-card-custom-ui
+    sensor.wifi_attic_quality:
       templates:
-        rgb_name: "if (state === 'Amazing') return [127, 255, 0];
+        rgb_color: "if (state === 'Amazing') return [127, 255, 0];
         else if (state === 'Unusable') return [255, 0, 0];
         else if (state === 'Very good') return [85, 107, 47];
         else if (state === 'Okay') return [135, 206, 250];
@@ -16,26 +15,21 @@ sensor:
         friendly_name: 'Attic Wifi Quality'
 #        entity_id: "sensor.front_door_access_control"
         value_template: >-
-          {%if states.sensor.attic_wifi.state | float<=30 %} Amazing
-            mdi:wifi-strength-4
-          {% elif states.sensor.attic_wifi.state | float>81 %}Unusable
-            mdi:wifi-strength-0
-          {% elif states.sensor.attic_wifi.state | float<=66 | float>31 %}Very good
-            mdi:wifi-strength-3
-          {% elif states.sensor.attic_wifi.state | float<=70 | float>67 %}Okay
-            mdi:wifi-strength-2
-          {% elif states.sensor.attic_wifi.state | float<=80 | float>71 %}Not good
-            mdi:wifi-strength-1
+          {% if states.sensor.attic_wifi.state | float>=-30 %} Amazing
+          {% elif states.sensor.attic_wifi.state | float<-81 %}Unusable
+          {% elif states.sensor.attic_wifi.state | float>=-66 | float<-31 %}Very good
+          {% elif states.sensor.attic_wifi.state | float>=-70 | float<-67 %}Okay
+          {% elif states.sensor.attic_wifi.state | float>=-80 | float<-71 %}Not good
           {%- endif %}
         icon_template: >-
-          {%if states.sensor.attic_wifi.state | float<=30 %}
+          {% if states.sensor.attic_wifi.state | float>=-30 %}
             mdi:wifi-strength-4
-          {% elif states.sensor.attic_wifi.state | float>81 %}
+          {% elif states.sensor.attic_wifi.state | float<-81 %}
             mdi:wifi-strength-0
-          {% elif states.sensor.attic_wifi.state | float<=66 | float>31 %}
+          {% elif states.sensor.attic_wifi.state | float>=-66 | float<-31 %}
             mdi:wifi-strength-3
-          {% elif states.sensor.attic_wifi.state | float<=70 | float>67 %}
+          {% elif states.sensor.attic_wifi.state | float>=-70 | float<-67 %}
             mdi:wifi-strength-2
-          {% elif states.sensor.attic_wifi.state | float<=80 | float>71 %}
+          {% elif states.sensor.attic_wifi.state | float>=-80 | float<-71 %}
             mdi:wifi-strength-1
           {%- endif %}
