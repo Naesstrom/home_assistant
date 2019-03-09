@@ -1,0 +1,40 @@
+sensor:
+  - platform: untappd
+    username: Naesstrom
+    id: !secret untappd_ID
+    secret: !secret untappd_Secret
+
+### Templating for the untappd lovelace card (https://sharethelove.io/picture-elements-cards/untappd-card)
+  - platform: template
+    sensors:
+      untappd_badge:
+       value_template: "Recent Badge: {{ states.sensor.untappd_last_badge.attributes.badge }} (Level {{ states.sensor.untappd_last_badge.attributes.level }})"
+
+  - platform: template
+    sensors:
+      untappd_beer:
+       value_template: "Recent Beer: {{ states.sensor.untappd_last_checkin.attributes.beer }} ({{ states.sensor.untappd_last_checkin.attributes.abv }})"
+
+  - platform: template
+    sensors:
+      untappd_followings:
+       unit_of_measurement: followers
+       value_template: "{{ states.sensor.untappd_last_checkin.attributes.followings }}"
+
+  - platform: template
+    sensors:
+      untappd_checked:
+       unit_of_measurement: checkins
+       value_template: "{{ states.sensor.untappd_last_checkin.attributes.checkins }}"
+
+  - platform: template
+    sensors:
+      untappd_total_beers:
+       unit_of_measurement: beers
+       value_template: "{{ states.sensor.untappd_last_checkin.attributes.total_beers }}"
+
+  - platform: template
+    sensors:
+      untappd_total_badges:
+       unit_of_measurement: badges
+       value_template: "{{ states.sensor.untappd_last_checkin.attributes.total_badges }}"

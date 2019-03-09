@@ -1,4 +1,0 @@
-  - platform: untappd
-    username: Naesstrom
-    id: !secret untappd_ID
-    secret: !secret untappd_Secret
