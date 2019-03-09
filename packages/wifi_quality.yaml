@@ -1,6 +1,6 @@
 homeassistant:
   customize_glob:
-    sensor.wifi_attic_quality:
+    sensor.*wifi*:
       templates:
         rgb_color: "if (state === 'Amazing') return [127, 255, 0];
         else if (state === 'Unusable') return [255, 0, 0];
