@@ -2,11 +2,11 @@ homeassistant:
   customize_glob:
     sensor.*wifi*:
       templates:
-        rgb_color: "if (state === 'Amazing') return [127, 255, 0];
-        else if (state === 'Unusable') return [255, 0, 0];
-        else if (state === 'Very good') return [85, 107, 47];
-        else if (state === 'Okay') return [135, 206, 250];
-        else if (state === 'Not good') return [255, 165, 0];"
+        hs_color: "if (state === 'Amazing') return [112, 100];
+        else if (state === 'Unusable') return [360, 100];
+        else if (state === 'Very good') return [182, 100];
+        else if (state === 'Okay') return [59, 73];
+        else if (state === 'Not good') return [35, 100];"
 
 sensor:
   - platform: template
