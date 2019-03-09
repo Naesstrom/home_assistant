@@ -24,6 +24,13 @@ homeassistant:
 #    cover.*:
 #      custom_ui_state_card: state-card-custom-ui
 
+#customizer:
+#  custom_ui: local
+#  hide_attributes:
+#    - node_id
+#    - value_index
+#  columns: [350, 700, 1050, 1400, 1850, 2100]
+
 http:
 # Uncomment this to add a password (recommended!)
 #  api_password: !secret http_password
@@ -56,11 +63,10 @@ map:
 
 # Enables the frontend
 frontend:
-#  javascript_version: latest
-#  extra_html_url:
-#    - /local/custom_ui/state-card-custom-ui.html
-#  extra_html_url_es5:
-#    - /local/custom_ui/state-card-custom-ui-es5.html
+  extra_html_url:
+    - /local/custom_ui/state-card-custom-ui.html
+  extra_html_url_es5:
+    - /local/custom_ui/state-card-custom-ui-es5.html
 
 custom_updater:
   track:
