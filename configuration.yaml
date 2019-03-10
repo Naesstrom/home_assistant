@@ -14,15 +14,14 @@ homeassistant:
   time_zone: Europe/Stockholm
   packages: !include_dir_named packages
   auth_providers:
-   - type: homeassistant
-#   - type: legacy_api_password
-   - type: trusted_networks
-     trusted_networks:
-       - 127.0.0.1
-       - 192.168.1.0/24
-       - 192.168.0.0/16
-       - 172.30.32.2
-       - 192.168.1.1
+    - type: homeassistant
+#    - type: trusted_networks
+#      trusted_networks:
+#        - 127.0.0.1
+#        - 192.168.1.0/24
+#        - 192.168.0.0/16
+#        - 172.30.32.2
+#        - 192.168.1.1
 
 #  customize_glob:
 #    light.*:
