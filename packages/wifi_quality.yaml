@@ -9,27 +9,52 @@ homeassistant:
         else if (state === 'Not good') return [35, 100];"
 
 sensor:
+# Wifi quality in the attic
   - platform: template
     sensors:
-      wifi_attic_quality:
-        friendly_name: 'Attic Wifi Quality'
-#        entity_id: "sensor.front_door_access_control"
+      wifi_quality_attic:
+        friendly_name: 'Wifi Quality (Attic)'
         value_template: >-
-          {% if states.sensor.attic_wifi.state | float>=-30 %} Amazing
-          {% elif states.sensor.attic_wifi.state | float<-81 %}Unusable
-          {% elif states.sensor.attic_wifi.state | float>=-66 | float<-31 %}Very good
-          {% elif states.sensor.attic_wifi.state | float>=-70 | float<-67 %}Okay
-          {% elif states.sensor.attic_wifi.state | float>=-80 | float<-71 %}Not good
+          {% if states.sensor.attic_wifi_2.state | float>=-30 %} Amazing
+          {% elif states.sensor.attic_wifi_2.state | float<-81 %}Unusable
+          {% elif states.sensor.attic_wifi_2.state | float>=-66 | float<-31 %}Very good
+          {% elif states.sensor.attic_wifi_2.state | float>=-70 | float<-67 %}Okay
+          {% elif states.sensor.attic_wifi_2.state | float>=-80 | float<-71 %}Not good
           {%- endif %}
         icon_template: >-
-          {% if states.sensor.attic_wifi.state | float>=-30 %}
+          {% if states.sensor.attic_wifi_2.state | float>=-30 %}
             mdi:wifi-strength-4
-          {% elif states.sensor.attic_wifi.state | float<-81 %}
+          {% elif states.sensor.attic_wifi_2.state | float<-81 %}
             mdi:wifi-strength-0
-          {% elif states.sensor.attic_wifi.state | float>=-66 | float<-31 %}
+          {% elif states.sensor.attic_wifi_2.state | float>=-66 | float<-31 %}
             mdi:wifi-strength-3
-          {% elif states.sensor.attic_wifi.state | float>=-70 | float<-67 %}
+          {% elif states.sensor.attic_wifi_2.state | float>=-70 | float<-67 %}
             mdi:wifi-strength-2
-          {% elif states.sensor.attic_wifi.state | float>=-80 | float<-71 %}
+          {% elif states.sensor.attic_wifi_2.state | float>=-80 | float<-71 %}
+            mdi:wifi-strength-1
+          {%- endif %}
+
+# Wifi quality in the Office
+  - platform: template
+    sensors:
+      wifi_quality_office:
+        friendly_name: 'Wifi Quality (Office)'
+        value_template: >-
+          {% if states.sensor.wifi_office.state | float>=-30 %} Amazing
+          {% elif states.sensor.wifi_office.state | float<-81 %}Unusable
+          {% elif states.sensor.wifi_office.state | float>=-66 | float<-31 %}Very good
+          {% elif states.sensor.wifi_office.state | float>=-70 | float<-67 %}Okay
+          {% elif states.sensor.wifi_office.state | float>=-80 | float<-71 %}Not good
+          {%- endif %}
+        icon_template: >-
+          {% if states.sensor.wifi_office.state | float>=-30 %}
+            mdi:wifi-strength-4
+          {% elif states.sensor.wifi_office.state | float<-81 %}
+            mdi:wifi-strength-0
+          {% elif states.sensor.wifi_office.state | float>=-66 | float<-31 %}
+            mdi:wifi-strength-3
+          {% elif states.sensor.wifi_office.state | float>=-70 | float<-67 %}
+            mdi:wifi-strength-2
+          {% elif states.sensor.wifi_office.state | float>=-80 | float<-71 %}
             mdi:wifi-strength-1
           {%- endif %}
