@@ -1,4 +1,4 @@
-- name: NOTIFIER_NAME
+- name: twitter
   platform: twitter
   consumer_key: !secret twitter_consumer_key
   consumer_secret: !secret twitter_consumer_secret
