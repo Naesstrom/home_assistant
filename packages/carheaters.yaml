@@ -15,6 +15,25 @@ binary_sensor:
     payload_off: "Offline"
     device_class: connectivity
 
+switch:
+  - platform: mqtt
+    name: "Carheater Erik (sonoff)"
+    command_topic: "cmnd/carheater_2/POWER"
+    state_topic: "stat/carheater_2/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+  - platform: mqtt
+    name: "Carheater Sussa (sonoff)"
+    command_topic: "cmnd/carheater_1/POWER"
+    state_topic: "stat/carheater_1/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
 sensor:
 ## Eriks Sensorer
 - platform: mqtt
