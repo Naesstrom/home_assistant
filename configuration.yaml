@@ -84,19 +84,6 @@ custom_updater:
   card_urls:
     - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
 
-#Enable mqtt broker
-#mqtt:
-#   broker: !secret mqtt_broker
-#   port: !secret mqtt_port
-#   username: !secret mqtt_username
-#   password: !secret mqtt_password
-#   discovery: true
-#   discovery_prefix: homeassistant
-
-
-#weather:
-#  - platform: met
-
 
 # Checks for available updates
 updater:
