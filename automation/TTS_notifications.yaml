@@ -38,19 +38,6 @@
       message: Något gick fel med din 3d utskrift.
       language: 'sv'
 
-- alias: Test TTS
-  initial_state: true
-  trigger:
-    platform: time
-    # When 'at' is used, you cannot also match on hour, minute, seconds.
-    # Military time format.
-    at: '16:05:00'
-  action:
-    service: tts.google_say
-    data_template:
-      message: "Temperature is {{states('sensor.office_temperature')}}."
-      cache: false
-
 - alias: mailbox TTS
   initial_state: true
   trigger:
