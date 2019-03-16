@@ -59,8 +59,6 @@ sensor:
             mdi:wifi-strength-1
           {%- endif %}
 
-sensor.wifi_livingroom_2
-
 # Wifi quality in the Livingroom
   - platform: template
     sensors:
