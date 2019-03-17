@@ -4,6 +4,6 @@
   - at: '22:00:00'
     platform: time
   action:
-    - service: switch.turn_off
+    - service: light.turn_off
       entity_id:
-        - switch.vagglampa
+        - light.blomlampa

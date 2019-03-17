@@ -11,3 +11,6 @@
       - switch.skapsbelysning
   - service: scene.turn_on
     entity_id: scene.livingroom_normal
+  - service: light.turn_on
+    entity_id:
+      - light.blomlampa
