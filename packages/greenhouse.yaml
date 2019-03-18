@@ -1,0 +1,105 @@
+### Work in progress ###
+
+### great thread for inspiration: https://community.home-assistant.io/t/garden-irrigation/1950/190
+
+#homeassistant:
+#customize:
+#  -
+
+input_boolean:
+  water_greenhouse:
+    name: Watering Greenhouse
+    initial: on
+    icon: mdi:water-pump
+
+sensor:
+  - platform: mqtt
+    name: "Greenhouse Temperature"
+    state_topic: "/greenhouse/DHT22/Temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Greenhouse Humidity"
+    state_topic: "/greenhouse/DHT22/Humidity"
+    qos: 0
+    unit_of_measurement: "%"
+
+
+### Custom component
+
+#wb_irrigation:
+#  api_key: !secret openweathermap
+#  rain_factor: 120
+#  max_ev: 3750 
+#  min_ev: -1500.0
+#  name: "wb_irrigation"
+#  longitude: !secret longitude
+#  latitude: !secret latitude
+#  taps: 
+#    - name: greenhouse
+#    - name: raised_bed_1
+
+
+group:
+  Greenhouse:
+  - sensor.greenhouse_temperature
+  - sensor.greenhouse_humidity
+  - switch.waterbed_1
+  - switch.waterbed_2
+  - switch.waterbed_3
+  - switch.waterbed_4
+  - script.water_greenhouse
+
+automation:
+  - alias: Time to water beds
+    trigger:
+    - platform: time
+      at: '19:00'
+    condition:
+    - condition: state
+      entity_id: input_boolean.water_greenhouse
+      state: 'off'
+      for:
+        hours: 47
+    action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.water_greenhouse
+    - service: script.turn_on
+      entity_id: script.water_greenhouse
+
+script:
+  water_greenhouse:
+    sequence:
+     - alias: 'Bed 1 ON'
+       service: switch.turn_on
+       entity_id: switch.waterbed_1
+     - delay: '00:60:00'
+     - alias: 'Bed 1 OFF'
+       service: switch.turn_off
+       entity_id: switch.waterbed_1
+     - alias: 'Bed 2 ON'
+       service: switch.turn_on
+       entity_id: switch.waterbed_2
+     - delay: '00:60:00'
+     - alias: 'Bed 2 OFF'
+       service: switch.turn_off
+       entity_id: switch.waterbed_2
+     - alias: 'Bed 3 ON'
+       service: switch.turn_on
+       entity_id: switch.waterbed_3
+     - delay: '00:60:00'
+     - alias: 'Bed 3 OFF'
+       service: switch.turn_off
+       entity_id: switch.waterbed_3
+     - alias: 'Bed 4 ON'
+       service: switch.turn_on
+       entity_id: switch.waterbed_4
+     - delay: '00:60:00'
+     - alias: 'Bed 4 OFF'
+       service: switch.turn_off
+       entity_id: switch.waterbed_4
+     - alias: 'Input bool to off'
+       service: state.turn_off
+       entity_id: input_boolean.water_greenhouse
+

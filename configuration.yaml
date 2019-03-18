@@ -289,10 +289,6 @@ media_player:
 ffmpeg:
 
 input_boolean:
-  water_greenhouse:
-    name: Watering Greenhouse
-    initial: on
-    icon: mdi:water-pump
   sussa_home:
     name: sussa home
     initial: on

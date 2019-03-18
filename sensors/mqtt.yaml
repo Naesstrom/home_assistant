@@ -47,18 +47,6 @@
     qos: 0
     unit_of_measurement: "hPa"
 
-  - platform: mqtt
-    name: "Greenhouse Temperature"
-    state_topic: "/greenhouse/DHT22/Temperature"
-    qos: 0
-    unit_of_measurement: "°C"
-
-  - platform: mqtt
-    name: "Greenhouse Humidity"
-    state_topic: "/greenhouse/DHT22/Humidity"
-    qos: 0
-    unit_of_measurement: "%"
-
 ### Sparsnäs sensors###
   - platform: mqtt
     state_topic: "home/sparsnas"
