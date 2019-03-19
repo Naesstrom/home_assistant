@@ -4,7 +4,7 @@
   initial_state: true
   trigger:
     platform: state
-    entity_id: binary_sensor.bathroom_movement
+    entity_id: binary_sensor.bathroom_motion_2
     to: 'on'
   action:
     service: light.turn_on
@@ -23,7 +23,7 @@
   initial_state: true
   trigger:
     platform: state
-    entity_id: binary_sensor.bathroom_movement
+    entity_id: binary_sensor.bathroom_motion_2
     to: 'off'
     for:
       minutes: 10

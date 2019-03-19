@@ -27,14 +27,4 @@
     qos: 0
     device_class: motion
 
-  automation:
-    - alias: "BRB pressed"
-      initial_state: true
-      trigger:
-        platform: mqtt
-        topic: /Node_Bathroom/BRB/BRB
-        payload: '1'
-      action:
-        - service: input_boolean.turn_on
-          # Don't forget to select the correct switch
-          entity_id: input_boolean.period_starts
+
