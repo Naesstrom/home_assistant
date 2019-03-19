@@ -303,8 +303,6 @@ input_boolean:
     name: AC living room
   switch_tv:
     name: TV
-  period_starts:
-    name: Sussas Period started
   mail:
     name: mail
     initial: off
