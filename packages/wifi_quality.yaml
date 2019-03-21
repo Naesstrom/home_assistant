@@ -15,22 +15,22 @@ sensor:
       wifi_quality_attic:
         friendly_name: 'Wifi Quality (Attic)'
         value_template: >-
-          {% if states.sensor.attic_wifi_2.state | float>=-30 %} Amazing
-          {% elif states.sensor.attic_wifi_2.state | float<-81 %}Unusable
-          {% elif states.sensor.attic_wifi_2.state | float>=-66 | float<-31 %}Very good
-          {% elif states.sensor.attic_wifi_2.state | float>=-70 | float<-67 %}Okay
-          {% elif states.sensor.attic_wifi_2.state | float>=-80 | float<-71 %}Not good
+          {% if states.sensor.wifi_attic.state | float>=-30 %} Amazing
+          {% elif states.sensor.wifi_attic.state | float<-81 %}Unusable
+          {% elif states.sensor.wifi_attic.state | float>=-66 | float<-31 %}Very good
+          {% elif states.sensor.wifi_attic.state | float>=-70 | float<-67 %}Okay
+          {% elif states.sensor.wifi_attic.state | float>=-80 | float<-71 %}Not good
           {%- endif %}
         icon_template: >-
-          {% if states.sensor.attic_wifi_2.state | float>=-30 %}
+          {% if states.sensor.wifi_attic.state | float>=-30 %}
             mdi:wifi-strength-4
-          {% elif states.sensor.attic_wifi_2.state | float<-81 %}
+          {% elif states.sensor.wifi_attic.state | float<-81 %}
             mdi:wifi-strength-0
-          {% elif states.sensor.attic_wifi_2.state | float>=-66 | float<-31 %}
+          {% elif states.sensor.wifi_attic.state | float>=-66 | float<-31 %}
             mdi:wifi-strength-3
-          {% elif states.sensor.attic_wifi_2.state | float>=-70 | float<-67 %}
+          {% elif states.sensor.wifi_attic.state | float>=-70 | float<-67 %}
             mdi:wifi-strength-2
-          {% elif states.sensor.attic_wifi_2.state | float>=-80 | float<-71 %}
+          {% elif states.sensor.wifi_attic.state | float>=-80 | float<-71 %}
             mdi:wifi-strength-1
           {%- endif %}
 
@@ -65,22 +65,22 @@ sensor:
       wifi_quality_livingroom:
         friendly_name: 'Wifi Quality (Livingroom)'
         value_template: >-
-          {% if states.sensor.wifi_livingroom_2.state | float>=-30 %} Amazing
-          {% elif states.sensor.wifi_livingroom_2.state | float<-81 %}Unusable
-          {% elif states.sensor.wifi_livingroom_2.state | float>=-66 | float<-31 %}Very good
-          {% elif states.sensor.wifi_livingroom_2.state | float>=-70 | float<-67 %}Okay
-          {% elif states.sensor.wifi_livingroom_2.state | float>=-80 | float<-71 %}Not good
+          {% if states.sensor.wifi_livingroom.state | float>=-30 %} Amazing
+          {% elif states.sensor.wifi_livingroom.state | float<-81 %}Unusable
+          {% elif states.sensor.wifi_livingroom.state | float>=-66 | float<-31 %}Very good
+          {% elif states.sensor.wifi_livingroom.state | float>=-70 | float<-67 %}Okay
+          {% elif states.sensor.wifi_livingroom.state | float>=-80 | float<-71 %}Not good
           {%- endif %}
         icon_template: >-
-          {% if states.sensor.wifi_livingroom_2.state | float>=-30 %}
+          {% if states.sensor.wifi_livingroom.state | float>=-30 %}
             mdi:wifi-strength-4
-          {% elif states.sensor.wifi_livingroom_2.state | float<-81 %}
+          {% elif states.sensor.wifi_livingroom.state | float<-81 %}
             mdi:wifi-strength-0
-          {% elif states.sensor.wifi_livingroom_2.state | float>=-66 | float<-31 %}
+          {% elif states.sensor.wifi_livingroom.state | float>=-66 | float<-31 %}
             mdi:wifi-strength-3
-          {% elif states.sensor.wifi_livingroom_2.state | float>=-70 | float<-67 %}
+          {% elif states.sensor.wifi_livingroom.state | float>=-70 | float<-67 %}
             mdi:wifi-strength-2
-          {% elif states.sensor.wifi_livingroom_2.state | float>=-80 | float<-71 %}
+          {% elif states.sensor.wifi_livingroom.state | float>=-80 | float<-71 %}
             mdi:wifi-strength-1
           {%- endif %}
 
@@ -90,21 +90,21 @@ sensor:
       wifi_quality_bathroom:
         friendly_name: 'Wifi Quality (Bathroom)'
         value_template: >-
-          {% if states.sensor.wifi_bathroom_2.state | float>=-30 %} Amazing
-          {% elif states.sensor.wifi_bathroom_2.state | float<-81 %}Unusable
-          {% elif states.sensor.wifi_bathroom_2.state | float>=-66 | float<-31 %}Very good
-          {% elif states.sensor.wifi_bathroom_2.state | float>=-70 | float<-67 %}Okay
-          {% elif states.sensor.wifi_bathroom_2.state | float>=-80 | float<-71 %}Not good
+          {% if states.sensor.wifi_bathroom.state | float>=-30 %} Amazing
+          {% elif states.sensor.wifi_bathroom.state | float<-81 %}Unusable
+          {% elif states.sensor.wifi_bathroom.state | float>=-66 | float<-31 %}Very good
+          {% elif states.sensor.wifi_bathroom.state | float>=-70 | float<-67 %}Okay
+          {% elif states.sensor.wifi_bathroom.state | float>=-80 | float<-71 %}Not good
           {%- endif %}
         icon_template: >-
-          {% if states.sensor.wifi_bathroom_2.state | float>=-30 %}
+          {% if states.sensor.wifi_bathroom.state | float>=-30 %}
             mdi:wifi-strength-4
-          {% elif states.sensor.wifi_bathroom_2.state | float<-81 %}
+          {% elif states.sensor.wifi_bathroom.state | float<-81 %}
             mdi:wifi-strength-0
-          {% elif states.sensor.wifi_bathroom_2.state | float>=-66 | float<-31 %}
+          {% elif states.sensor.wifi_bathroom.state | float>=-66 | float<-31 %}
             mdi:wifi-strength-3
-          {% elif states.sensor.wifi_bathroom_2.state | float>=-70 | float<-67 %}
+          {% elif states.sensor.wifi_bathroom.state | float>=-70 | float<-67 %}
             mdi:wifi-strength-2
-          {% elif states.sensor.wifi_bathroom_2.state | float>=-80 | float<-71 %}
+          {% elif states.sensor.wifi_bathroom.state | float>=-80 | float<-71 %}
             mdi:wifi-strength-1
           {%- endif %}
