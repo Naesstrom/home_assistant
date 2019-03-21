@@ -123,6 +123,10 @@ python_script:
 ifttt:
   key: !secret iftttapi
 
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+  
 tradfri:
   host: 192.168.1.7
 
@@ -235,6 +239,20 @@ octoprint:
   bed: true
   number_of_tools: 1
 
+transmission:
+  host: 192.168.1.12
+#  username: !secret transmission_name
+#  password: !secret transmission_pass
+  turtle_mode:
+  monitored_conditions:
+    - 'current_status'
+    - 'download_speed'
+    - 'upload_speed'
+    - 'active_torrents'
+    - 'paused_torrents'
+    - 'total_torrents'
+    - 'started_torrents'
+
 #### Merged folders (named) ####
 group: !include_dir_merge_named groups
 script: !include_dir_merge_named scripts
@@ -259,7 +277,7 @@ sabnzbd: !include sabnzb.yaml
 
 shopping_list:
 
-media_player:
+#media_player:
 #  - platform: cast
 #Control the livingroom TV
 #  - platform: broadlink
