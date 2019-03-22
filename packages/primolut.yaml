@@ -1,22 +1,16 @@
 ### Create Input boolean ###
 input_boolean:
   period_starts:
-    name: Sussas Period started
+    name: Period started
 
 automation:
 ### When Big Red Button is pressed switch input boolean ###
   - alias: "BRB pressed"
     initial_state: true
     trigger:
-#      platform: mqtt
-#      topic: /Node_Bathroom/BRB/BRB
-#      payload: '1'
       - platform: state
-        entity_id: binary_sensor.big_red_button_2
-        to: 'wet'
-      - platform: state
-        entity_id: binary_sensor.big_red_button_2
-        to: 'On'
+        entity_id: binary_sensor.big_red_button
+        to: 'on'
     action:
       - service: input_boolean.turn_on
         # Don't forget to select the correct switch
@@ -30,15 +24,30 @@ automation:
       entity_id: input_boolean.period_starts
       to: 'on'
     action:
-      - service: remember_the_milk.naesstrom_create_task
-        data_template:
-          name: "Börja ta primolut 16 days #Personligt +sussaisaksson@gmail.com"
-          id: ""
+      - service: google.add_event
+        data:
+          calendar_id: !secret familycal
+          summary: "Börja ta Primolut"
+          in:
+            days: 16
       - service: input_boolean.turn_off
         data:
           entity_id: input_boolean.period_starts
       - service: tts.google_say
         entity_id: media_player.google_home_group
         data_template:
-          message: "You pressed the big red button... Self destruct in 10, 9, 8, 7, 6..."
+          message: "You pressed the big red button... Self destruct in 10, 9, 8, 7, 6, 5, 4... Ha ha! Just kidding!"
+          cache: false
+
+  - alias: "BRB pressed 2"
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.big_red_button
+        to: 'on'
+    action:
+      - service: tts.google_say
+        entity_id: media_player.googlehome4557
+        data_template:
+          message: "You pressed the big red button... Self destruct in 10, 9, 8, 7, 6, 5, 4... Ha ha! Just kidding!"
           cache: false
