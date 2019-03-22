@@ -120,6 +120,9 @@ camera: !include cameras.yaml
 
 python_script:
 
+#Added in 0.90
+stream:
+
 ifttt:
   key: !secret iftttapi
 
