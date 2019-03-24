@@ -2,7 +2,7 @@
   initial_state: true
   trigger:
     platform: state
-    entity_id: binary_sensor.kitchen_movement
+    entity_id: binary_sensor.kitchen_motion
     to: 'on'
   condition:
     - after: '20:00'
@@ -18,7 +18,7 @@
   initial_state: true
   trigger:
     platform: state
-    entity_id: binary_sensor.kitchen_movement
+    entity_id: binary_sensor.kitchen_motion
     to: 'off'
     for:
       minutes: 30

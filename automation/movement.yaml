@@ -1,7 +1,7 @@
 #- alias: kitchen movement
 #  trigger:
 #    platform: state
-#    entity_id: binary_sensor.kitchen_movement
+#    entity_id: binary_sensor.kitchen_motion
 #    to: 'on'
 #  condition:
 #   condition: and
@@ -10,7 +10,7 @@
 #      after: 03:00
 #      before: 05:00
 #    - condition: template
-#      value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.kitchen_movement.attributes.last_triggered) | int > 180 }}'
+#      value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.kitchen_motion.attributes.last_triggered) | int > 180 }}'
 #  action:
 #    service: tts.google_say
 #    entity_id: media_player.googlehome0719

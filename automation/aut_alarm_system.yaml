@@ -33,7 +33,7 @@
       to: 'open'
     ### Movement sensors ###
     - platform: state
-      entity_id: binary_sensor.kitchen_movement
+      entity_id: binary_sensor.kitchen_motion
       to: 'on'
     - platform: state
       entity_id: binary_sensor.livingroom_movement
