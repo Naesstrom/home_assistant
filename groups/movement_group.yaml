@@ -2,5 +2,5 @@ Movement:
   - binary_sensor.kitchen_motion
   - binary_sensor.bedroom_movement
   - binary_sensor.livingroom_motion
-  - binary_sensor.office_movement
+  - binary_sensor.office_motion
   - binary_sensor.bathroom_motion
