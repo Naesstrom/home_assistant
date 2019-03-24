@@ -36,7 +36,7 @@
       entity_id: binary_sensor.kitchen_motion
       to: 'on'
     - platform: state
-      entity_id: binary_sensor.livingroom_movement
+      entity_id: binary_sensor.livingroom_motion
       to: 'On'
     - platform: state
       entity_id: binary_sensor.bedroom_movement
