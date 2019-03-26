@@ -29,4 +29,3 @@ automation:
         entity_id: media_player.chromecastaudio6872
         media_content_id: http://edge-bauersefm-06-gos2.sharp-stream.com/mixmegapol_instream_se_mp3
         media_content_type: music
-}
