@@ -16,10 +16,10 @@ automation:
           conditions:
             - condition: state
               entity_id:  person.erik
-              state: 'home'
+              state: 'Home'
             - condition: state
               entity_id:  person.sussa
-              state: 'home'
+              state: 'Home'
     # Set volume of bedroom speakers and start playing the radio stream
     action:
       - service: media_player.volume_set
