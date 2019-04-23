@@ -1,8 +1,0 @@
-Scripts_tab:
-  name: Scripts
-  view: true
-  icon: mdi:script
-  entities:
-  - script.javis_greeting
-  - script.water_greenhouse
-  - script.radio

@@ -1,8 +1,0 @@
-Trafikverket:
-- camera.trafikplats_tegnaby
-- sensor.trafikverket_tegnaby_air_temperature
-- sensor.trafikverket_tegnaby_humidity
-- sensor.trafikverket_tegnaby_precipitation_type
-- sensor.trafikverket_tegnaby_road_temperature
-- sensor.trafikverket_tegnaby_wind_direction_text
-- sensor.trafikverket_tegnaby_wind_speed

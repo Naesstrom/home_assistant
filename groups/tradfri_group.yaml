@@ -1,9 +1,0 @@
-tradfri:
-- light.night_lights
-- light.livingroom_ambient_lights
-- light.bathroom
-- light.spotlight_2
-- light.tradfri_bulb_e14_ws_opal_400lm
-- light.tradfri_transformer_10w
-- sensor.tradfri_wireless_dimmer
-- sensor.tradfri_remote_control

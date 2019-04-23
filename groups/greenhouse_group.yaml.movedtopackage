@@ -1,8 +1,0 @@
-Greenhouse:
-- sensor.greenhouse_temperature
-- sensor.greenhouse_humidity
-- switch.waterbed_1
-- switch.waterbed_2
-- switch.waterbed_3
-- switch.waterbed_4
-- script.water_greenhouse

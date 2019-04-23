@@ -1,5 +1,0 @@
-presence_status:
-  name: presence Status
-  entities:
-    - device_tracker.sussa
-    - device_tracker.erik

@@ -1,9 +1,0 @@
-Luftdata:
-- sensor.luftdata_pm10
-- sensor.luftdata_pm25
-- sensor.luftdata_temperature
-- sensor.luftdata_humidity
-- sensor.pm10_stats_mean
-- sensor.air_quality_pm10
-- sensor.pm25_stats_mean
-- sensor.air_quality_pm25

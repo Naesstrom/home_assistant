@@ -1,6 +1,0 @@
-alarm_tab:
-  name: Debug information
-  view: true
-  icon: mdi:alarm-light
-  entities:
-  - alarm_control_panel.home_alarm

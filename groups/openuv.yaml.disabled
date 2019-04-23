@@ -1,9 +1,0 @@
-Open_UV:
-    name: Open UV
-    control: hidden
-    entities:
-    - binary_sensor.protection_window
-    - sensor.current_ozone_level
-    - sensor.current_uv_index
-    - sensor.max_uv_index
-    - sensor.skin_type_3_safe_exposure_time

@@ -1,4 +1,0 @@
-Door_sensors:
-  - sensor.patio_door
-  - sensor.front_door
-  - sensor.side_door
