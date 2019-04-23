@@ -27,3 +27,8 @@ exclude:
    - sensor.last_boot
    - sensor.date
    - sensor.radarr_movies
+   - sensor.time
+   - sensor.time_date
+   - sensor.time_home
+   - sensor.time_work
+   - sensor.time_utc
