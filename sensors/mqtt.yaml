@@ -19,34 +19,6 @@
     qos: 0
     unit_of_measurement: "%"
 
-#sensor 7:
-  - platform: mqtt
-    name: "Lux"
-    state_topic: "/Node_Climate/BH1750/Lux"
-    qos: 0
-    unit_of_measurement: "Lx"
-
-#sensor 8:
-  - platform: mqtt
-    name: "Outside Temperature"
-    state_topic: "/Node_Climate/BME280/Temperature"
-    qos: 0
-    unit_of_measurement: "°C"
-
-#sensor 9:
-  - platform: mqtt
-    name: "Outside Humidity"
-    state_topic: "/Node_Climate/BME280/Humidity"
-    qos: 0
-    unit_of_measurement: "%"
-
-#sensor 10:
-  - platform: mqtt
-    name: "Outside Pressure"
-    state_topic: "/Node_Climate/BME280/Pressure"
-    qos: 0
-    unit_of_measurement: "hPa"
-
 ### Sparsnäs sensors###
   - platform: mqtt
     state_topic: "home/sparsnas"

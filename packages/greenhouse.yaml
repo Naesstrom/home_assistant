@@ -12,20 +12,6 @@ input_boolean:
     initial: on
     icon: mdi:water-pump
 
-sensor:
-  - platform: mqtt
-    name: "Greenhouse Temperature"
-    state_topic: "/greenhouse/DHT22/Temperature"
-    qos: 0
-    unit_of_measurement: "°C"
-
-  - platform: mqtt
-    name: "Greenhouse Humidity"
-    state_topic: "/greenhouse/DHT22/Humidity"
-    qos: 0
-    unit_of_measurement: "%"
-
-
 ### Custom component
 
 #wb_irrigation:
@@ -39,17 +25,6 @@ sensor:
 #  taps: 
 #    - name: greenhouse
 #    - name: raised_bed_1
-
-
-group:
-  Greenhouse:
-  - sensor.greenhouse_temperature
-  - sensor.greenhouse_humidity
-  - switch.waterbed_1
-  - switch.waterbed_2
-  - switch.waterbed_3
-  - switch.waterbed_4
-  - script.water_greenhouse
 
 automation:
   - alias: Time to water beds

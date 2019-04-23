@@ -1,0 +1,27 @@
+#homeassistant:
+#  customize:
+#    -
+  sensor:
+  - platform: mqtt
+    name: "Bedroom Temperature"
+    state_topic: "/Node_Bedroom/DHT22/Temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Bedroom Humidity"
+    state_topic: "/Node_Bedroom/DHT22/Humidity"
+    qos: 0
+    unit_of_measurement: "%"
+#  group:
+#    -
+  binary_sensor:
+  - platform: mqtt
+    name: "Bedroom Movement"
+    state_topic: "/Node_Bedroom/PIR/Switch"
+    payload_on: "1"
+    payload_off: "0"
+    payload_available: "on"
+    payload_not_available: "off"
+    qos: 0
+    device_class: motion
