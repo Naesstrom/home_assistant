@@ -10,14 +10,26 @@
       message: "Temperaturen i pumphuset är {{ states.sensor.pumphus_temperature.state }}ºC och utetemperaturen är {{ states.sensor.ute_temperature.state }}ºC"
       title: "Varning: Pumphuset"
 
-- alias: 'Frys.förråd'
+- alias: 'Frys.forrad'
   initial_state: true
   trigger:
     platform: numeric_state
-    entity_id: sensor.pumphus_temperature
-    below: 2
+    entity_id: sensor.frys_forrad_temperature
+    above: -10
   action:
     service: notify.ringvattnet
     data:
-      message: "Temperaturen i pumphuset är {{ states.sensor.pumphus_temperature.state }}ºC och utetemperaturen är {{ states.sensor.ute_temperature.state }}ºC"
-      title: "Varning: Pumphuset"
+      message: "Temperaturen i Frys 1 är {{ states.sensor.frys_forrad_temperature.state }}ºC"
+      title: "Varning: Frys 1"
+
+- alias: 'Frys.forrad_2'
+  initial_state: true
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.frys_2_forrad_temperature
+    above: -10
+  action:
+    service: notify.ringvattnet
+    data:
+      message: "Temperaturen i Frys 2 är {{ states.sensor.frys_2_forrad_temperature.state }}ºC"
+      title: "Varning: Frys 2"
