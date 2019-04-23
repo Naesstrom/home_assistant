@@ -1,0 +1,13 @@
+sensor:
+  - platform: statistics
+    name: "greenhouse statistics"
+    entity_id: sensor.greenhouse_temperature_2
+    sampling_size: 1440
+    max_age:
+      hours: 24
+  - platform: template
+    sensors:
+      greenhouse_min:
+        value_template: "{{ state_attr('sensor.greenhouse_statistics_mean', 'min_value') }}"
+        device_class: temperature
+        unit_of_measurement: "°C"
