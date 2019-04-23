@@ -45,6 +45,7 @@
     resource: https://www.ingo.se/sv_SE/pg1334073834580/INGO/Priser.html
     select: 'tbody tr:nth-of-type(1) td:nth-of-type(1)'
 #    value_template: '{{ value.split("kr")[1] }}'
+    value_template: '{{ value.replace(",", ".") }}'    
     scan_interval: 3600
 
   - platform: scrape
