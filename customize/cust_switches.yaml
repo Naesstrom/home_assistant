@@ -3,10 +3,3 @@ switch.brevladan:
   friendly_name: Brevlådan
   icon: mdi:mailbox
   sensor_class: 'opening'
-
-
-group.door_sensors:
-  assumed_state: true
-  friendly_name: Doorsensors
-  icon: mdi:glassdoor
-  sensor_class: 'opening'
