@@ -9,7 +9,7 @@
 default: warn
 logs:
   homeassistant.core: error
-  homeassistant.components.automation: debug
+  homeassistant.components.automation: warn
   homeassistant.components.binary_sensor: error
   homeassistant.components.device_tracker: error
   homeassistant.components.discovery: warn
