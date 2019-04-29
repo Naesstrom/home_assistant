@@ -1,8 +1,8 @@
 {
-  "domain": "krisinformation",
+  "domain": "Krisinformation",
   "name": "Krisinformation",
   "documentation": "https://github.com/isabellaalstrom/sensor.krisinformation",
   "dependencies": [],
   "codeowners": ["@isabellaalstrom"],
-  "requirements": ["pyuntappd==0.0.5"]
+  "requirements": []
 }
