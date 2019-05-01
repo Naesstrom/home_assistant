@@ -277,7 +277,7 @@ lock: !include_dir_merge_list locks
 
 cast:
 
-sabnzbd: !include sabnzb.yaml
+#sabnzbd: !include sabnzb.yaml
 
 shopping_list:
 
@@ -339,36 +339,16 @@ remember_the_milk:
   - name: naesstrom
     api_key: !secret rtm_api_key
     shared_secret: !secret rtm_secret
+
 panel_iframe:
   mdiindex:
     title: MDI Icon Index
     icon: mdi:vector-square
     url: https://cdn.rawgit.com/james-fry/home-assistant-mdi/efd95d7a/home-assistant-mdi.html
-  dashboard:
-    title: 'HADashboard'
-    url: !secret ha_dashboard_url
-    icon: mdi:apps
   lightning:
     title: 'Realtime Lightning'
-    url: 'https://lmaps.org/#15.14;56.76;9'
+    url: 'http://map.blitzortung.org/#5.72/56.399/16.371'
     icon: mdi:weather-lightning
-  pihole:
-    title: 'Pi-Hole'
-    url: 'http://192.168.1.119/admin/index.php'
-    icon: mdi:block-helper
-  configurator:
-    title: Configurator
-    icon: mdi:wrench
-    url: 'http://192.168.1.119:3218'
-  motioneye:
-    title: motionEye
-    icon: mdi:cctv
-    url: !secret motion_eye_url
-  jupyterlab:
-    title: JupyterLab
-    icon: mdi:flask
-    url: !secret jupyter_url
 
-shell_command:
-  getbilladata: 'PATH=$PATH:/bin && rm -fr /home/hass/.homeassistant/billa.txt && curl -X GET https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/14.938817/lat/56.826237/data.json >> /home/hass/.homeassistant/billa.txt'
-  lovelace_migrate: 'python3 /config/lovelace_migrate.py -c /config'
+#shell_command:
+#  getbilladata: 'PATH=$PATH:/bin && rm -fr /home/hass/.homeassistant/billa.txt && curl -X GET https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/14.938817/lat/56.826237/data.json >> /home/hass/.homeassistant/billa.txt'
