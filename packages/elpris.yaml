@@ -1,0 +1,6 @@
+sensor:
+  - platform: scrape
+    name: spot_price_vaxjo
+    resource: https://elen.nu/timpriser-pa-el-for-elomrade-se4-malmo
+    select: ".elspot-area-price strong"
+    value_template: '{{ value.replace(",", ".") }}'
