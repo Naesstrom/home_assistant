@@ -1,0 +1,8 @@
+  - platform: scrape
+### Link to any shared NetOnNet wishlist
+    resource: https://www.netonnet.se/Customer/SharedList/182635
+    name: "PC Upgrade"
+    select: ".price"
+    unit_of_measurement: kr
+
+    value_template: '{{ value.split() | join() | replace(":-","") }}'
