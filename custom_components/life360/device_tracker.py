@@ -9,12 +9,21 @@ from requests import HTTPError, ConnectionError as ReqConnectionError, Timeout
 import voluptuous as vol
 
 from homeassistant.components.device_tracker import (
-    CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, DOMAIN,
-    ENTITY_ID_FORMAT as DT_ENTITY_ID_FORMAT, PLATFORM_SCHEMA)
+    CONF_SCAN_INTERVAL, DOMAIN, PLATFORM_SCHEMA)
+try:
+    from homeassistant.components.device_tracker.const import (
+        ENTITY_ID_FORMAT as DT_ENTITY_ID_FORMAT,
+        SCAN_INTERVAL as DEFAULT_SCAN_INTERVAL)
+except ImportError:
+    from homeassistant.components.device_tracker import (
+        DEFAULT_SCAN_INTERVAL, ENTITY_ID_FORMAT as DT_ENTITY_ID_FORMAT)
 from homeassistant.components.zone import (
     DEFAULT_PASSIVE, ENTITY_ID_FORMAT as ZN_ENTITY_ID_FORMAT, ENTITY_ID_HOME,
     Zone)
-from homeassistant.components.zone.zone import active_zone
+try:
+    from homeassistant.components.zone import async_active_zone
+except ImportError:
+    from homeassistant.components.zone.zone import async_active_zone
 from homeassistant.const import (
     ATTR_BATTERY_CHARGING, ATTR_FRIENDLY_NAME, ATTR_LATITUDE, ATTR_LONGITUDE,
     ATTR_NAME, CONF_FILENAME, CONF_PASSWORD, CONF_PREFIX, CONF_USERNAME,
@@ -24,7 +33,8 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.event import track_time_interval
 from homeassistant.util import slugify
-from homeassistant.util.async_ import run_coroutine_threadsafe
+from homeassistant.util.async_ import (
+    run_callback_threadsafe, run_coroutine_threadsafe)
 from homeassistant.util.distance import convert
 import homeassistant.util.dt as dt_util
 
@@ -331,8 +341,18 @@ class Life360Scanner:
         if self._time_as in [TZ_DEVICE_UTC, TZ_DEVICE_LOCAL]:
             from timezonefinderL import TimezoneFinder
             self._tf = TimezoneFinder()
-        self._started = dt_util.utcnow()
 
+        self._seen_members = set()
+
+        if self._members is not None:
+            _LOGGER.debug(
+                'Including: %s',
+                ', '.join([
+                    self._prefix
+                    + slugify(name.replace(',', '_').replace('-', '_'))
+                    for name in self._members]))
+
+        self._started = dt_util.utcnow()
         self._update_life360()
         track_time_interval(self._hass, self._update_life360, interval)
 
@@ -369,10 +389,7 @@ class Life360Scanner:
             return self._dt_attr_from_utc(utc, time_zone)
         return STATE_UNKNOWN
 
-    def _update_member(self, member, name):
-        name = name.replace(',', '_').replace('-', '_')
-
-        dev_id = slugify(self._prefix + name)
+    def _update_member(self, member, dev_id):
         prev_seen, reported = self._dev_data.get(dev_id, (None, False))
 
         loc = member.get('location')
@@ -510,12 +527,15 @@ class Life360Scanner:
             # If we don't have a location name yet and user wants driving or
             # moving to be shown as state, and current location is not in a HA
             # zone, then update location name accordingly.
-            if not loc_name and not active_zone(
-                    self._hass, lat, lon, gps_accuracy):
-                if SHOW_DRIVING in self._show_as_state and driving is True:
-                    loc_name = SHOW_DRIVING.capitalize()
-                elif SHOW_MOVING in self._show_as_state and moving is True:
-                    loc_name = SHOW_MOVING.capitalize()
+            if not loc_name:
+                active_zone = run_callback_threadsafe(
+                    self._hass.loop, async_active_zone, self._hass, lat, lon,
+                    gps_accuracy).result()
+                if not active_zone:
+                    if SHOW_DRIVING in self._show_as_state and driving is True:
+                        loc_name = SHOW_DRIVING.capitalize()
+                    elif SHOW_MOVING in self._show_as_state and moving is True:
+                        loc_name = SHOW_MOVING.capitalize()
 
             try:
                 battery = int(float(loc.get('battery')))
@@ -554,16 +574,29 @@ class Life360Scanner:
                 err_key = 'Member data'
                 try:
                     m_id = member['id']
+                    first = member.get('firstName')
+                    last = member.get('lastName')
+                    if first and last:
+                        full_name = ' '.join([first, last])
+                    else:
+                        full_name = first or last
+                    name = _m_name(first, last)
+                    include_member = not self._members or name in self._members
+                    dev_id = (
+                        self._prefix
+                        + slugify(name.replace(',', '_').replace('-', '_')))
+                    if full_name not in self._seen_members:
+                        self._seen_members.add(full_name)
+                        _LOGGER.debug(
+                            '%s -> %s: will%s be tracked', full_name,
+                            dev_id,
+                            '' if include_member else ' NOT')
                     sharing = bool(int(member['features']['shareLocation']))
-                    name = _m_name(
-                        member.get('firstName'), member.get('lastName'))
                 except (KeyError, TypeError, ValueError):
                     self._err(err_key, member)
                     continue
                 self._ok(err_key)
 
-                if (m_id not in checked_ids and
-                        (not self._members or name in self._members) and
-                        sharing):
+                if m_id not in checked_ids and include_member and sharing:
                     checked_ids.append(m_id)
-                    self._update_member(member, name)
+                    self._update_member(member, dev_id)
