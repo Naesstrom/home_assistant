@@ -15,13 +15,13 @@ homeassistant:
   packages: !include_dir_named packages
   auth_providers:
     - type: homeassistant
-#    - type: trusted_networks
-#      trusted_networks:
-#        - 127.0.0.1
-#        - 192.168.1.0/24
-#        - 192.168.0.0/16
-#        - 172.30.32.2
-#        - 192.168.1.1
+    - type: trusted_networks
+      trusted_networks:
+        - 127.0.0.1
+        - 192.168.1.0/24
+        - 192.168.0.0/16
+        - 172.30.32.2
+        - 192.168.1.1
 
 #  customize_glob:
 #    light.*:
@@ -60,6 +60,12 @@ system_health:
 #added in 0.88
 person:
 
+#added in 0.94
+ssdp:
+
+#added in 0.94
+zeroconf:
+
 #Enable Cloud service
 cloud:
 
@@ -73,17 +79,8 @@ frontend:
   extra_html_url_es5:
     - /local/custom_ui/state-card-custom-ui-es5.html
 
-custom_updater:
-  track:
-    - components
-    - python_scripts
-  component_urls:
-    - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/custom_components.json
-  python_script_urls:
-    - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/python_scripts.json
-  card_urls:
-    - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
-
+hacs:
+  token: !secret my_github_access_token
 
 # Checks for available updates
 updater:
@@ -174,6 +171,7 @@ device_tracker:
 #    home_interval: 10
 #  - platform: owntracks_http
 #    max_gps_accuracy: 200
+#  - platform: bluetooth_le_tracker
   - platform: bluetooth_tracker
     interval_seconds: 10
   - platform: google_maps
@@ -188,14 +186,24 @@ device_tracker:
     max_gps_accuracy: 200
     max_update_wait:
       minutes: 45
-#  - platform: googlehome
-#    host: 192.168.1.218
-#  - platform: googlehome
-#    host: 192.168.1.216
-#  - platform: googlehome
-#    host: 192.168.1.237
-#  - platform: googlehome
-#    host: 192.168.1.183
+
+#googlehome:
+#  devices:
+#    - host: '192.168.1.233'
+#      track_alarms: true
+#      track_devices: true
+#    - host: '192.168.1.183'
+#      track_alarms: true
+#      track_devices: true
+#    - host: '192.168.1.242'
+#      track_alarms: true
+#      track_devices: true
+#    - host: '192.168.1.237'
+#      track_alarms: true
+#      track_devices: true
+#    - host: '192.168.1.225'
+#      track_alarms: true
+#      track_devices: true
 #zwave:
 #  device_config: !include zwave_device_config.yaml
 
@@ -273,7 +281,28 @@ binary_sensor: !include_dir_merge_list binary_sensor
 #automation old: !include_dir_merge_list automation
 cover: !include_dir_merge_list covers
 lock: !include_dir_merge_list locks
-# media_player: include_dir_merge_list media_players
+
+
+#media_player: moved to packages
+## Sony Amplifier
+## Disabled due to broadlink problems
+#  - platform: broadlink
+#    name: Livingroom Amplifier
+#    host: 192.168.1.5
+#    mac: '34:ea:34:40:78:ff'
+#    ircodes_ini: 'broadlink_media_codes/sony_str_dn1040.ini'
+#    ping_host: 192.168.1.62
+#    retain: true
+
+## Andersson TV
+## Disabled due to broadlink problems
+#  - platform: broadlink
+#    name: Livingroom Andersson
+#    host: 192.168.1.5
+#    mac: '34:ea:34:40:78:ff'
+#    ircodes_ini: 'broadlink_media_codes/andersson.ini'
+#    retain: true
+
 
 cast:
 
@@ -281,59 +310,7 @@ cast:
 
 shopping_list:
 
-#media_player:
-#  - platform: cast
-#Control the livingroom TV
-#  - platform: broadlink
-#    name: Livingroom Andersson
-#    host: 192.168.1.5
-#    mac: '34:ea:34:40:78:ff'
-#    ircodes_ini: 'broadlink_media_codes/andersson.ini'
-    #retain: true
-##  - platform: plex
-##    entity_namespace: 'plex'
-##    include_non_clients: true
-##    scan_interval: 10
-#    show_all_controls: true
-#    use_custom_entity_ids: true
-##    use_episode_art: true
-##    remove_unavailable_clients: true
-##    client_remove_interval: 600
-#Control the livingroom Amplifier Sony STR DN-1040
-#  - platform: broadlink
-#    name: Livingroom Amplifier
-#    host: 192.168.1.5
-#    mac: '34:ea:34:40:78:ff'
-#    ircodes_ini: 'broadlink_media_codes/sony_str_dn1040.ini'
-#    ping_host: 192.168.1.62
-    #retain: true
-
 ffmpeg:
-
-input_boolean:
-  sussa_home:
-    name: sussa home
-    initial: on
-    icon: mdi:human-female
-  erik_home:
-    name: erik home
-    initial: on
-    icon: mdi:human-male
-  switch_ac_kitchen:
-    name: AC kitchen
-  switch_ac_livingroom:
-    name: AC living room
-  switch_tv:
-    name: TV
-  mail:
-    name: mail
-    initial: off
-    icon: mdi:mailbox
-  guestmode:
-    name: Guest Mode
-    initial: off
-    icon: mdi:account-plus
-
 
 remember_the_milk:
   - name: naesstrom
