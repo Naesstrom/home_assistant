@@ -1,8 +1,0 @@
-- platform: mqtt
-  state_topic: '/SMHI/warning/'
-  name: SMHI Warning
-  value_template: "{{ value_json['description'] }}"
-
-- platform: mqtt
-  state_topic: '/SMHI/warning/'
-  name: SMHI Warning 2
