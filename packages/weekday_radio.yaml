@@ -4,7 +4,7 @@ automation:
     # Should start playing at 09:00 on weekends.
     trigger:
       platform: time
-      at: '05:50:00'
+      at: '10:50:00'
     # But only if it's not a workday and either of us is home
     condition:
       condition: and
