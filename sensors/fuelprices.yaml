@@ -54,3 +54,8 @@
     select: 'tbody tr:nth-of-type(1) td:nth-of-type(2)'
 #    value_template: '{{ value.split("kr")[1] }}'
     scan_interval: 3600
+
+  - platform: rest
+    name: "Ingo Vaxjo"
+    resource: https://henrikhjelm.se/api/
+    value_template: '{{ value_json.kronobergslan_Ingo_VaxjoSoderleden_2__95 }}'
