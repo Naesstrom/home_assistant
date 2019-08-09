@@ -1,0 +1,69 @@
+sensor:
+  - platform: rest
+    resource: https://opendata-download-warnings.smhi.se/api/version/2/alerts.json
+    name: "SMHI Warning - severity"
+    value_template: >-
+      {% set areaDesc = '020' %}
+      {% set alert = value_json['alert'] | selectattr('info.area.areaDesc','eq',areaDesc) | list | first %}
+      {{ alert.info.severity }}
+
+  - platform: rest
+    resource: https://opendata-download-warnings.smhi.se/api/version/2/alerts.json
+    name: "SMHI Warning - urgency"
+    value_template: >-
+      {% set areaDesc = '020' %}
+      {% set alert = value_json['alert'] | selectattr('info.area.areaDesc','eq',areaDesc) | list | first %}
+      {{ alert.info.urgency }}
+
+  - platform: rest
+    resource: https://opendata-download-warnings.smhi.se/api/version/2/alerts.json
+    name: "SMHI Warning - certainty"
+    value_template: >-
+      {% set areaDesc = '020' %}
+      {% set alert = value_json['alert'] | selectattr('info.area.areaDesc','eq',areaDesc) | list | first %}
+      {{ alert.info.certainty }}
+
+  - platform: rest
+    resource: https://opendata-download-warnings.smhi.se/api/version/2/alerts.json
+    name: "SMHI Warning - type"
+    value_template: >-
+      {% set areaDesc = '020' %}
+      {% set alert = value_json['alert'] | selectattr('info.area.areaDesc','eq',areaDesc) | list | first %}
+      {{ alert.info.event }}
+
+  - platform: rest
+    resource: https://opendata-download-warnings.smhi.se/api/version/2/alerts.json
+    name: "SMHI Warning - location"
+    value_template: >-
+      {% set areaDesc = '020' %}
+      {% set alert = value_json['alert'] | selectattr('info.area.areaDesc','eq',areaDesc) | list | first %}
+      {{ alert.info.headline }}
+
+  - platform: rest
+    resource: https://opendata-download-warnings.smhi.se/api/version/2/alerts.json
+    name: "SMHI Warning - event"
+    value_template: >-
+      {% set areaDesc = '020' %}
+      {% set alert = value_json['alert'] | selectattr('info.area.areaDesc','eq',areaDesc) | list | first %}
+      {{ alert.info.eventCode[1].value }}
+
+  - platform: rest
+    resource: https://opendata-download-warnings.smhi.se/api/version/2/alerts.json
+    name: "SMHI Warning - attributes"
+    value_template: >-
+      {% set areaDesc = '020' %}
+      {% set alert = value_json['alert'] | selectattr('info.area.areaDesc','eq',areaDesc) | list | first %}
+      {{ alert.info }}
+    json_attributes:
+      - urgency
+      - severity
+      - certainty
+      - eventCode[1].value
+
+  - platform: rest
+    resource: https://opendata-download-warnings.smhi.se/api/version/2/alerts.json
+    name: "SMHI Warning - test igen eventCode"
+    value_template: >-
+      {% set areaDesc = '020' %}
+      {% set alert = value_json['alert'] | selectattr('info.area.areaDesc','eq',areaDesc) | list | first %}
+      {{ alert.info.eventCode }}
