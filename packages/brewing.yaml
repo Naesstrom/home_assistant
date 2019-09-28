@@ -64,6 +64,20 @@ sensor:
     state_topic: "/brewing/plato"
     qos: 0
 
+  - platform: template
+    sensors:
+      brewing_state_text:
+        friendly_name: 'Brewing: State text'
+        value_template: >-
+          {%if states.sensor.brewing_state.state | int==0 %}Ingen nederbörd
+          {% elif states.sensor.brewing_state.state | int==1 %}Paused
+          {% elif states.sensor.brewing_state.state | int==2 %}Something
+          {% elif states.sensor.brewing_state.state | int==3 %}Heating
+          {% elif states.sensor.brewing_state.state | int==4 %}Cooling
+          {% elif states.sensor.brewing_state.state | int==5 %}Something else
+          {% elif states.sensor.brewing_state.state | int==6 %}Off
+          {%- endif %}
+
 
 #----------- CUSTOMIZE -----------#
 # Just some small polishing moves!
@@ -72,15 +86,15 @@ homeassistant:
     sensor.brewing_state:
       templates:
         icon: >
-          if (state === '3') return 'mdi:fire';
-          if (state === '4') return 'mdi:snowflake';
-          if (state === 'auto') return 'mdi:autorenew';
-          if (state === '1') return 'mdi:sleep';
-          if (state === '6') return 'mdi:sleep';
+          if (state == '3') return 'mdi:fire';
+          if (state == '4') return 'mdi:snowflake';
+          if (state == 'auto') return 'mdi:autorenew';
+          if (state == '1') return 'mdi:sleep';
+          if (state == '6') return 'mdi:sleep';
           return 'mdi:power-off';
         icon_color: >
-          if (state === '3') return 'red';
-          if (state === '4') return 'blue';
-          if (state === 'auto') return 'green';
-          if (state === '1') return 'black';
-          if (state === '6') return 'mdi:sleep';
+          if (state == '3') return 'red';
+          if (state == '4') return 'blue';
+          if (state == 'auto') return 'green';
+          if (state == '1') return 'black';
+          if (state == '6') return 'mdi:sleep';
