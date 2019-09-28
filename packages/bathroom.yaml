@@ -1,0 +1,61 @@
+light:
+  - platform: group
+    name: Bathroom Lights
+    entities:
+      - light.bath1
+      - light.bath2
+      - light.bathroom
+
+automation:
+### Turn on light when movement is detected
+# Between 22:00-07:00 lights will be dimmed
+- alias: bathroom light on
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bathroom_motion
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.bathroom_lights
+        state: 'off'
+  action:
+    - service: light.turn_on
+      data_template:
+        entity_id: light.bathroom_lights
+        brightness: >
+          {%- if now().strftime('%H')| int >= 23 %}
+            25
+          {%- elif now().strftime('%H')| int < 6 %}
+            25
+          {%- else %}
+            255
+          {%- endif %}
+    - service: media_player.play_media
+      entity_id: media_player.googlehome4557
+      data:
+        media_content_id: http://edge-bauersefm-06-gos2.sharp-stream.com/mixmegapol_instream_se_mp3
+        media_content_type: music
+
+### Turn off lights 10 minutes after last movement.
+- alias: bathroom light off 10min
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bathroom_motion
+    to: 'off'
+    for:
+      minutes: 10
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.bathroom_lights
+        state: 'on'
+  action:
+    - service: light.turn_off
+      entity_id: light.bathroom_lights
+    - service: media_player.media_stop
+      entity_id: media_player.googlehome4557
