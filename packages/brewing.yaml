@@ -1,0 +1,86 @@
+sensor:
+  - platform: mqtt
+    name: "Brewing: Fridge temp"
+    state_topic: "/brewing/fridgeTemp"
+    qos: 0
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Brewing: Fridge set temp"
+    state_topic: "/brewing/fridgeSet"
+    qos: 0
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Brewing: Beer temp"
+    state_topic: "/brewing/beerTemp"
+    qos: 0
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Brewing: Set beer temp"
+    state_topic: "/brewing/beerSet"
+    qos: 0
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Brewing: state"
+    state_topic: "/brewing/state"
+    qos: 0
+
+
+  - platform: mqtt
+    name: "Brewing: mode"
+    state_topic: "/brewing/mode"
+    qos: 0
+
+### iSpindel
+  - platform: mqtt
+    name: "Brewing: iSpindel Voltage"
+    state_topic: "/brewing/voltage"
+    qos: 0
+    unit_of_measurement: "V"
+
+  - platform: mqtt
+    name: "Brewing: iSpindel Temp"
+    state_topic: "/brewing/auxTemp"
+    qos: 0
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Brewing: iSpindel tilt"
+    state_topic: "/brewing/tilt"
+    qos: 0
+    unit_of_measurement: "°"
+
+  - platform: mqtt
+    name: "Brewing: iSpindel Gravity"
+    state_topic: "/brewing/gravity"
+    qos: 0
+    unit_of_measurement: "SG"
+
+  - platform: mqtt
+    name: "Brewing: iSpindel Plato"
+    state_topic: "/brewing/plato"
+    qos: 0
+
+
+#----------- CUSTOMIZE -----------#
+# Just some small polishing moves!
+homeassistant:
+  customize:
+    sensor.brewing_state:
+      templates:
+        icon: >
+          if (state === '3') return 'mdi:fire';
+          if (state === '4') return 'mdi:snowflake';
+          if (state === 'auto') return 'mdi:autorenew';
+          if (state === '1') return 'mdi:sleep';
+          if (state === '6') return 'mdi:sleep';
+          return 'mdi:power-off';
+        icon_color: >
+          if (state === '3') return 'red';
+          if (state === '4') return 'blue';
+          if (state === 'auto') return 'green';
+          if (state === '1') return 'black';
+          if (state === '6') return 'mdi:sleep';
