@@ -18,7 +18,7 @@
             {{states.sensor.krisinformation_vaxjo.attributes.messages[0].Headline}} - {{states.sensor.krisinformation_vaxjo.attributes.messages[0].Message}} {{states.sensor.krisinformation_vaxjo.attributes.messages[0].Web}}
         data:
           target: 476413377623752704
-      - service: tts.google_say
+      - service: tts.google_translate_say
         entity_id: media_player.google_home_group
         data_template:
           message: >
@@ -82,7 +82,7 @@
             {{states.sensor.krisinformation_ringvattnet.attributes.messages[0].Headline}} - {{states.sensor.krisinformation_ringvattnet.attributes.messages[0].Message}} {{states.sensor.krisinformation_ringvattnet.attributes.messages[0].Web}}
         data:
           target: 476413377623752704
-      - service: tts.google_say
+      - service: tts.google_translate_say
         entity_id: media_player.google_home_group
         data_template:
           message: >

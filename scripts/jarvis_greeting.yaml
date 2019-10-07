@@ -1,7 +1,7 @@
 javis_greeting:
   alias: javis greeting
   sequence:
-    - service: tts.google_say
+    - service: tts.google_translate_say
       data_template:
         entity_id: media_player.koket
         message: >

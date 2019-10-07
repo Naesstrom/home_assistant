@@ -64,7 +64,7 @@ automation:
       condition: template
       value_template: '{{ states.proximity.home_sussa.attributes.dir_of_travel == "towards" }}'
     action:
-      - service: tts.google_say
+      - service: tts.google_translate_say
         entity_id: media_player.google_home_group
         data:
           message: "Susanne är hemma om cirka 5 minuter"
@@ -80,7 +80,7 @@ automation:
       condition: template
       value_template: '{{ states.proximity.home_erik.attributes.dir_of_travel == "towards" }}'
     action:
-      - service: tts.google_say
+      - service: tts.google_translate_say
         entity_id: media_player.google_home_group
         data:
           message: "Erik är hemma om cirka 5 minuter"

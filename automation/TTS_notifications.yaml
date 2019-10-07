@@ -5,7 +5,7 @@
     platform: state
     to: 'Just Arrived'
   action:
-    service: tts.google_say
+    service: tts.google_translate_say
     entity_id: media_player.google_home_group
     data:
       message: Erik kom just hem!
@@ -18,7 +18,7 @@
     platform: state
     to: 'Just Arrived'
   action:
-    service: tts.google_say
+    service: tts.google_translate_say
     entity_id: media_player.google_home_group
     data:
       message: The queen just arrived!
@@ -32,7 +32,7 @@
     platform: state
     to: 'on'
   action:
-    service: tts.google_say
+    service: tts.google_translate_say
     entity_id: media_player.google_home_group
     data:
       message: Något gick fel med din 3d utskrift.
@@ -50,7 +50,7 @@
       before: '15:00'
       condition: time
   action:
-    service: tts.google_say
+    service: tts.google_translate_say
     entity_id: media_player.google_home_group
     data_template:
       message: "The mail just arrived."
