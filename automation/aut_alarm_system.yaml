@@ -1,4 +1,5 @@
 - alias: 'Trigger alarm while armed home'
+  id: dalkfjh0293y52pu3ht213d
   initial_state: true
   trigger:
     - platform: state
@@ -20,6 +21,7 @@
 
 ##Triggered while armed away
 - alias: 'Trigger alarm while armed away'
+  id: alkfjnlskdjngldisuhfgp2985y4uf
   initial_state: true
   trigger:
     - platform: state
@@ -54,6 +56,7 @@
 
 #### Send Notification ####
 - alias: 'Send notification when alarm triggered'
+  id: p908tugjpvpu9YTPOGIJ
   initial_state: true
   trigger:
     - platform: state
@@ -65,25 +68,25 @@
         message: "Alarm has been triggered and police have been contacted."
         target: 476413377623752704
     ### Bedroom Google Mini ###
-    - service: tts.google_say
+    - service: tts.google_translate_say
       entity_id: media_player.googlehome0719
       data_template:
         message: "Alarm has been triggered and police have been contacted."
         cache: false
     ### Office Google Mini ###
-    - service: tts.google_say
+    - service: tts.google_translate_say
       entity_id: media_player.googlehome4544
       data_template:
         message: "Alarm has been triggered and police have been contacted."
         cache: false
     ### Office Google Mini ###
-    - service: tts.google_say
+    - service: tts.google_translate_say
       entity_id: media_player.kitchen
       data_template:
         message: "Alarm has been triggered and police have been contacted."
         cache: false
     ### Office Google Mini ###
-    - service: tts.google_say
+    - service: tts.google_translate_say
       entity_id: media_player.livingroom
       data_template:
         message: "Alarm has been triggered and police have been contacted."
