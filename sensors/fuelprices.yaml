@@ -56,6 +56,8 @@
     scan_interval: 3600
 
   - platform: rest
+    resource: https://henrikhjelm.se/api/getdata.php?lan=kronobergs-lan
     name: "Ingo Vaxjo"
-    resource: https://henrikhjelm.se/api/
-    value_template: '{{ value_json.kronobergslan_Ingo_VaxjoSoderleden_2__95 }}'
+    value_template: '{{ value_json.kronobergslan_Ingo_VaxjoSoderleden_2__95 | float }}'
+    unit_of_measurement: 'kr'
+    scan_interval: 1800
