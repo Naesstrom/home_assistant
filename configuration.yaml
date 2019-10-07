@@ -85,6 +85,7 @@ hacs:
   appdaemon: true
   python_script: true
   theme: true
+#  options: true
 
 # Checks for available updates
 updater:
