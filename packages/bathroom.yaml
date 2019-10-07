@@ -4,7 +4,6 @@ light:
     entities:
       - light.bath1
       - light.bath2
-      - light.bathroom
 
 automation:
 ### Turn on light when movement is detected

@@ -1,8 +1,8 @@
   - name: Livingroom off
     entities:
-        light.tradfri_transformer_10w:
+        light.window_lights:
             state: off
             transition: 3
-        light.tradfri_bulb_e14_ws_opal_400lm_2:
+        light.wallight_livingroom:
             state: off
             transition: 3

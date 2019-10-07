@@ -1,6 +1,9 @@
   - name: Livingroom dim
     entities:
-        light.livingroom_ambient_lights:
+        light.window_lights:
             state: on
-            transition: 2
+            transition: 3
             brightness_pct: 10
+        light.wallight_livingroom:
+            state: off
+            transition: 3

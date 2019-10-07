@@ -23,14 +23,6 @@ homeassistant:
       icon: mdi:silverware-fork-knife
 
 sensor:
-  - platform: rest
-    resource: https://spreadsheets.google.com/feeds/list/1cEHjlTG8j4QpMZU6bAmqlf11e3vj7bh9hL5cNgHPoU4/default/public/values?alt=json
-    name: "Matsedel"
-#    value_template: '{{ value_json.feed }}'
-# nedan ger mig {'type': 'text', '$t': '_cokwr: Köttbullar och mos/broccoli + gräddsås'}
-    value_template: '{{ value_json.feed.entry[2].content }}'
-
-
   - platform: mqtt
     name: "Matsedel: Måndag"
     state_topic: "/matsedel/monday"
@@ -38,6 +30,7 @@ sensor:
   - platform: mqtt
     name: "Matsedel: Tisdag"
     state_topic: "/matsedel/tuesday"
+
   - platform: mqtt
     name: "Matsedel: Onsdag"
     state_topic: "/matsedel/wednesday"
@@ -57,3 +50,8 @@ sensor:
   - platform: mqtt
     name: "Matsedel: Söndag"
     state_topic: "/matsedel/sunday"
+
+#  - platform: rest
+#    resource: https://spreadsheets.google.com/feeds/list/1cEHjlTG8j4QpMZU6bAmqlf11e3vj7bh9hL5cNgHPoU4/default/public/values?alt=json
+#    name: "Matsedel"
+#    value_template: '{{ value_json.feed.entry[2].content }}'

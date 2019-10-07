@@ -11,7 +11,7 @@ appdaemon:
       ha_url: http://hassio/homeassistant
       cert_path: /ssl/fullchain.pem
       cert_verify: true
-      token: a51680e873a563c175a04220d6e17a87758f847cb034b147134f0af2deb0cf0685e51144338c104e978ac80300fca1b2d8f1b6479ba2fb0f
+      token: 28cfc20892573c11509b7e871dfa375a60f733b2df16edd85b9ec1259a86a86e738fb853fe2ad5a02e8fa2bda260f1ee163291ab8ce202f4
 hadashboard:
   dash_url: http://127.0.0.1:5050
   dash_dir: /config/appdaemon/dashboards

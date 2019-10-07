@@ -1,5 +1,6 @@
 sensor:
   - platform: swedish_calendar
+#    special_themes_dir: /config/custom_components/swedish_calendar
 
 automation:
 - alias: 'Send push on important namnsdag'
