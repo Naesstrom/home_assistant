@@ -1,0 +1,25 @@
+beerbolaget:
+  api_key: !secret systembolaget
+  image_url: "https://www.systembolaget.se/api/productsearch/search/sok-dryck"
+  store: "Samarkand"
+  untappd_client_id: !secret untappd_ID
+  untappd_secret: !secret untappd_Secret
+  untappd_token: !secret untappd_Token
+
+automation:
+# Beerbolaget release notification
+- alias: Beerbolaget Release
+  initial_state: on
+  trigger:
+    platform: state
+    entity_id: sensor.beerbolaget
+    from: 'False'
+    to: 'True'
+  action:
+    service: notify.discord_webhook
+    data:
+      title: "Beerbolaget"
+      message: "Nya Små partier: {{ states.sensor.beerbolaget.attributes.release_date }}"
+      data:
+        push:
+          badge: 0

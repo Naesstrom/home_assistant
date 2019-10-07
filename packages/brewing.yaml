@@ -69,7 +69,7 @@ sensor:
       brewing_state_text:
         friendly_name: 'Brewing: State text'
         value_template: >-
-          {%if states.sensor.brewing_state.state | int==0 %}Ingen nederbörd
+          {% if states.sensor.brewing_state.state | int==0 %}Idling
           {% elif states.sensor.brewing_state.state | int==1 %}Paused
           {% elif states.sensor.brewing_state.state | int==2 %}Something
           {% elif states.sensor.brewing_state.state | int==3 %}Heating
@@ -77,7 +77,14 @@ sensor:
           {% elif states.sensor.brewing_state.state | int==5 %}Something else
           {% elif states.sensor.brewing_state.state | int==6 %}Off
           {%- endif %}
-
+        icon_template: >-
+          {% if states.sensor.brewing_state.state | int==1 %}mdi:sleep
+          {% elif states.sensor.brewing_state.state | int==2 %}mdi:lock
+          {% elif states.sensor.brewing_state.state | int==3 %}mdi:fire
+          {% elif states.sensor.brewing_state.state | int==4 %}mdi:snowflake
+          {% elif states.sensor.brewing_state.state | int==5 %}mdi:lock
+          {% elif states.sensor.brewing_state.state | int==6 %}mdi:sleep
+          {%- endif %}
 
 #----------- CUSTOMIZE -----------#
 # Just some small polishing moves!
@@ -87,14 +94,14 @@ homeassistant:
       templates:
         icon: >
           if (state == '3') return 'mdi:fire';
-          if (state == '4') return 'mdi:snowflake';
-          if (state == 'auto') return 'mdi:autorenew';
-          if (state == '1') return 'mdi:sleep';
-          if (state == '6') return 'mdi:sleep';
+          elif (state == '4') return 'mdi:snowflake';
+          elif (state == 'auto') return 'mdi:autorenew';
+          elif (state == '1') return 'mdi:sleep';
+          elif (state == '6') return 'mdi:sleep';
           return 'mdi:power-off';
         icon_color: >
           if (state == '3') return 'red';
-          if (state == '4') return 'blue';
-          if (state == 'auto') return 'green';
-          if (state == '1') return 'black';
-          if (state == '6') return 'mdi:sleep';
+          elif (state == '4') return 'blue';
+          elif (state == 'auto') return 'green';
+          elif (state == '1') return 'black';
+          elif (state == '6') return 'mdi:sleep';
