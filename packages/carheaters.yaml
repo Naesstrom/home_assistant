@@ -157,3 +157,65 @@ automation:
         entity_id:
           - switch.carheater_erik_sonoff
           - switch.carheater_sussa_sonoff
+
+  - alias: 'Check Sussas heater'
+    trigger:
+      platform: time
+      at: "20:30:00"
+    condition:
+      condition: state
+      entity_id: binary_sensor.arbetsdag_imorgon
+      state: 'on'    
+    action:
+      - service: switch.turn_on
+        entity_id: switch.carheater_sussa_sonoff
+      - delay: "00:01:00"
+      - condition: template
+        value_template: "{{ (states('sensor.sussas_carheater_1_power') | int) == 0 }}"
+      - service: notify.discord_webhook
+        data:
+          message: Sladden till Sussas motorvärmare är inte ansluten
+          target: 476413377623752704
+      - service: tts.google_translate_say
+        entity_id: media_player.google_home_group
+        data:
+          message: Sussas motorvärmare är inte ansluten!
+          language: 'sv'
+      - service: switch.turn_off
+        entity_id: switch.carheater_sussa_sonoff
+
+  - alias: 'Check Eriks heater'
+    trigger:
+      platform: time
+      at: "20:31:00"
+    condition:
+      condition: state
+      entity_id: binary_sensor.arbetsdag_imorgon
+      state: 'on'    
+    action:
+      - service: switch.turn_on
+        entity_id: switch.carheater_erik_sonoff
+      - delay: "00:01:00"
+      - condition: template
+        value_template: "{{ (states('sensor.eriks_carheater_2_power') | int) == 0 }}"
+      - service: notify.discord_webhook
+        data:
+          message: Sladden till Eriks motorvärmare är inte ansluten
+          target: 476413377623752704
+      - service: tts.google_translate_say
+        entity_id: media_player.google_home_group
+        data:
+          message: Eriks motorvärmare är inte ansluten!
+          language: 'sv'
+      - service: switch.turn_off
+        entity_id: switch.carheater_erik_sonoff
+
+  - alias: 'Turn off heaters after checking'
+    trigger:
+      platform: time
+      at: "20:35:00"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.carheater_sussa_sonoff
+      - service: switch.turn_off
+        entity_id: switch.carheater_erik_sonoff
