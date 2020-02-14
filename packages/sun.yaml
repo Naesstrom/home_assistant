@@ -1,0 +1,25 @@
+sensor:
+  - platform: template
+    sensors:
+      nextsunrise:
+        entity_id: sun.sun
+        friendly_name: 'Next Sunrise'
+        value_template: >
+          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom(' %R ') }}
+        icon_template: mdi:weather-sunset-up
+      nextsunset:
+        entity_id: sun.sun
+        friendly_name: 'Next Sunset'
+        value_template: >
+          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom(' %R') }}
+        icon_template: mdi:weather-sunset-down
+
+#Lovelace example - Vertical stack
+#      - type: vertical-stack
+#        cards:
+#          - type: entities
+#            title: Season, Sun & Moon Phase
+#            show_header_toggle: false
+#            entities:
+#              - sensor.nextsunrise
+#              - sensor.nextsunset
