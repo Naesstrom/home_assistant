@@ -1,3 +1,38 @@
+input_slider:
+  beer_temp:
+    name: Beer temp
+    initial: 18
+    min: 2
+    max: 40
+    step: 1
+
+  fridge_temp:
+    name: Fridge temp
+    initial: 18
+    min: 2
+    max: 40
+    step: 1
+
+automation:    
+  - alias: Set beer temp 
+    trigger:
+      platform: state
+      entity_id: input_slider.beer_temp
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "/brewing/beerSet/"
+          payload: '{{ states.input_slider.beer_temp.state | int }}'
+  - alias: Set fridge temp 
+    trigger:
+      platform: state
+      entity_id: input_slider.fridge_temp
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "/brewing/fridgeSet/"
+          payload: '{{ states.input_slider.fridge_temp.state | int }}'
+
 sensor:
   - platform: mqtt
     name: "Brewing: Fridge temp"
