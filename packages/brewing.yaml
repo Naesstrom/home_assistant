@@ -24,7 +24,7 @@ automation:
       - service: mqtt.publish
         data_template:
           topic: "/brewing/beerSet/"
-          payload: '{{ states.input_slider.beer_temp.state | int }}'
+          payload: '{{ states.input_number.beer_temp.state | int }}'
   - alias: Set fridge temp 
     trigger:
       platform: state
@@ -33,7 +33,7 @@ automation:
       - service: mqtt.publish
         data_template:
           topic: "/brewing/fridgeSet/"
-          payload: '{{ states.input_slider.fridge_temp.state | int }}'
+          payload: '{{ states.input_number.fridge_temp.state | int }}'
 
 sensor:
   - platform: mqtt
@@ -107,12 +107,15 @@ sensor:
         friendly_name: 'Brewing: State text'
         value_template: >-
           {% if states.sensor.brewing_state.state | int==0 %}Idling
-          {% elif states.sensor.brewing_state.state | int==1 %}Paused
-          {% elif states.sensor.brewing_state.state | int==2 %}Something
+          {% elif states.sensor.brewing_state.state | int==1 %}Off
+          {% elif states.sensor.brewing_state.state | int==2 %}Door Open
           {% elif states.sensor.brewing_state.state | int==3 %}Heating
           {% elif states.sensor.brewing_state.state | int==4 %}Cooling
-          {% elif states.sensor.brewing_state.state | int==5 %}Something else
-          {% elif states.sensor.brewing_state.state | int==6 %}Off
+          {% elif states.sensor.brewing_state.state | int==5 %}Waiting to Cool
+          {% elif states.sensor.brewing_state.state | int==6 %}Waiting to Heat
+          {% elif states.sensor.brewing_state.state | int==7 %}Waiting for Peak detect
+          {% elif states.sensor.brewing_state.state | int==8 %}Cooling min. time
+          {% elif states.sensor.brewing_state.state | int==9 %}Heating min. time
           {%- endif %}
         icon_template: >-
           {% if states.sensor.brewing_state.state | int==1 %}mdi:sleep
