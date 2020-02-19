@@ -1,10 +1,11 @@
-input_slider:
+input_number:
   beer_temp:
     name: Beer temp
     initial: 18
     min: 2
     max: 40
     step: 1
+    unit_of_measurement: "ºC"
 
   fridge_temp:
     name: Fridge temp
@@ -12,6 +13,7 @@ input_slider:
     min: 2
     max: 40
     step: 1
+    unit_of_measurement: "ºC"
 
 automation:    
   - alias: Set beer temp 
