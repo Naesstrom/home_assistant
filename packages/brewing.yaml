@@ -19,7 +19,7 @@ automation:
   - alias: Set beer temp 
     trigger:
       platform: state
-      entity_id: input_slider.beer_temp
+      entity_id: input_number.beer_temp
     action:
       - service: mqtt.publish
         data_template:
@@ -28,11 +28,11 @@ automation:
   - alias: Set fridge temp 
     trigger:
       platform: state
-      entity_id: input_slider.fridge_temp
+      entity_id: input_number.fridge_temp
     action:
       - service: mqtt.publish
         data_template:
-          topic: "/brewing/fridgeSet/"
+          topic: "/brewing/fridgeSet"
           payload: '{{ states.input_number.fridge_temp.state | int }}'
 
 sensor:
