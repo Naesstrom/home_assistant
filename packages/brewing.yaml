@@ -1,3 +1,16 @@
+
+#Select fridge mode to work in
+input_select:
+  fridge_mode:
+    name: Fridge mode
+    options:
+      - Off
+      - Fridge constant
+      - Beer constant
+      - Beer profile
+    icon: mdi:beer
+
+# Either select a set beer temp or a set fridge temp.
 input_number:
   beer_temp:
     name: Beer temp
@@ -6,7 +19,6 @@ input_number:
     max: 40
     step: 1
     unit_of_measurement: "ºC"
-
   fridge_temp:
     name: Fridge temp
     initial: 18
@@ -15,7 +27,9 @@ input_number:
     step: 1
     unit_of_measurement: "ºC"
 
-automation:    
+#And now some automations
+automation:
+#The first to sets temp based on the sliders above when used.    
   - alias: Set beer temp 
     trigger:
       platform: state
@@ -34,7 +48,29 @@ automation:
         data_template:
           topic: "/brewing/fridgeSet"
           payload: '{{ states.input_number.fridge_temp.state | int }}'
+#These set the selected mode
+  - alias: Set fridge mode
+    trigger:
+      - platform: state
+        entity_id: input_select.fridge_mode
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: "/brewing/modeSet"
+        payload_template: >-
+          {% if states('input_select.fridge_mode', 'off') %}
+            'o'      
+          {% elif states('input_select.fridge_mode', 'Fridge constant') %}
+            'f' 
+          {% elif states('input_select.fridge_mode', 'Beer constant') %}
+            'b' 
+          {% elif states('input_select.fridge_mode', 'Beer profile') %}
+            'p' 
+          {% else %}
+            'b'
+          {% endif %}
 
+#Sensors from brewpiless
 sensor:
   - platform: mqtt
     name: "Brewing: Fridge temp"
