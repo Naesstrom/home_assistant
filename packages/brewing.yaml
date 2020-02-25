@@ -1,13 +1,23 @@
+#### BrewPi(Less) support in hass ####
+# In BPL setup your mqtt server in   #
+# Logs and take make sure you write  #
+# down the different topics.         #
+# Add your own topics to this package#
+# from the settings and your done    #
+# Big thanks to Pelle Windestam who  #
+# helped with parts of the code      #
 
+
+#Input selects:
 #Select fridge mode to work in
 input_select:
   fridge_mode:
     name: Fridge mode
     options:
-      - Off
-      - Fridge constant
-      - Beer constant
-      - Beer profile
+      - 'Off'
+      - 'Fridge constant'
+      - 'Beer constant'
+      - 'Beer profile'
     icon: mdi:beer
 
 # Either select a set beer temp or a set fridge temp.
@@ -29,7 +39,39 @@ input_number:
 
 #And now some automations
 automation:
-#The first to sets temp based on the sliders above when used.    
+#These set the selected mode
+  - alias: Adjust fridge mode
+    trigger:
+      platform: state
+      entity_id: input_select.fridge_mode
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: '/brewing/modeSet'
+        retain: true
+        payload_template: >-
+          {% if states('input_select.fridge_mode') == "Off" %} o
+          {% elif states('input_select.fridge_mode') == "Fridge temperature" %} f
+          {% elif states('input_select.fridge_mode') == "Beer temperature" %} b
+          {% elif states('input_select.fridge_mode') == "Beer profile" %} p
+          {%- endif %} (edited) 
+
+  - alias: Update fridge mode
+    trigger:
+      platform: mqtt
+      topic: '/brewpi/mode'
+    action:
+      service: input_select.set_option
+      data_template:
+        entity_id: input_select.fridge_mode
+        option: >-
+          {% set mydict = {
+             'f': 'Fridge constant',
+             'b': 'Beer constant',
+             'p': 'Beer profile',
+             'o': 'Off' } %}
+          {{ mydict.get(trigger.payload, 'o') }}
+#These sets temp based on the sliders above when used.    
   - alias: Set beer temp 
     trigger:
       platform: state
@@ -48,136 +90,109 @@ automation:
         data_template:
           topic: "/brewing/fridgeSet"
           payload: '{{ states.input_number.fridge_temp.state | int }}'
-#These set the selected mode
-  - alias: Set fridge mode
-    trigger:
-      - platform: state
-        entity_id: input_select.fridge_mode
-    action:
-      service: mqtt.publish
-      data_template:
-        topic: "/brewing/modeSet"
-        payload_template: >-
-          {% if states('input_select.fridge_mode', 'off') %}
-            'o'      
-          {% elif states('input_select.fridge_mode', 'Fridge constant') %}
-            'f' 
-          {% elif states('input_select.fridge_mode', 'Beer constant') %}
-            'b' 
-          {% elif states('input_select.fridge_mode', 'Beer profile') %}
-            'p' 
-          {% else %}
-            'b'
-          {% endif %}
 
-#Sensors from brewpiless
+#Import sensors from brewpiless
 sensor:
   - platform: mqtt
-    name: "Brewing: Fridge temp"
+    name: "Fridge temp"
     state_topic: "/brewing/fridgeTemp"
     qos: 0
     unit_of_measurement: "°C"
 
   - platform: mqtt
-    name: "Brewing: Fridge set temp"
+    name: "Fridge set temp"
     state_topic: "/brewing/fridgeSet"
     qos: 0
     unit_of_measurement: "°C"
 
   - platform: mqtt
-    name: "Brewing: Beer temp"
+    name: "Beer temp"
     state_topic: "/brewing/beerTemp"
     qos: 0
     unit_of_measurement: "°C"
 
   - platform: mqtt
-    name: "Brewing: Set beer temp"
+    name: "Set beer temp"
     state_topic: "/brewing/beerSet"
     qos: 0
     unit_of_measurement: "°C"
 
   - platform: mqtt
-    name: "Brewing: state"
+    name: "BPL state"
     state_topic: "/brewing/state"
     qos: 0
-
+#    hidden: true
+    value_template: >-
+      {% if    value | int == 0 %} Idle
+      {% elif  value | int == 1 %} Off
+      {% elif  value | int == 2 %} Door open
+      {% elif  value | int == 3 %} Heating
+      {% elif  value | int == 4 %} Cooling 
+      {% elif  value | int == 5 %} Waiting to cool 
+      {% elif  value | int == 6 %} Waiting to heat
+      {% elif  value | int == 7 %} Waiting for peak detect
+      {% elif  value | int == 8 %} Cooling minimum time
+      {% elif  value | int == 9 %} Heating minimum time
+      {%- endif %}
 
   - platform: mqtt
-    name: "Brewing: mode"
+    name: "BPL mode"
     state_topic: "/brewing/mode"
     qos: 0
+    value_template: >-
+      {% if value == "o" %} Off
+      {% elif value == "f" %} Fridge Constant
+      {% elif value == "b" %} Beer Constant
+      {% elif value == "p" %} Beer profile
+      {%- endif %}
 
 ### iSpindel
   - platform: mqtt
-    name: "Brewing: iSpindel Voltage"
+    name: "iSpindel Voltage"
     state_topic: "/brewing/voltage"
     qos: 0
     unit_of_measurement: "V"
 
   - platform: mqtt
-    name: "Brewing: iSpindel Temp"
+    name: "iSpindel Temp"
     state_topic: "/brewing/auxTemp"
     qos: 0
     unit_of_measurement: "°C"
 
   - platform: mqtt
-    name: "Brewing: iSpindel tilt"
+    name: "iSpindel tilt"
     state_topic: "/brewing/tilt"
     qos: 0
     unit_of_measurement: "°"
 
   - platform: mqtt
-    name: "Brewing: iSpindel Gravity"
+    name: "iSpindel Gravity"
     state_topic: "/brewing/gravity"
     qos: 0
     unit_of_measurement: "SG"
+    value_template: '{{value | round(4) }}'
 
   - platform: mqtt
-    name: "Brewing: iSpindel Plato"
+    name: "iSpindel Plato"
     state_topic: "/brewing/plato"
     qos: 0
 
-  - platform: template
-    sensors:
-      brewing_state_text:
-        friendly_name: 'Brewing: State text'
-        value_template: >-
-          {% if states.sensor.brewing_state.state | int==0 %}Idling
-          {% elif states.sensor.brewing_state.state | int==1 %}Off
-          {% elif states.sensor.brewing_state.state | int==2 %}Door Open
-          {% elif states.sensor.brewing_state.state | int==3 %}Heating
-          {% elif states.sensor.brewing_state.state | int==4 %}Cooling
-          {% elif states.sensor.brewing_state.state | int==5 %}Waiting to Cool
-          {% elif states.sensor.brewing_state.state | int==6 %}Waiting to Heat
-          {% elif states.sensor.brewing_state.state | int==7 %}Waiting for Peak detect
-          {% elif states.sensor.brewing_state.state | int==8 %}Cooling min. time
-          {% elif states.sensor.brewing_state.state | int==9 %}Heating min. time
-          {%- endif %}
-        icon_template: >-
-          {% if states.sensor.brewing_state.state | int==1 %}mdi:sleep
-          {% elif states.sensor.brewing_state.state | int==2 %}mdi:lock
-          {% elif states.sensor.brewing_state.state | int==3 %}mdi:fire
-          {% elif states.sensor.brewing_state.state | int==4 %}mdi:snowflake
-          {% elif states.sensor.brewing_state.state | int==5 %}mdi:lock
-          {% elif states.sensor.brewing_state.state | int==6 %}mdi:sleep
-          {%- endif %}
+#Trying some templating.
 
-#----------- CUSTOMIZE -----------#
-# Just some small polishing moves!
-homeassistant:
-  customize:
-    sensor.brewing_state:
-      templates:
-        icon: >
-          if (state == '3') return 'mdi:fire';
-          elif (state == '4') return 'mdi:snowflake';
-          elif (state == 'auto') return 'mdi:autorenew';
-          elif (state == '1') return 'mdi:sleep';
-          elif (state == '6') return 'mdi:sleep';
-          return 'mdi:power-off';
-        icon_color: >
-          if (state == '3') return 'red';
-          elif (state == '4') return 'blue';
-          elif (state == 'auto') return 'green';
-          elif (state == '1') return 'black';
-          elif (state == '6') return 'mdi:sleep';
+#Change the above templates to human form
+#  - platform: template
+#    sensors:
+#      bpl_state:
+#        friendly_name: "BPL state"
+#        icon_template: >-
+#          {% if  states('sensor.bpl_state_hidden') == 0 %}mdi:sleep
+#          {% elif states('sensor.bpl_state_hidden') == 1 %}mdi:close-circle-outline
+#          {% elif states('sensor.bpl_state_hidden') == 2 %}mdi:door-open
+#          {% elif states('sensor.bpl_state_hidden') == 3 %}mdi:radiator
+#          {% elif states('sensor.bpl_state_hidden') == 4 %}mdi:snowflake
+#          {% elif states('sensor.bpl_state_hidden') == 5 %}mdi:timer-sand-empty
+#          {% elif states('sensor.bpl_state_hidden') == 6 %}mdi:timer-sand-empty
+#          {% elif states('sensor.bpl_state_hidden') == 7 %}mdi:pulse
+#          {% elif states('sensor.bpl_state_hidden') == 8 %}mdi:snowflake-alert
+#          {% elif states('sensor.bpl_state_hidden') == 9 %}mdi:radiator
+#          {%- endif %}
