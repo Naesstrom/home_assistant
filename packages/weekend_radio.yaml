@@ -1,6 +1,6 @@
 automation:
   - alias: play_weekend_radio
-    initial_state: 'on'
+    initial_state: 'off'
     # Should start playing at 09:00 on weekends.
     trigger:
       platform: time
