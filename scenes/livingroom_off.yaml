@@ -1,8 +1,0 @@
-  - name: Livingroom off
-    entities:
-        light.window_lights:
-            state: off
-            transition: 3
-        light.wallight_livingroom:
-            state: off
-            transition: 3

@@ -1,6 +1,7 @@
 sensor:
   - platform: smhialert
     district: '018'
+    language: 'sv'
 
 automation:
   - id: smhialert

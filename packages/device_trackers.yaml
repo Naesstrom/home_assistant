@@ -1,0 +1,7 @@
+device_tracker:
+  - platform: bluetooth_tracker
+    interval_seconds: 10
+
+  - platform: google_maps
+    username: !secret googlemaps_name
+#    password: !secret googlemaps_pass

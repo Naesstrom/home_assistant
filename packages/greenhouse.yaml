@@ -2,29 +2,48 @@
 
 ### great thread for inspiration: https://community.home-assistant.io/t/garden-irrigation/1950/190
 
-#homeassistant:
-#customize:
-#  -
-
 input_boolean:
   water_greenhouse:
     name: Watering Greenhouse
     initial: on
     icon: mdi:water-pump
 
-### Custom component
-
-#wb_irrigation:
-#  api_key: !secret openweathermap
-#  rain_factor: 120
-#  max_ev: 3750 
-#  min_ev: -1500.0
-#  name: "wb_irrigation"
-#  longitude: !secret longitude
-#  latitude: !secret latitude
-#  taps: 
-#    - name: greenhouse
-#    - name: raised_bed_1
+######################################################################
+##  Switches in the Greenhouse
+######################################################################
+switch:
+- platform: mqtt
+  name: "Waterbed 1"
+  state_topic: "/greenhouse/water_1/switch"
+  command_topic: "/greenhouse/gpio/0"
+  payload_on: "0"
+  payload_off: "1"
+  optimistic: true
+  qos: 0
+- platform: mqtt
+  name: "Waterbed 2"
+  state_topic: "/greenhouse/water_2/switch"
+  command_topic: "/greenhouse/gpio/14"
+  payload_on: "0"
+  payload_off: "1"
+  optimistic: true
+  qos: 0
+- platform: mqtt
+  name: "Waterbed 3"
+  state_topic: "/greenhouse/water_3/switch"
+  command_topic: "/greenhouse/gpio/12"
+  payload_on: "0"
+  payload_off: "1"
+  optimistic: true
+  qos: 0
+- platform: mqtt
+  name: "Waterbed 4"
+  state_topic: "/greenhouse/water_4/switch"
+  command_topic: "/greenhouse/gpio/13"
+  payload_on: "0"
+  payload_off: "1"
+  optimistic: true
+  qos: 0
 
 automation:
   - alias: Time to water beds
@@ -77,4 +96,3 @@ script:
      - alias: 'Input bool to off'
        service: state.turn_off
        entity_id: input_boolean.water_greenhouse
-
