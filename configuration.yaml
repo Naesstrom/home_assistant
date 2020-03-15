@@ -29,12 +29,12 @@ homeassistant:
 #    cover.*:
 #      custom_ui_state_card: state-card-custom-ui
 
-#customizer:
-#  custom_ui: local
-#  hide_attributes:
-#    - node_id
-#    - value_index
-#  columns: [350, 700, 1050, 1400, 1850, 2100]
+customizer:
+  custom_ui: hosted
+  hide_attributes:
+    - node_id
+    - value_index
+  columns: [350, 700, 1050, 1400, 1850, 2100]
 
 http:
 # Uncomment this to add a password (recommended!)
@@ -75,17 +75,9 @@ map:
 # Enables the frontend
 frontend:
   extra_html_url:
-    - /local/custom_ui/state-card-custom-ui.html
+    - https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/state-card-custom-ui.html
   extra_html_url_es5:
-    - /local/custom_ui/state-card-custom-ui-es5.html
-
-#Enables Community Addon Store
-hacs:
-  token: !secret my_github_access_token
-  appdaemon: true
-  python_script: true
-  theme: true
-#  options: true
+    - https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/state-card-custom-ui-es5.html
 
 # Checks for available updates
 updater:
@@ -96,7 +88,7 @@ discovery:
 conversation:
 
 # Enables support for tracking state changes over time.
-history:
+history: !include history.yaml
 logger: !include logger.yaml
 #recorder:
 recorder: !include recorder.yaml
@@ -133,8 +125,7 @@ google:
   client_id: !secret google_client_id
   client_secret: !secret google_client_secret
   
-tradfri:
-  host: 192.168.1.7
+
 
 rflink:
   port: /dev/serial/by-id/usb-Arduino__www.arduino.cc__Arduino_Mega_2560_55639313633351104170-if00
@@ -165,28 +156,7 @@ alarm_control_panel:
       pending_time: 60
       delay_time: 30
 
-device_tracker:
-  - platform: unifi
-    host: 192.168.1.23
-    username: !secret unifi_username
-    password: !secret unifi_password
-    verify_ssl: False
-#  - platform: nmap_tracker
-#    hosts: 192.168.1.1/24
-#    home_interval: 10
-#  - platform: owntracks_http
-#    max_gps_accuracy: 200
-#  - platform: bluetooth_le_tracker
-  - platform: bluetooth_tracker
-    interval_seconds: 10
-  - platform: google_maps
-    username: !secret googlemaps_name
-#    password: !secret googlemaps_pass
 
-life360:
-  accounts:
-    - username: !secret life360_username
-      password: !secret life360_password
 # don't think the folowing is used anymore...
 #  show_as_state: driving, moving, places
 #  driving_speed: 18
@@ -258,20 +228,6 @@ octoprint:
   bed: true
   number_of_tools: 1
 
-transmission:
-  host: 192.168.1.12
-#  username: !secret transmission_name
-#  password: !secret transmission_pass
-#  turtle_mode:
-  monitored_conditions:
-    - 'current_status'
-    - 'download_speed'
-    - 'upload_speed'
-    - 'active_torrents'
-    - 'paused_torrents'
-    - 'total_torrents'
-    - 'started_torrents'
-
 #### Merged folders (named) ####
 group: !include_dir_merge_named groups
 script: !include_dir_merge_named scripts
@@ -280,7 +236,7 @@ input_select: !include_dir_merge_named input_select
   #### Merged folders (Lists) ####
 notify: !include_dir_merge_list notifications
 automation: !include_dir_merge_list automation
-scene: !include_dir_merge_list scenes
+scene: !include scenes.yaml
 sensor: !include_dir_merge_list sensors
 switch: !include_dir_merge_list switch
 light: !include_dir_merge_list light

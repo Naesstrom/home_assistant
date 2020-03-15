@@ -1,0 +1,26 @@
+  include:
+    domains:
+      - media_player
+    entities:
+     - device_tracker.erik_presence
+     - device_tracker.sussa_presence
+     - device_tracker.erik_xz2
+     - device_tracker.galaxy_s9
+     - device_tracker.galaxy_s9_bt
+     - device_tracker.google_maps_110812454925350234140
+     - device_tracker.google_maps_114557479077035215629
+     - device_tracker.life360_erik_nasstrom
+     - device_tracker.life360_susanne_nasstrom
+     - light.kontoret
+     - light.spotlight_1
+     - sensor.attic_temperature
+     - sensor.bathroom_temperature
+     - sensor.bedroom_temperature_2
+     - sensor.kitchen_temperature_2
+     - sensor.livingroom_temperature
+     - sensor.office_temperature
+
+#  exclude:
+#    entities:
+#    domains:
+#     - device_tracker

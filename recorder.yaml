@@ -19,10 +19,22 @@ include:
     - automation.engine_heater_activate_sussa
     - automation.engine_heater_deactivate_erik
     - automation.engine_heater_deactivate_sussa
+    - light.kontoret
+    - device_tracker.erik_presence
+    - device_tracker.sussa_presence
+    - device_tracker.erik_xz2
+    - device_tracker.galaxy_s9
+    - device_tracker.galaxy_s9_bt
+    - device_tracker.google_maps_110812454925350234140
+    - device_tracker.google_maps_114557479077035215629
+    - device_tracker.life360_erik_nasstrom
+    - device_tracker.life360_susanne_nasstrom
 #  entities:
 #    - device_tracker.google_maps_110812454925350234140
 #    - device_tracker.google_maps_114557479077035215629
 exclude:
+  domains:
+   - device_tracker
   entities:
    - sensor.last_boot
    - sensor.date
@@ -32,3 +44,9 @@ exclude:
    - sensor.time_home
    - sensor.time_work
    - sensor.time_utc
+   - device_tracker.00_00_00_00_00_01
+#   - device_tracker.02_ff_60_03_aa_47
+#   - device_tracker.00_67_1f_43_d3_9a
+#   - device_tracker.02_ff_60_1f_7c_62
+#   - device_tracker.02_ff_60_46_b0_17
+#   - device_tracker.02_ff_60_5a_44_c5
