@@ -1,33 +1,34 @@
-############################################################
-#
-# Scenes
-#
-############################################################
+# scenes.yaml
 
-- name: Livingroom normal
+- id: nasdoiuhy18735y039trhu
+  name: Livingroom dim
   entities:
-    switch.vardagsrum_1: on
-    switch.vardagsrum_2: on
-    switch.vardagsrum3: on
-- name: Livingroom off
-  entities:
-    switch.vardagsrum_1: off
-    switch.vardagsrum_2: off
-    switch.vardagsrum3: off
-#- name: Normal_lys
-#  entities:
-#    light.Lys_stue:
-#      state: on
-#      brightness: 170
-#    light.Lys_TV:
-#      state: on
-#      brightness: 170
+    light.window_lights:
+      state: on
+#      transition: 3
+      brightness_pct: 10
+    light.wallight_livingroom:
+      state: off
+#      transition: 3
 
-#- name: Mye lys
-#  entities:
-#    light.Lys_stue:
-#      state: on
-#      brightness: 220
-#    light.Lys_TV:
-#      state: on
-#      brightness: 180
+- id: lasdkjlaosrpfdm      
+  name: Livingroom normal
+  entities:
+    light.window_lights:
+      state: on
+#      transition: 3
+      brightness_pct: 80
+    light.wallight_livingroom:
+      state: on
+#      transition: 3
+      brightness_pct: 30
+
+- id: mcxnvzkxcjvb
+  name: Livingroom off
+  entities:
+    light.window_lights:
+      state: off
+#      transition: 3
+    light.wallight_livingroom:
+      state: off
+#      transition: 3

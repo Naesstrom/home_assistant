@@ -2,9 +2,9 @@
     initial_state: true
     trigger:
       - platform: state
-        entity_id: media_player.rasplex
+        entity_id: media_player.nvidia_shield
         to: 'playing'
-        from: 'idle'
+        from: 'standby'
       - platform: state
         entity_id: media_player.livingroom_tv
         from: 'playing'
