@@ -1,5 +1,24 @@
 # example Json
-# {"temp":27,"target":27,"locked":false ,"air":false,"celsius":true,"heating" :false,"heater":true,"filter":true,"p ower":true,"time":"2020-09-25 16:15:58","clts":346537,"heattime":21 7034,"uptime":1049253,"airtime":62,"f iltertime":680695,"cost":184.0584,"au to":true,"dsp":" 27"}"
+# {
+#  "temp":27,
+#  "target":27,
+#  "locked":false ,
+#  "air":false,
+#  "celsius":true,
+#  "heating" :false,
+#  "heater":true,
+#  "filter":true,#
+#  "power":true,
+#  "time":"2020-09-25 16:15:58",
+#  "clts":346537,
+#  "heattime":21 7034,
+#  "uptime":1049253,
+#  "airtime":62,
+#  "filtertime":680695,
+#  "cost":184.0584,
+#  "auto":true,
+#  "dsp":" 27"
+# }
 
 sensor:
   - platform: mqtt
@@ -7,6 +26,12 @@ sensor:
     state_topic: "BW-1.27_MQTT/message"
     unit_of_measurement: 'ºC'
     value_template: "{{ value_json.temp }}"
+  - platform: mqtt
+    name: "Pool target Temp"
+    state_topic: "BW-1.27_MQTT/message"
+    unit_of_measurement: 'ºC'
+    value_template: "{{ value_json.target }}"
+
 
 binary_sensor:
   - platform: mqtt
@@ -15,3 +40,20 @@ binary_sensor:
     device_class: heat
     payload_on: "true"
     payload_off: "false"
+    value_template: "{{ value_json.heating }}"
+
+  - platform: mqtt
+    name: "Locked"
+    state_topic: "BW-1.27_MQTT/message"
+    device_class: lock
+    payload_on: "true"
+    payload_off: "false"
+    value_template: "{{ value_json.locked }}"
+
+  - platform: mqtt
+    name: "Bubbles"
+    state_topic: "BW-1.27_MQTT/message"
+    device_class: gas
+    payload_on: "true"
+    payload_off: "false"
+    value_template: "{{ value_json.air }}"
