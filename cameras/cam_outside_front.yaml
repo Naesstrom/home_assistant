@@ -1,0 +1,14 @@
+- platform: reolink_dev
+  host: 192.168.1.195
+  username: !secret reolink_user
+  password: !secret reolink_pass
+  # name: optional, default Reolink Camera)
+  name: frontdoor 
+  # #stream: main or sub (optional, default main)
+  stream: main
+  # protocol: rtmp or rtsp (optional, default rtmp)
+  protocol: rtmp
+  # channel: NVR camera channel (optional, default 0)
+  channel: 0
+  # scan_interval: 5 (optional, default 30s)
+  scan_interval: 5

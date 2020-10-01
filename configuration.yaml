@@ -85,9 +85,6 @@ tts:
     time_memory: 300
 #    base_url: !secret tts_base_url
 
-#Include Cameras
-camera: !include cameras.yaml
-
 python_script:
 
 #Added in 0.90
@@ -211,6 +208,8 @@ binary_sensor: !include_dir_merge_list binary_sensor
 #automation old: !include_dir_merge_list automation
 cover: !include_dir_merge_list covers
 lock: !include_dir_merge_list locks
+camera: !include_dir_merge_list cameras
+
 
 
 #media_player: moved to packages
