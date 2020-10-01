@@ -5,7 +5,7 @@
     entity_id: binary_sensor.kitchen_motion
     to: 'on'
   condition:
-    - after: '20:00'
+    - after: '22:00'
       before: 06:00
       condition: time
   action:
@@ -29,9 +29,9 @@
       - condition: state
         entity_id: light.kitchen_lights
         state: 'on'
-      - condition: time
-        after: '20:00'
-        before: 06:00
+#      - condition: time
+#        after: '20:00'
+#        before: 06:00
   action:
     service: light.turn_off
     entity_id: light.kitchen_lights

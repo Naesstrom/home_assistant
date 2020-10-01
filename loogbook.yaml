@@ -12,4 +12,3 @@ exclude:
     - media_player.rasplex
     - media_player.rasplex_2
     - media_player.sovrum
-    - sensor.yr_symbol    

@@ -10,6 +10,18 @@
       message: "Temperaturen i pumphuset är {{ states.sensor.pumphus_temperature.state }}ºC och utetemperaturen är {{ states.sensor.ute_temperature.state }}ºC"
       title: "Varning: Pumphuset"
 
+- alias: 'Pumphuset Varm'
+  initial_state: true
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.pumphus_temperature
+    above: 30
+  action:
+    service: notify.ringvattnet
+    data:
+      message: "Temperaturen i pumphuset är {{ states.sensor.pumphus_temperature.state }}ºC, Skynda dig att öppna!"
+      title: "Varning: Pumphuset"
+
 - alias: 'Frys.forrad'
   initial_state: true
   trigger:

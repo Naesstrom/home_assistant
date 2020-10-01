@@ -4,7 +4,8 @@ beerbolaget:
   store: "Samarkand"
   untappd_client_id: !secret untappd_ID
   untappd_secret: !secret untappd_Secret
-  untappd_token: !secret untappd_Token
+#  untappd_token: !secret untappd_Token
+  untappd_callback: !secret untappd_callback
 
 automation:
 # Beerbolaget release notification

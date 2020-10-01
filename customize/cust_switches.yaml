@@ -1,5 +1,0 @@
-switch.brevladan:
-  assumed_state: true
-  friendly_name: Brevlådan
-  icon: mdi:mailbox
-  sensor_class: 'opening'

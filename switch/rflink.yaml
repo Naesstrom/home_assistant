@@ -1,5 +1,4 @@
 - platform: rflink
-#  automatic_add: true
 
   device_defaults:
     fire_event: true

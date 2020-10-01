@@ -12,7 +12,7 @@ automation:
   initial_state: true
   trigger:
     platform: state
-    entity_id: binary_sensor.bathroom_motion
+    entity_id: binary_sensor.bathroom_motion_2
     to: 'on'
   condition:
     condition: and
@@ -38,7 +38,7 @@ automation:
   initial_state: true
   trigger:
     platform: state
-    entity_id: binary_sensor.bathroom_motion
+    entity_id: binary_sensor.bathroom_motion_2
     to: 'off'
     for:
       minutes: 10
@@ -52,22 +52,22 @@ automation:
     - service: light.turn_off
       entity_id: light.bathroom_lights
     - service: media_player.media_stop
-      entity_id: media_player.googlehome6057
+      entity_id: media_player.badrum
 
 ##Bathroom Music
 - alias: bathroom music on
   initial_state: true
   trigger:
     platform: state
-    entity_id: binary_sensor.bathroom_motion
+    entity_id: binary_sensor.bathroom_motion_2
     to: 'on'
   condition:
     condition: state
-    entity_id: media_player.googlehome6057
+    entity_id: media_player.badrum
     state: 'off'
   action:
     - service: media_player.play_media
-      entity_id: media_player.googlehome6057
+      entity_id: media_player.badrum
       data:
         media_content_id: http://edge-bauersefm-06-gos2.sharp-stream.com/mixmegapol_instream_se_mp3
         media_content_type: music

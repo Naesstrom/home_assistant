@@ -13,10 +13,6 @@ input_boolean:
     name: AC living room
   switch_tv:
     name: TV
-  mail:
-    name: mail
-    initial: off
-    icon: mdi:mailbox
   guestmode:
     name: Guest Mode
     initial: off

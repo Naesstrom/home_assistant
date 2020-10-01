@@ -1,4 +1,0 @@
-- platform: template
-  sensors:
-    mailbox:
-      value_template: "{% if is_state('input_boolean.mail', 'on') %}Mail{% else %}Empty{% endif %}"

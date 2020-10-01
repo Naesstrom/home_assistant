@@ -164,7 +164,6 @@ automation:
 group:
   sparsnas:
     name: Energy Consumption
-    view: no
     icon: mdi:flash-circle
     entities:
       - sensor.sparsnas_energy_consumption_momentary_2

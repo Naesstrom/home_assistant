@@ -1,6 +1,11 @@
+input_boolean:
+  weekday_radio:
+    name: Play radio on weekdays
+    icon: mdi:radio
+
 automation:
   - alias: play_weekday_radio
-    initial_state: 'off'
+    initial_state: 'on'
     # Should start playing at 06:00 on weekdays.
     trigger:
       platform: time
@@ -11,6 +16,9 @@ automation:
       conditions:
         - condition: state
           entity_id: 'binary_sensor.arbetsdag'
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.weekday_radio
           state: 'on'
         - condition: or
           conditions:
@@ -23,21 +31,21 @@ automation:
     # Set volume of bedroom speakers and start playing the radio stream
     action:
       - service: media_player.volume_set
-        entity_id: media_player.chromecastaudio6872
+        entity_id: media_player.bedroom_speakers
         data:
           volume_level: '0.075'
       - service: media_player.play_media
-        entity_id: media_player.chromecastaudio6872
+        entity_id: media_player.bedroom_speakers
         data:
           media_content_id: http://edge-bauersefm-06-gos2.sharp-stream.com/mixmegapol_instream_se_mp3
           media_content_type: music
-    #Kitchen spearkers at 10%
+    #Kitchen spearkers at 7.5%
       - service: media_player.volume_set
-        entity_id: media_player.kitchen_speaker
+        entity_id: media_player.kitchen_speakers
         data:
-          volume_level: '0.1'
+          volume_level: '0.075'
       - service: media_player.play_media
-        entity_id: media_player.kitchen_speaker
+        entity_id: media_player.kitchen_speakers
         data:
           media_content_id: http://edge-bauersefm-06-gos2.sharp-stream.com/mixmegapol_instream_se_mp3
           media_content_type: music

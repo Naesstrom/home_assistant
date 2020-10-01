@@ -5,48 +5,29 @@
 ###################################################
 
 homeassistant:
-  name: !secret name
-  latitude: !secret latitude
-  longitude: !secret longitude
-  elevation: !secret elevation
-  unit_system: metric
-  customize: !include_dir_merge_named customize
-  time_zone: Europe/Stockholm
+#  name: !secret name
+#  latitude: !secret latitude
+#  longitude: !secret longitude
+#  elevation: !secret elevation
+#  unit_system: metric
+#  customize: !include_dir_merge_named customize
+#  time_zone: Europe/Stockholm
   packages: !include_dir_named packages
-  auth_providers:
-    - type: homeassistant
-    - type: trusted_networks
-      trusted_networks:
-        - 127.0.0.1
-        - 192.168.1.0/24
-        - 192.168.0.0/16
-        - 172.30.32.2
-        - 192.168.1.1
-
-#  customize_glob:
-#    light.*:
-#      custom_ui_state_card: state-card-custom-ui
-#    cover.*:
-#      custom_ui_state_card: state-card-custom-ui
-
-customizer:
-  custom_ui: hosted
-  hide_attributes:
-    - node_id
-    - value_index
-  columns: [350, 700, 1050, 1400, 1850, 2100]
+#  auth_providers:
+#    - type: homeassistant
+#    - type: trusted_networks
+#      trusted_networks:
+#        - 192.168.1.0/24
+#        - 192.168.0.0/16
+#        - 172.30.32.2
+#        - 192.168.1.1
 
 http:
 # Uncomment this to add a password (recommended!)
 #  api_password: !secret http_password
-  base_url: !secret base_url
+#  base_url: !secret base_url
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
-#  trusted_networks:
-#    - 192.168.1.0/24
-#    - 192.168.0.0/16
-#    - 172.30.32.2
-#    - 192.168.1.1
   ip_ban_enabled: True
   login_attempts_threshold: 2
 
@@ -74,10 +55,7 @@ map:
 
 # Enables the frontend
 frontend:
-  extra_html_url:
-    - https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/state-card-custom-ui.html
-  extra_html_url_es5:
-    - https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/state-card-custom-ui-es5.html
+
 
 # Checks for available updates
 updater:
@@ -101,14 +79,11 @@ sun:
 # Setup TTS
 tts:
   - platform: google_translate
-#    service_name: google_say
-#    cache: true
-#    cache_dir: /config/tts
-#    time_memory: 300
-#    base_url: !secret base_url
-
-#Include Zones
-zone: !include zones.yaml
+    service_name: google_say
+    cache: true
+    cache_dir: /config/tts
+    time_memory: 300
+#    base_url: !secret tts_base_url
 
 #Include Cameras
 camera: !include cameras.yaml
@@ -132,14 +107,6 @@ rflink:
 # cd /dev/serial/by-id
 # ls
 # usb-Arduino__www.arduino.cc__Arduino_Mega_2560_85430353631351209040-if00
-
-history_graph:
-  gr1:
-    name: Time Graph
-    entities:
-      - sensor.erik_at_work_week
-    hours_to_show: 240
-    refresh: 3600
 
 alarm_control_panel:
   - platform: manual_mqtt
@@ -223,7 +190,7 @@ influxdb:
     source: hass
 
 octoprint:
-  host: 192.168.1.19
+  host: 192.168.1.253
   api_key: !secret octoprint_api
   bed: true
   number_of_tools: 1

@@ -4,7 +4,6 @@ shell_command:
 
 automation:
   - alias: Rapportera Temperatur
-    hide_entity: false
     initial_state: true
     trigger:
     - platform: time_pattern

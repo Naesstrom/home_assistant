@@ -68,25 +68,25 @@
         message: "Alarm has been triggered and police have been contacted."
         target: 476413377623752704
     ### Bedroom Google Mini ###
-    - service: tts.google_translate_say
+    - service: tts.google_say
       entity_id: media_player.googlehome0719
       data_template:
         message: "Alarm has been triggered and police have been contacted."
         cache: false
     ### Office Google Mini ###
-    - service: tts.google_translate_say
+    - service: tts.google_say
       entity_id: media_player.googlehome4544
       data_template:
         message: "Alarm has been triggered and police have been contacted."
         cache: false
     ### Office Google Mini ###
-    - service: tts.google_translate_say
+    - service: tts.google_say
       entity_id: media_player.kitchen
       data_template:
         message: "Alarm has been triggered and police have been contacted."
         cache: false
     ### Office Google Mini ###
-    - service: tts.google_translate_say
+    - service: tts.google_say
       entity_id: media_player.livingroom
       data_template:
         message: "Alarm has been triggered and police have been contacted."

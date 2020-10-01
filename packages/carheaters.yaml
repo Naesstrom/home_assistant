@@ -99,21 +99,27 @@ input_boolean:
   workdays_only_erik:
     name: Only active on workdays erik
     initial: true
+  run_carheaters:
+    name: Should carheaters be active
+    icon: mdi:car-seat-heater
 
 automation:
   - alias: "Engine heater activate erik"
-    initial_state: true
+    initial_state: false
     trigger:
       platform: time
       at: '04:00:00'
     condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: binary_sensor.arbetsdag
-          state: 'on'
-        - condition: template
-          value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
+      - condition: state
+        entity_id: binary_sensor.run_carheaters
+        state: 'on'
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.arbetsdag
+            state: 'on'
+          - condition: template
+            value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
 #        - condition: numeric_state
 #          entity_id: 'sensor.outside_temperature'
 #          below: 5
@@ -125,18 +131,21 @@ automation:
         entity_id: switch.carheater_erik_sonoff
 
   - alias: "Engine heater activate sussa"
-    initial_state: true
+    initial_state: false
     trigger:
       platform: time
       at: '04:00:00'
     condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: binary_sensor.arbetsdag
-          state: 'on'
-        - condition: template
-          value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
+      - condition: state
+        entity_id: binary_sensor.run_carheaters
+        state: 'on'
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.arbetsdag
+            state: 'on'
+          - condition: template
+            value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
     # If the above conditions are fulfilled, ie. you are home and it's a workday
     # then activate the heater on your selected time
     action:
@@ -147,10 +156,14 @@ automation:
 
   # Automation 2 turns off the car heater at the set delay.
   - alias: "Engine heater deactivate both"
-    initial_state: true
+    initial_state: false
     trigger:
       platform: time
       at: '07:30:00'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.run_carheaters
+        state: 'on'
     action:
       - service: switch.turn_off
         # Don't forget to select the correct switch
@@ -163,9 +176,12 @@ automation:
       platform: time
       at: "20:30:00"
     condition:
-      condition: state
-      entity_id: binary_sensor.arbetsdag_imorgon
-      state: 'on'    
+      - condition: state
+        entity_id: binary_sensor.arbetsdag_imorgon
+        state: 'on'    
+      - condition: state
+        entity_id: binary_sensor.run_carheaters
+        state: 'on'
     action:
       - service: switch.turn_on
         entity_id: switch.carheater_sussa_sonoff
@@ -176,7 +192,7 @@ automation:
         data:
           message: Sladden till Sussas motorvärmare är inte ansluten
           target: 476413377623752704
-      - service: tts.google_translate_say
+      - service: tts.google_say
         entity_id: media_player.google_home_group
         data:
           message: Sussas motorvärmare är inte ansluten!
@@ -189,9 +205,12 @@ automation:
       platform: time
       at: "20:31:00"
     condition:
-      condition: state
-      entity_id: binary_sensor.arbetsdag_imorgon
-      state: 'on'    
+      - condition: state
+        entity_id: binary_sensor.arbetsdag_imorgon
+        state: 'on'    
+      - condition: state
+        entity_id: binary_sensor.run_carheaters
+        state: 'on'
     action:
       - service: switch.turn_on
         entity_id: switch.carheater_erik_sonoff
@@ -202,7 +221,7 @@ automation:
         data:
           message: Sladden till Eriks motorvärmare är inte ansluten
           target: 476413377623752704
-      - service: tts.google_translate_say
+      - service: tts.google_say
         entity_id: media_player.google_home_group
         data:
           message: Eriks motorvärmare är inte ansluten!

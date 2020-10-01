@@ -37,7 +37,7 @@
 
   - platform: history_stats
     name: Erik at work (week)
-    entity_id: device_tracker.google_maps_110812454925350234140
+    entity_id: device_tracker.erik_presence
     state: 'ProCivitas'
     type: time
     start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}'
@@ -46,7 +46,7 @@
   - platform: history_stats
     name: Sussa at work (week)
     entity_id: device_tracker.life360_susanne_nasstrom
-    state: 'Grönkulla'
+    state: 'Ljungfälle'
     type: time
     start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}'
     end: '{{ now() }}'

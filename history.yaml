@@ -19,6 +19,7 @@
      - sensor.kitchen_temperature_2
      - sensor.livingroom_temperature
      - sensor.office_temperature
+     - switch.brevladan
 
 #  exclude:
 #    entities:

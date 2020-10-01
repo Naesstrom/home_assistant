@@ -5,8 +5,8 @@
     platform: state
     to: 'Just Arrived'
   action:
-    service: tts.google_translate_say
-    entity_id: media_player.google_home_group
+    service: tts.google_say
+    entity_id: media_player.office
     data:
       message: Erik kom just hem!
       language: 'sv'
@@ -18,8 +18,8 @@
     platform: state
     to: 'Just Arrived'
   action:
-    service: tts.google_translate_say
-    entity_id: media_player.google_home_group
+    service: tts.google_say
+    entity_id: media_player.office
     data:
       message: The queen just arrived!
 #      language: 'sv'
@@ -32,26 +32,8 @@
     platform: state
     to: 'on'
   action:
-    service: tts.google_translate_say
-    entity_id: media_player.google_home_group
+    service: tts.google_say
+    entity_id: media_player.office
     data:
       message: Något gick fel med din 3d utskrift.
       language: 'sv'
-
-- alias: mailbox TTS
-  initial_state: true
-  trigger:
-  - entity_id: switch.brevladan
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-    - after: '11:00'
-      before: '15:00'
-      condition: time
-  action:
-    service: tts.google_translate_say
-    entity_id: media_player.google_home_group
-    data_template:
-      message: "The mail just arrived."
-      cache: false

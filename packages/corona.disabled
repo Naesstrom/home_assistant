@@ -35,7 +35,7 @@ automation:
         entity_id: media_player.googlehome0719
         message: 'Nya fall av Coronavirus i Sverige har upptäckts, just nu är antalet {{ states.sensor.covid_19_svt_antal_smittade_totalt.state }} stycken smittade varav {{ states.sensor.covid_19_svt_antal_smittade_kronoberg.state }} i Kronoberg!'
         language: 'sv'
-      service: tts.google_translate_say
+      service: tts.google_say
     - delay: 00:00:15
     - data:
         entity_id: media_player.googlehome0719
