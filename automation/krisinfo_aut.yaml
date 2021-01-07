@@ -1,5 +1,5 @@
   - alias: 'Krisinformation Alert (Billa)'
-    initial_state: 'on'
+    initial_state: true
     trigger:
       platform: state
       entity_id: sensor.krisinformation_vaxjo
@@ -27,7 +27,7 @@
 
 
   - alias: 'Krisinformation News (Billa)'
-    initial_state: 'on'
+    initial_state: true
     trigger:
       platform: state
       entity_id: sensor.krisinformation_vaxjo
@@ -48,7 +48,7 @@
           target: 476413377623752704
 
   - alias: 'Krisinformation Alert (Ringvattnet)'
-    initial_state: 'on'
+    initial_state: true
     trigger:
       platform: state
       entity_id: sensor.krisinformation_ringvattnet
@@ -66,7 +66,7 @@
           target: 476413377623752704
 
   - alias: 'Krisinformation News (Ringvattnet)'
-    initial_state: 'on'
+    initial_state: true
     trigger:
       platform: state
       entity_id: sensor.krisinformation_ringvattnet

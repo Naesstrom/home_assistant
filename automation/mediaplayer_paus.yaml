@@ -2,7 +2,7 @@
     initial_state: true
     trigger:
       - platform: state
-        entity_id: media_player.nvidia_shield
+        entity_id: media_player.vardagsrum_2
         from: 'playing'
         to: 'paused'
       - platform: state

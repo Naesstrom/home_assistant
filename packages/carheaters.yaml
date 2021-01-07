@@ -1,95 +1,19 @@
-binary_sensor:
-  - platform: mqtt
-    name: "sonoff-sussas_heater lwt"
-    state_topic: "tele/carheater_1/LWT"
-    value_template: "{{ value }}"
-    payload_on: "Online"
-    payload_off: "Offline"
-    device_class: connectivity
-
-  - platform: mqtt
-    name: "sonoff-eriks_heater lwt"
-    state_topic: "tele/carheater_2/LWT"
-    value_template: "{{ value }}"
-    payload_on: "Online"
-    payload_off: "Offline"
-    device_class: connectivity
-
-switch:
-  - platform: mqtt
-    name: "Carheater Erik (sonoff)"
-    command_topic: "cmnd/carheater_2/POWER"
-    state_topic: "stat/carheater_2/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
-
-  - platform: mqtt
-    name: "Carheater Sussa (sonoff)"
-    command_topic: "cmnd/carheater_1/POWER"
-    state_topic: "stat/carheater_1/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
-
 sensor:
 ## Eriks Sensorer
-- platform: mqtt
-  name: "Eriks Carheater 2 Todays Energy"
-  state_topic: "tele/carheater_2/SENSOR"
-  value_template: '{{ value_json["ENERGY"]["Today"] }}'
-  unit_of_measurement: "kWh"
-- platform: mqtt
-  name: "Eriks Carheater 2 Power"
-  state_topic: "tele/carheater_2/SENSOR"
-  value_template: '{{ value_json["ENERGY"]["Power"] }}'
-  unit_of_measurement: "W"
-- platform: mqtt
-  name: "Eriks Carheater 2 Voltage"
-  state_topic: "tele/carheater_2/SENSOR"
-  value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
-  unit_of_measurement: "V"
-- platform: mqtt
-  name: "Eriks Carheater 2 Current"
-  state_topic: "tele/carheater_2/SENSOR"
-  value_template: '{{ value_json["ENERGY"]["Current"] }}'
-  unit_of_measurement: "A"
-- platform: template
-  sensors:
-    eriks_carheater_cost:
-      friendly_name: "Eriks Carheater daily cost"
-      unit_of_measurement: ' kr'
-      value_template: "{{ states.sensor.eriks_carheater_2_todays_energy.state | multiply(2.2478) | round(2)}}"
-
+  - platform: template
+    sensors:
+      eriks_carheater_cost:
+        friendly_name: "Eriks Carheater daily cost"
+        unit_of_measurement: ' kr'
+        value_template: "{{ ((states('sensor.electricity_price_billa_katrinelund_1') |float  + 0.6543 ) + (states('sensor.carheater_erik_daily_energy') |float)) }}"
 ## Sussas sensorer
-- platform: mqtt
-  name: "Sussas Carheater 1 Todays Energy"
-  state_topic: "tele/carheater_1/SENSOR"
-  value_template: '{{ value_json["ENERGY"]["Today"] }}'
-  unit_of_measurement: "kWh"
-- platform: mqtt
-  name: "Sussas Carheater 1 Power"
-  state_topic: "tele/carheater_1/SENSOR"
-  value_template: '{{ value_json["ENERGY"]["Power"] }}'
-  unit_of_measurement: "W"
-- platform: mqtt
-  name: "Sussas Carheater 1 Voltage"
-  state_topic: "tele/carheater_1/SENSOR"
-  value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
-  unit_of_measurement: "V"
-- platform: mqtt
-  name: "Sussas Carheater 1 Current"
-  state_topic: "tele/carheater_1/SENSOR"
-  value_template: '{{ value_json["ENERGY"]["Current"] }}'
-  unit_of_measurement: "A"
-- platform: template
-  sensors:
-    sussas_carheater_cost:
-      friendly_name: "Sussas Carheater daily cost"
-      unit_of_measurement: ' kr'
-      value_template: "{{ states.sensor.sussas_carheater_1_todays_energy.state | multiply(2.2478) | round(2)}}"
+  - platform: template
+    sensors:
+      sussas_carheater_cost:
+        friendly_name: "Sussas Carheater daily cost"
+        unit_of_measurement: ' kr'
+#      value_template: "{{ states.sensor.sussas_carheater_1_todays_energy.state | multiply(2.2478) | round(2)}}"
+        value_template: "{{ ((states('sensor.electricity_price_billa_katrinelund_1') |float  + 0.6543 ) + (states('sensor.carheater_sussa_daily_energy') |float)) }}"
 
 ## Input switches
 input_boolean:
@@ -105,13 +29,13 @@ input_boolean:
 
 automation:
   - alias: "Engine heater activate erik"
-    initial_state: false
+    initial_state: on
     trigger:
       platform: time
       at: '04:00:00'
     condition:
       - condition: state
-        entity_id: binary_sensor.run_carheaters
+        entity_id: input_boolean.run_carheaters
         state: 'on'
       - condition: and
         conditions:
@@ -128,16 +52,16 @@ automation:
     action:
       - service: switch.turn_on
         # Don't forget to select the correct switch
-        entity_id: switch.carheater_erik_sonoff
+        entity_id: switch.carheater_erik_relay
 
   - alias: "Engine heater activate sussa"
-    initial_state: false
+    initial_state: on
     trigger:
       platform: time
       at: '04:00:00'
     condition:
       - condition: state
-        entity_id: binary_sensor.run_carheaters
+        entity_id: input_boolean.run_carheaters
         state: 'on'
       - condition: and
         conditions:
@@ -151,25 +75,25 @@ automation:
     action:
       - service: switch.turn_on
         # Don't forget to select the correct switch
-        entity_id: switch.carheater_sussa_sonoff
+        entity_id: switch.carheater_sussa_relay
 
 
   # Automation 2 turns off the car heater at the set delay.
   - alias: "Engine heater deactivate both"
-    initial_state: false
+    initial_state: on
     trigger:
       platform: time
-      at: '07:30:00'
+      at: '08:30:00'
     condition:
       - condition: state
-        entity_id: binary_sensor.run_carheaters
+        entity_id: input_boolean.run_carheaters
         state: 'on'
     action:
       - service: switch.turn_off
         # Don't forget to select the correct switch
         entity_id:
-          - switch.carheater_erik_sonoff
-          - switch.carheater_sussa_sonoff
+          - switch.carheater_erik_relay
+          - switch.carheater_sussa_relay
 
   - alias: 'Check Sussas heater'
     trigger:
@@ -180,14 +104,14 @@ automation:
         entity_id: binary_sensor.arbetsdag_imorgon
         state: 'on'    
       - condition: state
-        entity_id: binary_sensor.run_carheaters
+        entity_id: input_boolean.run_carheaters
         state: 'on'
     action:
       - service: switch.turn_on
-        entity_id: switch.carheater_sussa_sonoff
+        entity_id: switch.carheater_sussa_relay
       - delay: "00:01:00"
       - condition: template
-        value_template: "{{ (states('sensor.sussas_carheater_1_power') | int) == 0 }}"
+        value_template: "{{ (states('sensor.carheater_sussa_power') | int) == 0 }}"
       - service: notify.discord_webhook
         data:
           message: Sladden till Sussas motorvärmare är inte ansluten
@@ -198,7 +122,7 @@ automation:
           message: Sussas motorvärmare är inte ansluten!
           language: 'sv'
       - service: switch.turn_off
-        entity_id: switch.carheater_sussa_sonoff
+        entity_id: switch.carheater_sussa_relay
 
   - alias: 'Check Eriks heater'
     trigger:
@@ -209,14 +133,14 @@ automation:
         entity_id: binary_sensor.arbetsdag_imorgon
         state: 'on'    
       - condition: state
-        entity_id: binary_sensor.run_carheaters
+        entity_id: input_boolean.run_carheaters
         state: 'on'
     action:
       - service: switch.turn_on
-        entity_id: switch.carheater_erik_sonoff
+        entity_id: switch.carheater_erik_relay
       - delay: "00:01:00"
       - condition: template
-        value_template: "{{ (states('sensor.eriks_carheater_2_power') | int) == 0 }}"
+        value_template: "{{ (states('sensor.carheater_erik_power') | int) == 0 }}"
       - service: notify.discord_webhook
         data:
           message: Sladden till Eriks motorvärmare är inte ansluten
@@ -227,7 +151,7 @@ automation:
           message: Eriks motorvärmare är inte ansluten!
           language: 'sv'
       - service: switch.turn_off
-        entity_id: switch.carheater_erik_sonoff
+        entity_id: switch.carheater_erik_relay
 
   - alias: 'Turn off heaters after checking'
     trigger:
@@ -235,6 +159,6 @@ automation:
       at: "20:35:00"
     action:
       - service: switch.turn_off
-        entity_id: switch.carheater_sussa_sonoff
+        entity_id: switch.carheater_sussa_relay
       - service: switch.turn_off
-        entity_id: switch.carheater_erik_sonoff
+        entity_id: switch.carheater_erik_relay

@@ -33,7 +33,7 @@ proximity:
 
 automation:
   - alias: '[Presence] Presence Homebound'
-    initial_state: 'on'
+    initial_state: true
     trigger:
       - platform: numeric_state
         entity_id: proximity.home_erik
@@ -55,7 +55,7 @@ automation:
           message: "{{ trigger.to_state.state }}"
 
   - alias: '[Presence] Sussa Homebound'
-    initial_state: 'on'
+    initial_state: true
     trigger:
       - platform: numeric_state
         entity_id: proximity.home_sussa
@@ -71,7 +71,7 @@ automation:
           language: 'sv'
 
   - alias: '[Presence] Erik Homebound'
-    initial_state: 'on'
+    initial_state: true
     trigger:
       - platform: numeric_state
         entity_id: proximity.home_erik

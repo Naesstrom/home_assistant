@@ -1,25 +1,63 @@
 sensor:
   - platform: template
     sensors:
-      nextsunrise:
-        entity_id: sun.sun
-        friendly_name: 'Next Sunrise'
-        value_template: >
-          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom(' %R ') }}
-        icon_template: mdi:weather-sunset-up
-      nextsunset:
-        entity_id: sun.sun
-        friendly_name: 'Next Sunset'
-        value_template: >
-          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom(' %R') }}
-        icon_template: mdi:weather-sunset-down
+      sunrise_today:
+        unique_id: 9K5KSePnPmtsk5B368L7
+        friendly_name: "Sunrise today"
+        value_template: "{{ state_attr('sensor.sunrise', 'today') }}"
+      sunrise_tomorrow:
+        unique_id: hp7U7EKM7YMRRWfzszRv
+        friendly_name: "Sunrise tomorrow"
+        value_template: "{{ state_attr('sensor.sunrise', 'tomorrow') }}"
+      sunset_today:
+        unique_id: mmrg4UZZhcYEKHqq28aq
+        friendly_name: "Sunset today"
+        value_template: "{{ state_attr('sensor.sunset', 'today') }}"
+      sunset_tomorrow:
+        unique_id: F296VMe2HuM94PMpBxeT
+        friendly_name: "Sunset tomorrow"
+        value_template: "{{ state_attr('sensor.sunset', 'tomorrow') }}"
+      daylight_today:
+        unique_id: sRn8W5QSLaHKkq5mmZxx
+        friendly_name: "Daylight today"
+        value_template: "{{ state_attr('sensor.sunset', 'today') - state_attr('sensor.sunrise', 'today') }}"
+      daylight_tomorrow:
+        unique_id: Xkmsvv9sjj8RQebp686V
+        friendly_name: "Daylight tomorrow"
+        value_template: "{{ state_attr('sensor.sunset', 'tomorrow') - state_attr('sensor.sunrise', 'tomorrow') }}"
+      daylight_change:
+        unique_id: DTVLtRD58scctyeGEE9R
+        friendly_name: "Daylight change"
+        value_template: "{{( state_attr('sensor.sunset', 'tomorrow') - state_attr('sensor.sunrise', 'tomorrow') ) - (state_attr('sensor.sunset', 'today') - state_attr('sensor.sunrise', 'today') )}}"
 
-#Lovelace example - Vertical stack
-#      - type: vertical-stack
-#        cards:
-#          - type: entities
-#            title: Season, Sun & Moon Phase
-#            show_header_toggle: false
-#            entities:
-#              - sensor.nextsunrise
-#              - sensor.nextsunset
+  - platform: sun2
+    monitored_conditions:
+      - solar_midnight
+      - astronomical_dawn
+      - nautical_dawn
+      - dawn
+      - sunrise
+      - solar_noon
+      - sunset
+      - dusk
+      - nautical_dusk
+      - astronomical_dusk
+      - daylight
+      - civil_daylight
+      - nautical_daylight
+      - astronomical_daylight
+      - night
+      - civil_night
+      - nautical_night
+      - astronomical_night
+      - elevation
+      - min_elevation
+      - max_elevation
+binary_sensor:
+  - platform: sun2
+    monitored_conditions:
+      - elevation
+      - elevation: 3
+      - elevation:
+          above: -6
+          name: Above Civil Dawn

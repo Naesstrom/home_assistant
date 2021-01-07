@@ -1,4 +1,5 @@
 - alias: 'Erik is Home TTS'
+  initial_state: true
   trigger:
   - entity_id: device_tracker.erik
     from: 'Away'
@@ -12,6 +13,7 @@
       language: 'sv'
 
 - alias: 'Sussa is Home TTS'
+  initial_state: true  
   trigger:
   - entity_id: device_tracker.sussa
     from: 'Away'

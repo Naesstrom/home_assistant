@@ -49,7 +49,7 @@ automation:
   - alias: Time to water beds
     trigger:
     - platform: time
-      at: '19:00'
+      at: '19:00:00'
     condition:
     - condition: state
       entity_id: input_boolean.water_greenhouse

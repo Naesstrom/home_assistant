@@ -1,59 +1,119 @@
 # example Json
-# {
-#  "temp":27,
-#  "target":27,
-#  "locked":false ,
-#  "air":false,
-#  "celsius":true,
-#  "heating" :false,
-#  "heater":true,
-#  "filter":true,#
-#  "power":true,
-#  "time":"2020-09-25 16:15:58",
-#  "clts":346537,
-#  "heattime":21 7034,
-#  "uptime":1049253,
-#  "airtime":62,
-#  "filtertime":680695,
-#  "cost":184.0584,
-#  "auto":true,
-#  "dsp":" 27"
-# }
+#{
+#  "CONTENT": "STATES",
+#  "LCK": 0,
+#  "PWR": 1,
+#  "UNT": 1,
+#  "AIR": 0,
+#  "GRN": 1,
+#  "RED": 0,
+#  "FLT": 1,
+#  "TGT": 37,
+#  "TMP": 38,
+#  "CH1": 32,
+#  "CH2": 32,
+#  "CH3": 32
+#}
 
 sensor:
   - platform: mqtt
     name: "Pool Temp"
-    state_topic: "BW-1.27_MQTT/message"
+    state_topic: "BW_2.0.0/message"
     unit_of_measurement: 'ºC'
-    value_template: "{{ value_json.temp }}"
+    value_template: "{{ value_json.TMP }}"
   - platform: mqtt
     name: "Pool target Temp"
-    state_topic: "BW-1.27_MQTT/message"
+    state_topic: "BW_2.0.0/message"
     unit_of_measurement: 'ºC'
-    value_template: "{{ value_json.target }}"
+    value_template: "{{ value_json.TGT }}"
 
 
 binary_sensor:
   - platform: mqtt
-    name: "Heating"
-    state_topic: "BW-1.27_MQTT/message"
+    name: "Pool Heating"
+    state_topic: "BW_2.0.0/message"
     device_class: heat
-    payload_on: "true"
-    payload_off: "false"
-    value_template: "{{ value_json.heating }}"
+    payload_on: "1"
+    payload_off: "0"
+    value_template: "{{ value_json.RED }}"
 
   - platform: mqtt
-    name: "Locked"
-    state_topic: "BW-1.27_MQTT/message"
+    name: "Pool On"
+    state_topic: "BW_2.0.0/message"
+    device_class: power
+    payload_on: "1"
+    payload_off: "0"
+    value_template: "{{ value_json.PWR }}"
+
+  - platform: mqtt
+    name: "Pool Locked"
+    state_topic: "BW_2.0.0/message"
     device_class: lock
-    payload_on: "true"
-    payload_off: "false"
-    value_template: "{{ value_json.locked }}"
+    payload_on: "0"
+    payload_off: "1"
+    value_template: "{{ value_json.LCK }}"
 
   - platform: mqtt
-    name: "Bubbles"
-    state_topic: "BW-1.27_MQTT/message"
-    device_class: gas
-    payload_on: "true"
-    payload_off: "false"
-    value_template: "{{ value_json.air }}"
+    name: "Pool Bubbles"
+    state_topic: "BW_2.0.0/message"
+    #device_class: gas
+    payload_on: "1"
+    payload_off: "0"
+    value_template: "{{ value_json.AIR }}"
+
+  - platform: mqtt
+    name: "Pool Pump"
+    state_topic: "BW_2.0.0/message"
+    #device_class: gas
+    payload_on: "1"
+    payload_off: "0"
+    value_template: "{{ value_json.FLT }}"
+
+switch:
+  - platform: mqtt
+    unique_id: poolheat_switch
+    name: "Pool heating"
+    state_topic: "BW_2.0.0/message"
+    value_template: "{{ value_json.RED }}"
+    command_topic: "BW_2.0.0/command"
+    state_on: "1"
+    state_off: "0"
+    #availability:
+    #  - topic: "home/bedroom/switch1/available"
+    payload_on: "{\"CMD\":3,\"VALUE\":1,\"XTIME\":1603466443,\"INTERVAL\":0}"
+    payload_off: "{\"CMD\":3,\"VALUE\":0,\"XTIME\":1603466443,\"INTERVAL\":0}"
+    optimistic: false
+    qos: 0
+    retain: true
+
+  - platform: mqtt
+    unique_id: poolair_switch
+    name: "Pool Bubbles"
+    state_topic: "BW_2.0.0/message"
+    value_template: "{{ value_json.AIR }}"
+    command_topic: "BW_2.0.0/command"
+    state_on: "1"
+    state_off: "0"
+    #availability:
+    #  - topic: "home/bedroom/switch1/available"
+    payload_on: "{\"CMD\":2,\"VALUE\":true,\"XTIME\":1603466443,\"INTERVAL\":0}"
+    payload_off: "{\"CMD\":2,\"VALUE\":true,\"XTIME\":1603466443,\"INTERVAL\":0}"
+    optimistic: false
+    qos: 0
+    retain: true
+
+  - platform: mqtt
+    unique_id: pool_pump_switch
+    name: "Pool Pump"
+    state_topic: "BW_2.0.0/message"
+    value_template: "{{ value_json.FLT }}"
+    command_topic: "BW_2.0.0/command"
+    state_on: "1"
+    state_off: "0"
+    #availability:
+    #  - topic: "home/bedroom/switch1/available"
+    payload_on: "{\"CMD\":4,\"VALUE\":1,\"XTIME\":1603466443,\"INTERVAL\":0}"
+    payload_off: "{\"CMD\":4,\"VALUE\":0,\"XTIME\":1603466443,\"INTERVAL\":0}"
+    optimistic: false
+    qos: 0
+    retain: true

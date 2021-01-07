@@ -46,7 +46,7 @@ sensor:
 
 automation:
   - alias: Cheers
-    initial_state: 'on'
+    initial_state: on
     trigger:
       platform: state
       entity_id: sensor.untappd_last_check_in_naesstrom

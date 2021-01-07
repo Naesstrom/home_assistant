@@ -20,6 +20,10 @@
      - sensor.livingroom_temperature
      - sensor.office_temperature
      - switch.brevladan
+     - binary_sensor.pool_heating
+     - binary_sensor.pool_on
+     - sensor.pool_temp
+     - switch.pool_heating
 
 #  exclude:
 #    entities:

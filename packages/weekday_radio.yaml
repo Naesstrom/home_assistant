@@ -5,7 +5,7 @@ input_boolean:
 
 automation:
   - alias: play_weekday_radio
-    initial_state: 'on'
+    initial_state: true
     # Should start playing at 06:00 on weekdays.
     trigger:
       platform: time

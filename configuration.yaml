@@ -5,27 +5,10 @@
 ###################################################
 
 homeassistant:
-#  name: !secret name
-#  latitude: !secret latitude
-#  longitude: !secret longitude
-#  elevation: !secret elevation
-#  unit_system: metric
-#  customize: !include_dir_merge_named customize
-#  time_zone: Europe/Stockholm
   packages: !include_dir_named packages
-#  auth_providers:
-#    - type: homeassistant
-#    - type: trusted_networks
-#      trusted_networks:
-#        - 192.168.1.0/24
-#        - 192.168.0.0/16
-#        - 172.30.32.2
-#        - 192.168.1.1
+
 
 http:
-# Uncomment this to add a password (recommended!)
-#  api_password: !secret http_password
-#  base_url: !secret base_url
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
   ip_ban_enabled: True
@@ -56,7 +39,6 @@ map:
 # Enables the frontend
 frontend:
 
-
 # Checks for available updates
 updater:
 
@@ -81,9 +63,9 @@ tts:
   - platform: google_translate
     service_name: google_say
     cache: true
-    cache_dir: /config/tts
+    cache_dir: /config/www/tts
     time_memory: 300
-#    base_url: !secret tts_base_url
+    base_url: !secret tts_base_url
 
 python_script:
 
@@ -120,61 +102,6 @@ alarm_control_panel:
       pending_time: 60
       delay_time: 30
 
-
-# don't think the folowing is used anymore...
-#  show_as_state: driving, moving, places
-#  driving_speed: 18
-#  max_gps_accuracy: 200
-#  max_update_wait:
-#    minutes: 45
-
-#googlehome:
-#  devices:
-#    - host: '192.168.1.233'
-#      track_alarms: true
-#      track_devices: true
-#    - host: '192.168.1.183'
-#      track_alarms: true
-#      track_devices: true
-#    - host: '192.168.1.242'
-#      track_alarms: true
-#      track_devices: true
-#    - host: '192.168.1.237'
-#      track_alarms: true
-#      track_devices: true
-#    - host: '192.168.1.225'
-#      track_alarms: true
-#      track_devices: true
-#zwave:
-#  device_config: !include zwave_device_config.yaml
-
-#climate:
-#  - platform: broadlink
-#    name: "Living Room AC"
-#    host: 192.168.1.5
-#    mac: '34:ea:34:40:78:ff'
-#    ircodes_ini: 'broadlink_climate_codes/qlima.ini'
-#    min_temp: 17
-#    max_temp: 30
-#    target_temp: 21
-#    temp_sensor: sensor.livingroom_temperature
-#    default_operation: off
-#    default_fan_mode: auto
-#    customize:
-#      operations:
-#        - 'off'
-#        - on
-#        - cool
-#        - heat
-#        - auto
-#        - dry
-#        - fan
-#      fan_modes:
-#        - low
-#        - mid
-#        - high
-#        - auto
-
 influxdb:
   host: 192.168.1.15
   port: 8086
@@ -192,50 +119,33 @@ octoprint:
   bed: true
   number_of_tools: 1
 
+#### Automations ####
+automation dir: !include_dir_merge_list automation
+automation: !include automations.yaml
+
+#### Scenes ####
+scene dir: !include_dir_merge_list scenes
+scene: !include scenes.yaml
+
+#### Scripts ####
+script dir: !include_dir_merge_named scripts
+script: !include scripts.yaml
+
 #### Merged folders (named) ####
 group: !include_dir_merge_named groups
-script: !include_dir_merge_named scripts
 input_select: !include_dir_merge_named input_select
 
-  #### Merged folders (Lists) ####
+#### Merged folders (Lists) ####
 notify: !include_dir_merge_list notifications
-automation: !include_dir_merge_list automation
-scene: !include scenes.yaml
 sensor: !include_dir_merge_list sensors
 switch: !include_dir_merge_list switch
 light: !include_dir_merge_list light
 binary_sensor: !include_dir_merge_list binary_sensor
-#automation old: !include_dir_merge_list automation
 cover: !include_dir_merge_list covers
 lock: !include_dir_merge_list locks
 camera: !include_dir_merge_list cameras
 
-
-
-#media_player: moved to packages
-## Sony Amplifier
-## Disabled due to broadlink problems
-#  - platform: broadlink
-#    name: Livingroom Amplifier
-#    host: 192.168.1.5
-#    mac: '34:ea:34:40:78:ff'
-#    ircodes_ini: 'broadlink_media_codes/sony_str_dn1040.ini'
-#    ping_host: 192.168.1.62
-#    retain: true
-
-## Andersson TV
-## Disabled due to broadlink problems
-#  - platform: broadlink
-#    name: Livingroom Andersson
-#    host: 192.168.1.5
-#    mac: '34:ea:34:40:78:ff'
-#    ircodes_ini: 'broadlink_media_codes/andersson.ini'
-#    retain: true
-
-
 cast:
-
-#sabnzbd: !include sabnzb.yaml
 
 shopping_list:
 
@@ -245,16 +155,3 @@ remember_the_milk:
   - name: naesstrom
     api_key: !secret rtm_api_key
     shared_secret: !secret rtm_secret
-
-panel_iframe:
-  mdiindex:
-    title: MDI Icon Index
-    icon: mdi:vector-square
-    url: https://cdn.rawgit.com/james-fry/home-assistant-mdi/efd95d7a/home-assistant-mdi.html
-  lightning:
-    title: 'Realtime Lightning'
-    url: 'http://map.blitzortung.org/#5.72/56.399/16.371'
-    icon: mdi:weather-lightning
-
-#shell_command:
-#  getbilladata: 'PATH=$PATH:/bin && rm -fr /home/hass/.homeassistant/billa.txt && curl -X GET https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/14.938817/lat/56.826237/data.json >> /home/hass/.homeassistant/billa.txt'

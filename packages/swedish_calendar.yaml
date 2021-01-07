@@ -4,7 +4,7 @@ sensor:
 
 automation:
 - alias: 'Send push on important namnsdag'
-  initial_state: 'on'
+  initial_state: true
   trigger:
     - platform: state
       entity_id: sensor.swedish_calendar_name_day
