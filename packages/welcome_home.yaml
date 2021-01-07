@@ -1,0 +1,24 @@
+automation:
+- id: '1607358943622'
+  alias: Play media when Sussa get home
+  initial_state: true
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.side_door
+    from: 'Closed'
+    to: 'Open'
+  condition:
+  - condition: state
+    entity_id: device_tracker.sussa_presence
+    state: 'Just Arrived'
+  action:
+  - delay: '10'
+  - service: tts.cloud_say
+    entity_id: media_player.kitchen_speakers
+    data:
+      message: Welcome home Susanne
+      language: en-GB
+      options:
+        gender: male
+  mode: single
