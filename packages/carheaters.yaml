@@ -26,6 +26,12 @@ input_boolean:
   run_carheaters:
     name: Should carheaters be active
     icon: mdi:car-seat-heater
+  sussas_carheater:
+    name: Should Sussas carheater be active
+    icon: mdi:car-seat-heater
+  eriks_carheater:
+    name: Should Eriks carheater be active
+    icon: mdi:car-seat-heater
 
 automation:
   - alias: "Engine heater activate erik"
@@ -44,7 +50,12 @@ automation:
             state: 'on'
           - condition: template
             value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
-#        - condition: numeric_state
+          - condition: state
+            entity_id: input_boolean.eriks_carheater
+            state: 'on'
+
+
+            #        - condition: numeric_state
 #          entity_id: 'sensor.outside_temperature'
 #          below: 5
     # If the above conditions are fulfilled, ie. you are home and it's a workday
@@ -70,8 +81,11 @@ automation:
             state: 'on'
           - condition: template
             value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
-    # If the above conditions are fulfilled, ie. you are home and it's a workday
-    # then activate the heater on your selected time
+          - condition: state
+            entity_id: input_boolean.sussas_carheater
+            state: 'on'
+            # If the above conditions are fulfilled, ie. you are home and it's a workday
+            # then activate the heater on your selected time
     action:
       - service: switch.turn_on
         # Don't forget to select the correct switch

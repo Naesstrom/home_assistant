@@ -1,0 +1,21 @@
+automation:
+  - alias: 'Sophämtning'
+    initial_state: true
+    trigger:
+      - platform: time
+        at: '20:00:00'
+    condition:
+      - condition: state
+        entity_id: 'sensor.karl_1'
+        state: '1'
+    action:
+      - service: tts.google_say
+        entity_id: media_player.google_home_group
+        data_template:
+          message: >
+            {% if is_state("sensor.karl_1", "2") and is_state("sensor.karl_2", "2") %}
+            I morgon är det tömning av båda kärlen.
+            {% else %}
+            I morgon är det tömning av Kärl 1.
+            {% endif %}
+          language: 'sv'
