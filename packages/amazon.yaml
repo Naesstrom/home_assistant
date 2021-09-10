@@ -12,13 +12,16 @@ homeassistant:
 
 sensor:
   - platform: scrape
+    id: dgfansduigh3984y
     resource: https://www.amazon.se/-/en/dp/B07VXKF1L4
     name: "Amazon 12TB"
     select: "#price_inside_buybox"
     value_template: '{{ ((value.split(" ")[0]) | replace(",",".") | regex_replace("\s|kr", "")) }}'
+    unit_of_measurement: "kr"
 
   - platform: scrape
     resource: https://www.amazon.se/gp/product/B07W7YBB9H
     name: "Amazon 12TB 2"
     select: "#price_inside_buybox"
     value_template: '{{ ((value.split(" ")[0]) | replace(",",".") | regex_replace("\s|kr", "")) }}'
+    unit_of_measurement: "kr"
