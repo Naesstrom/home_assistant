@@ -1,0 +1,10 @@
+notify:
+  - name: all
+    platform: group
+    services:
+      - service: discord
+      - service: discord_webhook
+      - service: katrinelund
+      - service: mobile_app_in2023
+      - service: mobile_app_sm_g981b
+      - service: telegram_erik # Lägg till Telegram här om du vill att det ska plinga där också

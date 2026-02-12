@@ -1,0 +1,24 @@
+automation:
+  - alias: "Tvättmaskinen"
+    id: TWpLZEqvFhgcRK3S7mMPj8
+    initial_state: true
+    trigger:
+      - entity_id: binary_sensor.washing_machine_stat
+        from: "on"
+        platform: state
+        to: "off"
+    action:
+      - service: notify.discord
+        data:
+          message: Tvätten är klar!
+          target:
+            - channel/katrinelund
+      - service: notify.discord_webhook
+        data:
+          message: Tvätten är klar!
+          target: 476413377623752704
+      - service: tts.google_say
+        entity_id: media_player.vardagsrum
+        data:
+          message: Tvätten är klar!
+          language: "sv"

@@ -1,0 +1,28 @@
+swedish_calendar:
+  special_themes_dir: /config/custom_components/swedish_calendar
+  exclude:
+    - day_of_week
+#    special_themes_dir: /config/custom_components/swedish_calendar
+
+automation:
+  - alias: "Send push on important namnsdag"
+    id: GHpSF3TdcVQaeLYzuBJRhq
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: sensor.swedish_calendar_name_day
+    condition:
+      - condition: template
+        value_template: >-
+          {% set names_of_today = states.sensor.swedish_calendar_name_day.state.split(",") %}
+          {% set wanted_names = ['Susanne', 'Martina', 'Anders', 'Monika', 'Lena', 'Margareta'] %}
+          {% for name in names_of_today %}
+            {% if (name in wanted_names) %}
+              true
+            {% endif %}
+          {% endfor %}
+    action:
+      service: notify.discord_webhook
+      data_template:
+        title: "Namnsdag!"
+        message: "Idag firas {{ states.sensor.swedish_calendar_name_day.state }} "

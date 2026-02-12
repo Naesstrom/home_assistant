@@ -1,0 +1,23 @@
+input_boolean:
+  sussa_home:
+    name: sussa home
+    initial: on
+    icon: mdi:human-female
+  erik_home:
+    name: erik home
+    initial: on
+    icon: mdi:human-male
+  switch_ac_kitchen:
+    name: AC kitchen
+  switch_ac_livingroom:
+    name: AC living room
+  switch_tv:
+    name: TV
+  guestmode:
+    name: Guest Mode
+    initial: off
+    icon: mdi:account-plus
+  vacation:
+    name: Vacation
+    initial: off
+    icon: mdi:sunglasses

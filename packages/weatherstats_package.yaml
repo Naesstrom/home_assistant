@@ -1,0 +1,18 @@
+# Denna del stannar kvar under sensor:
+sensor:
+  - platform: statistics
+    name: "greenhouse statistics"
+    entity_id: sensor.greenhouse_temperature_2
+    sampling_size: 1440
+    state_characteristic: mean
+    max_age:
+      hours: 24
+
+# Denna del flyttar till din template-sektion (t.ex. templates.yaml)
+template:
+  - sensor:
+      - name: "Greenhouse Min"
+        unique_id: greenhouse_temp_min
+        state: "{{ state_attr('sensor.greenhouse_statistics_mean', 'min_value') }}"
+        device_class: temperature
+        unit_of_measurement: "°C"

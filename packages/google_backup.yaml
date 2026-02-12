@@ -1,0 +1,36 @@
+rest_command:
+  google_backup:
+    url: 'http://192.168.1.119:8055/gb/doBackup'
+    method: GET
+
+automation:
+  - alias: "Weekly Backup Friday at 3 AM"
+    id: WUTJvsmuz5aHgKeQLhG4NV
+    initial_state: true
+    trigger:
+      platform: time
+      at: '03:00:00'
+    condition:
+    - condition: time
+      weekday:
+        - fri
+    action:
+    - service: hassio.backup_full
+      data_template:
+        name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
+    - service: notify.discord_webhook
+      data_template:
+        message: Creating backup named "Automated Backup {{ now().strftime('%Y-%m-%d') }}"
+
+  - alias: "Weekly Backup to Google Friday at 3:30 AM"
+    id: Ah6vzgtDQEyjxmGrBpFkJV
+    initial_state: true
+    trigger:
+      platform: time
+      at: '03:30:00'
+    condition:
+    - condition: time
+      weekday:
+        - fri
+    action:
+    - service: rest_command.google_backup

@@ -1,0 +1,120 @@
+blueprint:
+  name: Dim lights when playing media
+  description: Change the brightness of a given light when a media player is turned
+    on. It works on a two step-transition, both on startup and shutdown.
+  domain: automation
+  input:
+    player_entity:
+      name: Media player
+      description: The monitored media player
+      selector:
+        entity:
+          domain: media_player
+    light_entity:
+      name: Light controlled
+      description: The light associated to the media player
+      selector:
+        entity:
+          domain: light
+    on_brightness:
+      name: Light brightness when TV is on
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          unit_of_measurement: '%'
+          mode: slider
+          step: 1.0
+    off_brightness:
+      name: Light brightness when TV is off
+      default: 100
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          unit_of_measurement: '%'
+          mode: slider
+          step: 1.0
+    startup_brightness:
+      name: Brightness used on startup
+      description: On startup we use this brightness for some seconds.
+      default: 60
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          unit_of_measurement: '%'
+          mode: slider
+          step: 1.0
+    shutdown_brightness:
+      name: Brightness used on shutdown
+      description: On shutdown we use this brightness for some seconds.
+      default: 10
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          unit_of_measurement: '%'
+          mode: slider
+          step: 1.0
+    two_step_delay:
+      name: Two step delay
+      description: How long we should stay in the temporary states.
+      default: 5
+      selector:
+        number:
+          min: 0.0
+          max: 1000.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+  source_url: https://gist.github.com/MatteoNardi/cf5ea37171a899a5e5915a3ff871fa5b
+trigger:
+- platform: state
+  entity_id: !input 'player_entity'
+condition: []
+mode: restart
+action:
+- choose:
+  - conditions:
+    - condition: state
+      entity_id: !input 'player_entity'
+      state: 'on'
+    sequence:
+    - service: scene.apply
+      data:
+        transition: 2
+        entities:
+          light.salotto:
+            state: 'on'
+            brightness_pct: !input 'startup_brightness'
+    - delay: !input 'two_step_delay'
+    - service: scene.apply
+      data:
+        transition: 2
+        entities:
+          light.salotto:
+            state: 'on'
+            brightness_pct: !input 'on_brightness'
+  - conditions:
+    - condition: state
+      entity_id: !input 'player_entity'
+      state: 'off'
+    sequence:
+    - service: scene.apply
+      data:
+        transition: 2
+        entities:
+          light.salotto:
+            state: 'on'
+            brightness_pct: !input 'shutdown_brightness'
+    - delay: !input 'two_step_delay'
+    - service: scene.apply
+      data:
+        transition: 2
+        entities:
+          light.salotto:
+            state: 'on'
+            brightness_pct: !input 'off_brightness'
+  default: []

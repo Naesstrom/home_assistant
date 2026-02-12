@@ -1,0 +1,75 @@
+title: Katrinelund
+views:
+  # Huvudvy - Överblick
+  - icon: mdi:home-assistant
+    title: Överblick
+    cards:
+      - type: weather-forecast
+        entity: weather.smhi_home
+
+      - type: entities
+        title: Snabba kontroller
+        entities:
+          - entity: light.livingroom_ambient_lights
+            name: Vardagsrum
+          - entity: switch.brevladan
+            name: Brevlådan
+          # Badrumslampan flaggades som saknad, 
+          # kontrollera namnet innan du lägger till den igen.
+
+      - type: map
+        title: Var är vi?
+        aspect_ratio: 50%
+        entities:
+          - person.erik
+          - person.sussa
+
+  # Motorvärmare - (Behöver ses över då många sensorer flaggades som saknade)
+  - icon: mdi:car-multiple
+    title: Motorvärmare
+    cards:
+      - type: entities
+        title: Sussas Motorvärmare
+        entities:
+          - entity: switch.engine_heater_sussa
+            name: Status
+          # Många av dina heater-sensorer flaggas som "missing". 
+          # Kontrollera i UI om de har fått nya ID:n.
+
+      - type: entities
+        title: Eriks Motorvärmare
+        entities:
+          - entity: switch.engine_heater_erik
+            name: Status
+
+  # Säkerhet - Här använder vi dina nyligen uppdaterade dörrsensorer
+  - icon: mdi:security-home
+    title: Säkerhet
+    id: security
+    cards:
+      - type: glance
+        title: Status: Dörrar
+        entities:
+          - entity: sensor.front_door
+            name: Framsidan
+          - entity: sensor.side_door
+            name: Groventré
+          - entity: sensor.patio_door
+            name: Altanen
+          - entity: sensor.bathroomdoor
+            name: Badrum
+      
+      - type: alarm-panel
+        entity: alarm_control_panel.ha_alarm
+
+  # Kameror - (Rensad då många flaggades som "unavail" eller "missing")
+  - icon: mdi:cctv
+    title: Kameror
+    cards:
+      - type: picture-glance
+        camera_image: camera.livingroom
+        title: Vardagsrum
+        entities:
+          - light.livingroom_ambient_lights
+      # Om de andra kamerorna (kök, kontor, sovrum) fungerar igen 
+      # kan de läggas till här med sina korrekta entity_id.

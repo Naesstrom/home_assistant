@@ -1,0 +1,20 @@
+- alias: 'Lamp: Turn on at sun set'
+  id: 4m7qLjpR9zMvVDPtKeXCES
+  initial_state: true
+  trigger:
+#    platform: template
+#    value_template: "{ ( (now().hour >= 9) and (now().hour < 18) ) and (states.sun.sun.attributes.elevation|float < 5) or (states('sensor.weather_cloudiness')|float > 25) }"
+    platform: sun
+    event: sunset
+    offset: '-00:45:00'
+
+  action:
+  - service: switch.turn_on
+    entity_id:
+      - switch.vagglampa
+      - switch.skapsbelysning
+  - service: scene.turn_on
+    entity_id: scene.livingroom_normal
+  - service: light.turn_on
+    entity_id:
+      - light.blomlampa

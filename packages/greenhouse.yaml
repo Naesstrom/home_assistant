@@ -1,0 +1,64 @@
+### Work in progress ###
+
+### great thread for inspiration: https://community.home-assistant.io/t/garden-irrigation/1950/190
+
+input_boolean:
+  water_greenhouse:
+    name: Watering Greenhouse
+    initial: on
+    icon: mdi:water-pump
+
+######################################################################
+##  Switches in the Greenhouse
+######################################################################
+mqtt:
+  switch:
+    - name: "Waterbed 1"
+      state_topic: "/greenhouse/water_1/switch"
+      command_topic: "/greenhouse/gpio/0"
+      payload_on: "0"
+      payload_off: "1"
+      optimistic: true
+      qos: 0
+
+    - name: "Waterbed 2"
+      state_topic: "/greenhouse/water_2/switch"
+      command_topic: "/greenhouse/gpio/14"
+      payload_on: "0"
+      payload_off: "1"
+      optimistic: true
+      qos: 0
+
+    - name: "Waterbed 3"
+      state_topic: "/greenhouse/water_3/switch"
+      command_topic: "/greenhouse/gpio/12"
+      payload_on: "0"
+      payload_off: "1"
+      optimistic: true
+      qos: 0
+      
+    - name: "Waterbed 4"
+      state_topic: "/greenhouse/water_4/switch"
+      command_topic: "/greenhouse/gpio/13"
+      payload_on: "0"
+      payload_off: "1"
+      optimistic: true
+      qos: 0
+
+automation:
+  - alias: Time to water beds
+    id: tvCJhjqZTEs8PgkfSpaBxw
+    trigger:
+    - platform: time
+      at: '19:00:00'
+    condition:
+    - condition: state
+      entity_id: input_boolean.water_greenhouse
+      state: 'off'
+      for:
+        hours: 47
+    action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.water_greenhouse
+    - service: script.turn_on
+      entity_id: script.water_greenhouse

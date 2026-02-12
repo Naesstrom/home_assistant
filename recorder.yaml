@@ -1,0 +1,44 @@
+############################################################
+# recorder
+############################################################
+#db_url: sqlite:///data/home-assistant_v2.db
+#purge_interval: 7
+#purge_keep_days: 7
+db_url: !secret db_url
+include:
+  domains:
+    - sensor
+    - switch
+    - media_player
+    - device_tracker
+    - weather
+    - binary_sensor
+  entities:
+    - automation.engine_heater_activate_erik
+    - automation.engine_heater_activate_sussa
+    - automation.engine_heater_deactivate_erik
+    - automation.engine_heater_deactivate_sussa
+    - light.kontoret
+    - person.erik_presence
+    - person.sussa_presence
+    - person.erik_xz2
+    - device_tracker.galaxy_s9
+    - device_tracker.galaxy_s9_bt
+    - device_tracker.google_maps_110812454925350234140
+    - device_tracker.google_maps_114557479077035215629
+    - sensor.house_energy_usage_cost
+#  entities:
+#    - device_tracker.google_maps_110812454925350234140
+#    - device_tracker.google_maps_114557479077035215629
+exclude:
+  domains:
+    - device_tracker
+  entities:
+    - sensor.last_boot
+    - sensor.date
+    - sensor.radarr_movies
+    - sensor.time
+    - sensor.time_date
+    - sensor.time_home
+    - sensor.time_work
+    - sensor.time_utc

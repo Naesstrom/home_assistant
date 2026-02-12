@@ -1,0 +1,66 @@
+template:
+  - sensor:
+      - name: "Sunrise today"
+        unique_id: 9K5KSePnPmtsk5B368L7
+        state: "{{ state_attr('sensor.sunrise', 'today') }}"
+
+      - name: "Sunrise tomorrow"
+        unique_id: hp7U7EKM7YMRRWfzszRv
+        state: "{{ state_attr('sensor.sunrise', 'tomorrow') }}"
+
+      - name: "Sunset today"
+        unique_id: mmrg4UZZhcYEKHqq28aq
+        state: "{{ state_attr('sensor.sunset', 'today') }}"
+
+      - name: "Sunset tomorrow"
+        unique_id: F296VMe2HuM94PMpBxeT
+        state: "{{ state_attr('sensor.sunset', 'tomorrow') }}"
+
+      - name: "Daylight today"
+        unique_id: sRn8W5QSLaHKkq5mmZxx
+        state: >-
+          {{ state_attr('sensor.sunset', 'today') - state_attr('sensor.sunrise', 'today') }}
+
+      - name: "Daylight tomorrow"
+        unique_id: Xkmsvv9sjj8RQebp686V
+        state: >-
+          {{ state_attr('sensor.sunset', 'tomorrow') - state_attr('sensor.sunrise', 'tomorrow') }}
+
+      - name: "Daylight change"
+        unique_id: DTVLtRD58scctyeGEE9R
+        state: >-
+          {% set today = state_attr('sensor.sunset', 'today') - state_attr('sensor.sunrise', 'today') %}
+          {% set tomorrow = state_attr('sensor.sunset', 'tomorrow') - state_attr('sensor.sunrise', 'tomorrow') %}
+          {{ tomorrow - today }}
+           
+  # - platform: sun2
+  #   monitored_conditions:
+  #     - solar_midnight
+  #     - astronomical_dawn
+  #     - nautical_dawn
+  #     - dawn
+  #     - sunrise
+  #     - solar_noon
+  #     - sunset
+  #     - dusk
+  #     - nautical_dusk
+  #     - astronomical_dusk
+  #     - daylight
+  #     - civil_daylight
+  #     - nautical_daylight
+  #     - astronomical_daylight
+  #     - night
+  #     - civil_night
+  #     - nautical_night
+  #     - astronomical_night
+  #     - elevation
+  #     - min_elevation
+  #     - max_elevation
+# binary_sensor:
+#  - platform: sun2
+#    monitored_conditions:
+#      - elevation
+#      - elevation: 3
+#      - elevation:
+#          above: -6
+#          name: Above Civil Dawn

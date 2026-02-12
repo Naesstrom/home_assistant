@@ -1,0 +1,16 @@
+homeassistant:
+  customize:
+    #### Varmvattenberedare ####
+    sensor.c3_battery_voltage:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      state_class: measurement
+
+mqtt:
+  sensor:
+    - name: "C3 battery voltage"
+      state_topic: "c3_battery_voltage/sensor/c3_voltage/state"
+      unit_of_measurement: "V"
+      device_class: voltage
+      qos: 2
+      payload_available: "online"
+      payload_not_available: "offline"

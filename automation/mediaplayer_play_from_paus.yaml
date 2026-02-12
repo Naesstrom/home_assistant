@@ -1,0 +1,19 @@
+  - alias: "Media player playing from Paused"
+    id: 2n8bw4dJzkQrGeNB69sMfR
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: media_player.vardagsrum_2
+        to: 'playing'
+        from: 'paused'
+      - platform: state
+        entity_id: media_player.livingroom_tv
+        from: 'playing'
+        to: 'idle'
+    condition:
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
+    action:
+        service: scene.turn_on
+        entity_id: scene.livingroom_dim

@@ -1,0 +1,12 @@
+  - alias: 'record cumulative rain to midnight'
+    id: 2B4ETb9UztuxyAGqFav7J5
+    initial_state: true
+    trigger:
+      - platform: time
+        at: "00:00:01"
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'hass/cum_rain_prior'
+        retain: true
+        payload: '{"day_1":"{{states.sensor.rain_cum.state}}"}'

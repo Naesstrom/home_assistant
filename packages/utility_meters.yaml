@@ -1,0 +1,7 @@
+utility_meter:
+  daily_energy:
+    source: sensor.sparsnas_energy_consumption_momentary_3
+    cycle: daily
+  monthly_energy:
+    source: sensor.sparsnas_energy_consumption_momentary_3
+    cycle: monthly

@@ -1,0 +1,75 @@
+blueprint:
+  name: Include and exclude dates
+  description: "This automation is triggered from the `garbage_collection` integration\
+    \ by event `garbage_collection_loaded`, during the device state update. \nIt PROCESSES\
+    \ DATA SENT WITH THE EVENT, and then FINISHES THE UPDATE. DO NOT CALL THIS SERVICE\
+    \ MANUALLY, IT WON'T WORK (it won't have the data).\nAlso, make sure the INTEGRATION\
+    \ IS CONFIGURED FOR `manual_update` (that will disable the state update by the\
+    \ integration and pass it to this automation).\n\nIt removes events on provided\
+    \ set of dates. Then, adds events on set of additional collection dates. Enter\
+    \ one date per line. For example:\n2022-01-03\n2022-04-04\n2022-07-04\n2022-10-03\n\
+    \nAfter updating the list, make sure to trigger the entity update.  The sensors\
+    \ are normally updated once a day, or when Home Assistant starts. The update can\
+    \ be triggered by updating the integration configuration (just hit configure and\
+    \ submit)."
+  domain: automation
+  source_url: https://github.com/bruxy70/Garbage-Collection/blob/master/blueprints/include_exclude.yaml
+  input:
+    garbage_collection_entity:
+      name: Garbage Collection Entity
+      description: Triggered by the event for this entity.
+      selector:
+        entity:
+          integration: garbage_collection
+    exclude:
+      name: Set of dates to exclude
+      description: List of dates in format yyyy-mm-dd, one date per line.
+      selector:
+        text:
+          multiline: true
+    include:
+      name: Set of dates to include
+      description: List of dates in format yyyy-mm-dd, one date per line.
+      selector:
+        text:
+          multiline: true
+mode: parallel
+trigger:
+- platform: event
+  event_type: garbage_collection_loaded
+  event_data:
+    entity_id: !input 'garbage_collection_entity'
+action:
+- variables:
+    exclude: !input 'exclude'
+    include: !input 'include'
+- alias: Iterate through the lines to exclude
+  repeat:
+    count: '{{ exclude.split(''
+
+      '') | count }}'
+    sequence:
+    - alias: Remove the date
+      service: garbage_collection.remove_date
+      data:
+        entity_id: '{{ trigger.event.data.entity_id }}'
+        date: '{{ exclude.split(''
+
+          '')[repeat.index-1] }}'
+- alias: Iterate through the lines to include
+  repeat:
+    count: '{{ include.split(''
+
+      '') | count }}'
+    sequence:
+    - alias: Add the date
+      service: garbage_collection.add_date
+      data:
+        entity_id: '{{ trigger.event.data.entity_id }}'
+        date: '{{ include.split(''
+
+          '')[repeat.index-1] }}'
+- alias: Update the garbage_collection entity
+  service: garbage_collection.update_state
+  data:
+    entity_id: '{{ trigger.event.data.entity_id }}'

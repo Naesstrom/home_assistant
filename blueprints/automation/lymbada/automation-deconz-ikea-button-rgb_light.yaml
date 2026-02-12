@@ -1,0 +1,127 @@
+blueprint:
+  name: DeconZ Ikea Button RGB Light
+  description: "Interface an Ikea Zigbee Button switch via DeconZ to provide simple
+    control of light(s) with RGB Lightoff:\n    - short press = turn off\n    - long
+    (hold) = cycle through the Hue (of HSV) of the light. (~10.8sec for full cycle)\nLighton:\n
+    \   - shor press = turn on\n    - long (hold) = slowly raise the brightness up
+    (until the value you desire or 100%)\n"
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: The Ikea Button remote control from Deconz
+      selector:
+        device:
+          integration: deconz
+          manufacturer: IKEA of Sweden
+          model: TRADFRI SHORTCUT Button
+          multiple: false
+    light:
+      name: Light
+      description: The RGB light(s) that will be controlled
+      selector:
+        target:
+          entity:
+          - domain:
+            - light
+    saturation:
+      name: Saturation
+      description: The Saturation (whiteness) value to be applied when cycling Hue
+        (colour)
+      selector:
+        number:
+          min: 10.0
+          max: 100.0
+          step: 1.0
+          unit_of_measurement: '%'
+          mode: slider
+  source_url: https://gist.github.com/lymbada/aff74b97d01f1a567bdebf13710d4a92
+mode: restart
+trigger:
+- platform: event
+  event_type: deconz_event
+  event_data:
+    device_id: !input remote
+variables:
+  lights: !input light
+action:
+- variables:
+    event: '{{ trigger.event.data.event }}'
+- service: system_log.write
+  data:
+    level: warning
+    message: ' {{lights}} {{lights.entity_id[0]}} That was the Lights (up) #######################
+      Current Colour: {% if is_state(lights.entity_id[0],"on")%}{{(state_attr(lights.entity_id[0],"hs_color")[0]
+      + 10) % 360}}{% endif %} ####################### '
+    logger: automations.log
+- if:
+  - condition: template
+    value_template: '{{is_state(lights.entity_id[0],''off'')}}
+
+      '
+  then:
+  - choose:
+    - conditions:
+      - '{{ event == 1002 }}'
+      sequence:
+      - service: light.turn_on
+        target: !input light
+        data:
+          transition: 1
+    - conditions:
+      - '{{ event == 1001 }}'
+      sequence:
+        repeat:
+          while:
+          - condition: template
+            value_template: '{{ repeat.index < 10 }}'
+          sequence:
+          - service: light.turn_on
+            target: !input light
+            data:
+              transition: 1
+              brightness_step_pct: 10
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 297
+    - conditions:
+      - '{{ event == 1003 }}'
+      sequence:
+      - service: light.turn_on
+        target: !input light
+  else:
+  - choose:
+    - conditions:
+      - '{{ event == 1002 }}'
+      sequence:
+      - service: light.turn_off
+        target: !input light
+        data:
+          transition: 1
+    - conditions:
+      - '{{ event == 1001 }}'
+      sequence:
+        repeat:
+          while:
+          - condition: template
+            value_template: '{{ is_state(lights.entity_id[0],"on") }}'
+          sequence:
+          - service: light.turn_on
+            target: !input light
+            data:
+              hs_color:
+              - '{{  (state_attr(lights.entity_id[0],"hs_color")[0] + 10) % 360}}'
+              - !input saturation
+              transition: 0.28
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 297
+    - conditions:
+      - '{{ event == 1003 }}'
+      sequence:
+      - service: light.turn_on
+        target: !input light

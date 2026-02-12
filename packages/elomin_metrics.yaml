@@ -1,0 +1,245 @@
+# packages/elomin_metrics.yaml
+template:
+  - sensor:
+      # --- VVB total effekt (W) från 3 faser ---
+      - name: "Elomin VVB total power"
+        unique_id: elomin_vvb_total_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {{ (states('sensor.elomin_vvb_phase_a_active_power')|float(0))
+           + (states('sensor.elomin_vvb_phase_b_active_power')|float(0))
+           + (states('sensor.elomin_vvb_phase_c_active_power')|float(0)) }}
+
+      # --- Panna total effekt (W) från 3EM fas A/B/C ---
+      - name: "Elomin total power"
+        unique_id: elomin_total_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {{ (states('sensor.elomin_channel_a_power')|float(0))
+           + (states('sensor.elomin_channel_b_power')|float(0))
+           + (states('sensor.elomin_channel_c_power')|float(0)) }}
+
+      # --- Cirkulationspumpens effekt (W) ---
+      - name: "Elomin Pump power"
+        unique_id: elomin_pump_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {{ states('sensor.cirkulationspump_power')|float(0) }}
+
+      # --- Radiatorernas effekt (W) = Panna total - VVB - Pump ---
+      - name: "Elomin Radiator power"
+        unique_id: elomin_radiator_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        availability: >
+          {{ states('sensor.elomin_total_power') not in ['unavailable','unknown']
+             and states('sensor.elomin_vvb_total_power') not in ['unavailable','unknown']
+             and states('sensor.cirkulationspump_power') not in ['unavailable','unknown'] }}
+        state: >
+          {% set elomin = states('sensor.elomin_total_power')|float(0) %}
+          {% set vvb    = states('sensor.elomin_vvb_total_power')|float(0) %}
+          {% set pump   = states('sensor.cirkulationspump_power')|float(0) %}
+          {{ [elomin - vvb - pump, 0]|max }}
+
+      # --- Strömbalans % (från 3EM-strömmar) ---
+      - name: "Elomin Strömbalans %"
+        unique_id: elomin_stromb_alans_pct
+        unit_of_measurement: "%"
+        state_class: measurement
+        icon: mdi:current-ac
+        state: >
+          {% set ia = states('sensor.elomin_channel_a_current')|float(0) %}
+          {% set ib = states('sensor.elomin_channel_b_current')|float(0) %}
+          {% set ic = states('sensor.elomin_channel_c_current')|float(0) %}
+          {% set avg = (ia + ib + ic) / 3 %}
+          {% if avg <= 0 %}
+            0
+          {% else %}
+            {{ (( [ia,ib,ic]|max - [ia,ib,ic]|min ) / avg * 100 )|round(1) }}
+          {% endif %}
+
+      # --- Panna total energi (kWh) från 3EM fas A/B/C ---
+      - name: "Elomin total active energy"
+        unique_id: elomin_total_active_energy
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        state: >
+          {% set ua = state_attr('sensor.elomin_channel_a_energy','unit_of_measurement') %}
+          {% set factor = 0.001 if ua in ['Wh','wh'] else 1 %}
+          {% set a = states('sensor.elomin_channel_a_energy')|float(0) %}
+          {% set b = states('sensor.elomin_channel_b_energy')|float(0) %}
+          {% set c = states('sensor.elomin_channel_c_energy')|float(0) %}
+          {{ ((a + b + c) * factor) | round(3) }}
+
+      # Golvvärme
+      # Säker ΔT om du vill visa även när någon givare saknas
+      - name: "Golvvärme ΔT (säkert)"
+        unique_id: golvvarme_dt_safe
+        unit_of_measurement: "°C"
+        state_class: measurement
+        device_class: temperature
+        state: >
+          {% set f = states('sensor.golvvarme_framledning') | float(0) %}
+          {% set r = states('sensor.golvvarme_retur') | float(0) %}
+          {{ (f - r) | round(1) }}
+
+      - name: "Golvvarme Aktiv (0/1)"
+        unique_id: golvvarme_active_01
+        unit_of_measurement: "1"
+        state_class: measurement
+        state: >
+          {{ 1 if is_state('binary_sensor.golvvarme_golvvarme_aktiv','on') else 0 }}
+
+  - binary_sensor:
+      - name: "Elomin Panna igång (text)"
+        unique_id: elomin_panna_igang_text
+        device_class: power
+        state: >
+          {{ (states('sensor.elomin_total_power')|float(0)) > 1000 }}
+        icon: >
+          {% if (states('sensor.elomin_total_power')|float(0)) > 1000 %}
+            mdi:fire
+          {% else %}
+            mdi:power
+          {% endif %}
+
+      - name: "Elomin låglast"
+        unique_id: elomin_laglast
+        state: >
+          {{ (states('sensor.elomin_total_power')|float(0)) < 200 }}
+
+      #Golvvärme
+      # "Aktiv" – exponera som binary om din ESPhome inte redan gör det exakt så här
+      - name: "Golvvärme Aktiv"
+        unique_id: golvvarme_aktiv_bin
+        device_class: heat
+        state: "{{ is_state('binary_sensor.golvvarme_golvvarme_aktiv','on') }}"
+
+# --- Energi från radiator-effekt (integral) ---
+sensor:
+  - platform: integration
+    name: "Elomin Radiator energi"
+    unique_id: elomin_radiator_energy
+    source: sensor.elomin_radiator_power
+    unit_prefix: k
+    round: 3
+    method: trapezoidal
+    unit_time: h
+
+  # --- NYTT: Drifttid per steg (0-7) senaste 24h ---
+  # Använder din nya sensor: sensor.elomin_panna_elomin_effektsteg_0_7
+  - platform: history_stats
+    name: "Elomin Steg 0 Tid"
+    entity_id: sensor.elomin_panna_elomin_effektsteg_0_7
+    state: "0"
+    type: time
+    start: "{{ now() - timedelta(hours=24) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: "Elomin Steg 1 Tid"
+    entity_id: sensor.elomin_panna_elomin_effektsteg_0_7
+    state: "1"
+    type: time
+    start: "{{ now() - timedelta(hours=24) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: "Elomin Steg 2 Tid"
+    entity_id: sensor.elomin_panna_elomin_effektsteg_0_7
+    state: "2"
+    type: time
+    start: "{{ now() - timedelta(hours=24) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: "Elomin Steg 3 Tid"
+    entity_id: sensor.elomin_panna_elomin_effektsteg_0_7
+    state: "3"
+    type: time
+    start: "{{ now() - timedelta(hours=24) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: "Elomin Steg 4 Tid"
+    entity_id: sensor.elomin_panna_elomin_effektsteg_0_7
+    state: "4"
+    type: time
+    start: "{{ now() - timedelta(hours=24) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: "Elomin Steg 5 Tid"
+    entity_id: sensor.elomin_panna_elomin_effektsteg_0_7
+    state: "5"
+    type: time
+    start: "{{ now() - timedelta(hours=24) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: "Elomin Steg 6 Tid"
+    entity_id: sensor.elomin_panna_elomin_effektsteg_0_7
+    state: "6"
+    type: time
+    start: "{{ now() - timedelta(hours=24) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: "Elomin Steg 7 Tid"
+    entity_id: sensor.elomin_panna_elomin_effektsteg_0_7
+    state: "7"
+    type: time
+    start: "{{ now() - timedelta(hours=24) }}"
+    end: "{{ now() }}"
+
+# --- Utility meters (dag/månad) ---
+utility_meter:
+  # VVB – använder Shellys kWh-sensor direkt
+  elomin_vvb_daglig:
+    name: "Elomin: VVB Daglig"
+    source: sensor.elomin_vvb_total_active_energy
+    cycle: daily
+  elomin_vvb_manad:
+    name: "Elomin: VVB Månad"
+    source: sensor.elomin_vvb_total_active_energy
+    cycle: monthly
+
+  # Radiator – från integrerad energi ovan
+  elomin_radiator_energi_dag:
+    name: "Elomin Radiator energi dag"
+    source: sensor.elomin_radiator_energi
+    cycle: daily
+  elomin_radiator_energi_manad:
+    name: "Elomin Radiator energi månad"
+    source: sensor.elomin_radiator_energi
+    cycle: monthly
+
+  # Panna totalt – från summerad kWh
+  elomin_daglig:
+    name: "Elomin: Daglig"
+    source: sensor.elomin_total_active_energy
+    cycle: daily
+  elomin_manad:
+    name: "Elomin: Månad"
+    source: sensor.elomin_total_active_energy
+    cycle: monthly
+
+  # Om din ESPhome-sensor "sensor.golvvarme_drifttid" är total timmar sedan midnatt – hoppa över utility_meter.
+  # Om den är kumulativ – använd dessa för dygn/vecka/månad.
+  golvvarme_drifttid_dag:
+    source: sensor.golvvarme_drifttid
+    cycle: daily
+  golvvarme_drifttid_vecka:
+    source: sensor.golvvarme_drifttid
+    cycle: weekly
+  golvvarme_drifttid_manad:
+    source: sensor.golvvarme_drifttid
+    cycle: monthly

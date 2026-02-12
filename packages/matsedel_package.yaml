@@ -1,0 +1,51 @@
+homeassistant:
+  customize:
+    sensor.matsedel_mandag:
+      friendly_name: "Måndag"
+      icon: mdi:silverware-fork-knife
+    sensor.matsedel_tisdag:
+      friendly_name: "Tisdag"
+      icon: mdi:silverware-fork-knife
+    sensor.matsedel_onsdag:
+      friendly_name: "Onsdag"
+      icon: mdi:silverware-fork-knife
+    sensor.matsedel_torsdag:
+      friendly_name: "Torsdag"
+      icon: mdi:silverware-fork-knife
+    sensor.matsedel_fredag:
+      friendly_name: "Fredag"
+      icon: mdi:silverware-fork-knife
+    sensor.matsedel_lordag:
+      friendly_name: "Lördag"
+      icon: mdi:silverware-fork-knife
+    sensor.matsedel_sondag:
+      friendly_name: "Söndag"
+      icon: mdi:silverware-fork-knife
+
+mqtt:
+  sensor:
+    - name: "Matsedel: Måndag"
+      state_topic: "/matsedel/monday"
+
+    - name: "Matsedel: Tisdag"
+      state_topic: "/matsedel/tuesday"
+
+    - name: "Matsedel: Onsdag"
+      state_topic: "/matsedel/wednesday"
+
+    - name: "Matsedel: Torsdag"
+      state_topic: "/matsedel/thursday"
+
+    - name: "Matsedel: Fredag"
+      state_topic: "/matsedel/friday"
+
+    - name: "Matsedel: Lördag"
+      state_topic: "/matsedel/saturday"
+
+    - name: "Matsedel: Söndag"
+      state_topic: "/matsedel/sunday"
+
+#  - platform: rest
+#    resource: https://spreadsheets.google.com/feeds/list/1cEHjlTG8j4QpMZU6bAmqlf11e3vj7bh9hL5cNgHPoU4/default/public/values?alt=json
+#    name: "Matsedel"
+#    value_template: '{{ value_json.feed.entry[2].content }}'

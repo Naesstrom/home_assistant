@@ -1,0 +1,71 @@
+#########################################
+# Track chores in Grocy by scanning NFC tags
+#
+# Source code and guide here: 
+# https://leonardosmarthomemakers.com/how-to-track-chores-in-home-assistant-with-grocy-and-nfc-tags/
+#
+#########################################
+
+# Add sensors for each chore here, replace IP and chore number accordingly
+sensor:
+- platform: rest
+  name: Bathroom Cleaning
+  resource: http://192.168.1.119:9091/api/chores/1
+  method: GET
+  value_template: '{{ (((as_timestamp(value_json.next_estimated_execution_time))-as_timestamp(value_json.last_tracked)) | int /60/1440) | round(0) }}'
+  json_attributes:
+    - last_tracked
+    - estimated_execution_time
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    GROCY-API-KEY: !secret grocy_api
+  unit_of_measurement: 'Days'
+  
+  
+- platform: rest
+  name: Ensuite Cleaning
+  resource: http://192.168.1.119:9091/api/chores/2
+  method: GET
+  value_template: '{{ (((as_timestamp(value_json.next_estimated_execution_time))-as_timestamp(value_json.last_tracked)) | int /60/1440) | round(0) }}'
+  json_attributes:
+    - last_tracked
+    - estimated_execution_time
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    GROCY-API-KEY: !secret grocy_api
+  unit_of_measurement: 'Days'
+
+
+
+#Automations to track the chores done, replace "tag_id" with correct tag and replace "chore_id" at the bottom  
+automation:
+  id: jJb3nvPSzXrVkHyNfU9DaF
+  alias: Track Bathroom Cleaning
+  trigger:
+   - platform: tag
+     tag_id: 712f273f-2937-4a7b-91a8-f6b04b71a654
+  action:
+   - service: shell_command.grocy_track_chore
+     data:
+       grocy_key: !secret grocy_api
+       chore_id: 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+shell_command:
+  grocy_track_chore: "curl -X POST http://192.168.1.119:9091/api/chores/{{chore_id}}/execute -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'GROCY-API-KEY: {{grocy_key}}' -H 'cache-control: no-cache' -d '{ \"tracked_time\": {{tracked_time}},  \"done_by\": 0 }'" 

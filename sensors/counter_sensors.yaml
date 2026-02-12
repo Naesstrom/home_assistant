@@ -1,0 +1,71 @@
+- platform: history_stats
+  name: Side door opens today
+  entity_id: sensor.side_door
+  state: "Open"
+  type: count
+  start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Patio door opens today
+  entity_id: sensor.patio_door
+  state: "Open"
+  type: count
+  start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+  end: "{{ now() }}"
+
+### Door open time###
+
+- platform: history_stats
+  name: Side door open time today
+  entity_id: sensor.side_door
+  state: "Open"
+  type: time
+  start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Patio door open time today
+  entity_id: sensor.patio_door
+  state: "Open"
+  type: time
+  start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+  end: "{{ now() }}"
+
+### At work counter###
+
+- platform: history_stats
+  name: Erik at work (week)
+  entity_id: person.erik_presence
+  state: "ProCivitas"
+  type: time
+  start: "{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Sussa at work (week)
+  entity_id: person.sussa_presence
+  state: "Ljungfälle"
+  type: time
+  start: "{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Attic movement
+  entity_id: binary_sensor.attic_motion
+  state: "On"
+  type: count
+  start: "{{ 0 }}"
+  end: "{{ now() }}"
+
+### Average temperature
+
+- platform: average
+  unique_id: 12389712y5023857+28ut
+  name: "Average outside temperature"
+  end: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+  duration:
+    hours: 24
+  entities:
+    - sensor.netatmo_katrinelund_ute_temperature
+    - sensor.lumi_lumi_weather_2899d702_temperature

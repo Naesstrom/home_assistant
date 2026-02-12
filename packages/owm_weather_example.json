@@ -1,0 +1,42 @@
+{
+    "coord": {
+        "lon": -105.27,
+        "lat": 40.02
+    },
+    "weather": [
+        {
+            "id": 800,
+            "main": "Clear",
+            "description": "clear sky",
+            "icon": "01n"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 275.15,
+        "pressure": 1015,
+        "humidity": 38,
+        "temp_min": 268.95,
+        "temp_max": 279.15
+    },
+    "visibility": 16093,
+    "wind": {
+        "speed": 1.5,
+        "deg": 160
+    },
+    "clouds": {
+        "all": 1
+    },
+    "dt": 1547729640,
+    "sys": {
+        "type": 1,
+        "id": 3406,
+        "message": 0.0035,
+        "country": "US",
+        "sunrise": 1547734803,
+        "sunset": 1547769779
+    },
+    "id": 420005994,
+    "name": "Boulder",
+    "cod": 200
+}

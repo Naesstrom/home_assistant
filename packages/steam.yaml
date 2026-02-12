@@ -1,0 +1,6 @@
+#sensor:
+#  - platform: steam_online
+#    api_key: !secret steam_key
+#    accounts:
+#      - 76561198003750218
+#      - 76561198126756526

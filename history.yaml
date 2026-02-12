@@ -1,0 +1,27 @@
+include:
+  domains:
+    - media_player
+    - light
+  entities:
+    - person.erik_presence
+    - person.sussa_presence
+    - person.erik_xz2
+    - device_tracker.galaxy_s9
+    - device_tracker.galaxy_s9_bt
+    - device_tracker.google_maps_110812454925350234140
+    - device_tracker.google_maps_114557479077035215629
+    - sensor.attic_temperature
+    - sensor.bathroom_temperature
+    - sensor.bedroom_temperature_2
+    - sensor.kitchen_temperature_2
+    - sensor.livingroom_temperature
+    - sensor.office_temperature
+    - switch.brevladan
+    - binary_sensor.pool_heating
+    - binary_sensor.pool_on
+    - sensor.pool_temp
+    - switch.pool_heating
+#  exclude:
+#    entities:
+#    domains:
+#     - device_tracker

@@ -1,0 +1,13 @@
+- alias: Update notifications
+  id: wjt2kSvfPm7JuTUGD8bWne
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: updater.updater
+  action:
+    service: notify.discord
+    data_template:
+      title: "New Home Assistant Release"
+      target:
+        - channel/katrinelund
+      message: "Home Assistant  {{ states.updater.updater.state }}  is now available."

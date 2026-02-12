@@ -1,0 +1,12 @@
+  - platform: rest
+    resource: https://henrikhjelm.se/api/getdata.php?lan=kronobergs-lan
+    name: "Ingo Vaxjo 95"
+    value_template: '{{ value_json.kronobergslan_Ingo_VaxjoSoderleden_2__95 | float }}'
+    unit_of_measurement: 'kr'
+    scan_interval: 1800
+  - platform: rest
+    resource: https://henrikhjelm.se/api/getdata.php?lan=kronobergs-lan
+    name: "Ingo Vaxjo D"
+    value_template: '{{ value_json.kronobergslan_Ingo_VaxjoSoderleden_2__diesel | float }}'
+    unit_of_measurement: 'kr'
+    scan_interval: 1800

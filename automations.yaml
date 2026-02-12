@@ -1,0 +1,787 @@
+- id: "1616617898338"
+  alias: Send image to phone
+  description: ""
+  use_blueprint:
+    path: seamus65/doorbell-notify-google-and-send-camera-snapshot-to-app.yaml
+    input:
+      notification_message: There is Somebody at the Door!
+      doorbell: binary_sensor.front_door
+      google_device: media_player.office
+      camera: camera.frontdoor_inside
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+      delay: 3
+- id: "1624900702934"
+  alias: Good Night
+  description: ""
+  use_blueprint:
+    path: Naesstrom/shortcut.yaml
+    input:
+      remote: 8dbda7739b4c05b5812336df7c9abf93
+      button_short:
+        - service: light.turn_off
+          target:
+            area_id:
+              - ef4fd8db44084cc0b56e620626a35c42
+              - 3268fd27479540fcaf85e57bedae1963
+              - b750b95e207c4483a234487ffe3f4f27
+              - d9c6b525a18a47dfad1fcaa2ece580cf
+              - 5b10d6ee69c64633ac215b640977076f
+- id: "1637086684780"
+  alias: Sängbordet
+  description: ""
+  use_blueprint:
+    path: SeanM/zha-aqara-wireless-mini-switch.yaml
+    input:
+      aqara_mini_switch: de44de47fd9901bcc1ee9b66136be8f9
+      button_single_press:
+        - service: light.turn_off
+          entity_id: all
+        - service: media_player.media_stop
+          entity_id: all
+      button_double_press:
+        - service: light.turn_on
+          data:
+            brightness: 1
+            color_name: wheat
+          target:
+            area_id: b750b95e207c4483a234487ffe3f4f27
+- id: "1637166398940"
+  alias: ZHA - Aqara Wireless Mini Switch
+  description: ""
+  use_blueprint:
+    path: SeanM/zha-aqara-wireless-mini-switch.yaml
+    input:
+      aqara_mini_switch: 44c63fb46be00c72e2b60de3d6f5b437
+      button_single_press:
+        - service: light.toggle
+          target:
+            area_id: b750b95e207c4483a234487ffe3f4f27
+- id: "1638180123716"
+  alias: "Motion: Hundgård"
+  description: ""
+  use_blueprint:
+    path: vorion/send-camera-snapshot-notification-on-motion.yaml
+    input:
+      notification_message: "{{ motion_sensor_name }} detected movement!"
+      motion_sensor: binary_sensor.hundgard_motion
+      camera: camera.hundgard_hd
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+- id: "1638180292686"
+  alias: "motion: hundgård 2"
+  description: ""
+  use_blueprint:
+    path: vorion/send-camera-snapshot-notification-on-motion.yaml
+    input:
+      motion_sensor: binary_sensor.hundgard_motion
+      camera: camera.hundgard_sd
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+      notification_message: "{{ motion_sensor_name }} detected movement!"
+      delay: 1
+- id: "1638180551672"
+  alias: Hundgård_2
+  description: ""
+  use_blueprint:
+    path: Naesstrom/send_camera_snapshot.yaml
+    input:
+      notification_message: "{{ motion_sensor_name }} detected movement!"
+      motion_sensor: binary_sensor.hundgard_motion
+      camera: camera.hundgard_hd
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+      delay: 3
+- id: "1643571142840"
+  alias: Mailbox till telefon
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: switch.brevladan
+      from: "off"
+      to: "on"
+  condition: []
+  action:
+    - service: notify.all
+      data:
+        message: Brevlådan öppnades
+  mode: single
+- id: "1647264208679"
+  alias: Brevlådan
+  description: ""
+  trigger:
+    - platform: zone
+      entity_id: person.erik
+      zone: zone.home
+      event: enter
+  condition:
+    - condition: state
+      entity_id: sensor.postnord_delivery_35575
+      attribute: days_left
+      state: "0"
+  action:
+    - service: notify.all
+      data:
+        message: Glöm inte att kolla posten!
+        title: Brevlåda
+  mode: single
+- id: "1648581400860"
+  alias: "Motion: Groventre"
+  description: ""
+  use_blueprint:
+    path: seamus65/doorbell-notify-google-and-send-camera-snapshot-to-app.yaml
+    input:
+      doorbell: binary_sensor.side_door
+      google_device: media_player.rasplex_2
+      camera: camera.hall
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+      delay: 2
+      notification_title: Groventre öppnades
+      message: " "
+- id: "1648582299735"
+  alias: Low battery level detection & notification for all battery sensors
+  description: ""
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      actions:
+        - service: notify.all
+          data:
+            message: "Low battery warning for: {{sensors}}"
+      exclude:
+        entity_id: []
+- id: "1649335259778"
+  alias: Cam Away
+  description: ""
+  use_blueprint:
+    path: Naesstrom/camera_snap_away.yaml
+    input:
+      motion_sensor: binary_sensor.lumi_lumi_sensor_motion_aq2_6f644604_ias_zone
+      camera: camera.hall
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+      notification_message: "{{ motion_sensor_name }} detected movement! (awau)"
+      delay: 2
+- id: "1649336798452"
+  alias: New Automation
+  description: ""
+  use_blueprint:
+    path: Naesstrom/camera_snap_away.yaml
+    input:
+      motion_sensor: sensor.front_door
+      camera: camera.frontdoor_inside
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+      delay: 3
+- id: "1649600108165"
+  alias: Nybygget varje timme
+  description: ""
+  trigger:
+    - platform: time_pattern
+      hours: "1"
+  condition: []
+  action:
+    - service: camera.snapshot
+      data:
+        filename: /config/www/nybygget.jpg
+      target:
+        entity_id:
+          - camera.nybygget_sd
+  mode: single
+- id: "1649605604556"
+  alias: Nybygget Timelapse
+  description: ""
+  trigger:
+    - platform: time_pattern
+      hours: /1
+      minutes: /30
+      seconds: "0"
+  condition: []
+  action:
+    - service: camera.snapshot
+      data:
+        filename:
+          /config/www/timelapse/nybygget_{{ now().strftime("%Y%m%d-%H%M%S")
+          }}.jpg
+      target:
+        entity_id:
+          - camera.nybygget_sd
+- id: "1649870195292"
+  alias: Unlock front door
+  description: ""
+  trigger:
+    - type: turned_on
+      platform: device
+      device_id: 3daa94438c2364a445dffc38896b97f8
+      entity_id: binary_sensor.door_pushbutton
+      domain: binary_sensor
+  condition: []
+  action:
+    - service: lock.unlock
+      data: {}
+      target:
+        entity_id:
+          - lock.front_door
+  mode: single
+- id: "1649872692146"
+  alias: "Doorbell: Någon ringer på dörren"
+  description: ""
+  use_blueprint:
+    path: seamus65/doorbell-notify-google-and-send-camera-snapshot-to-app.yaml
+    input:
+      doorbell: binary_sensor.doorbell
+      google_device: media_player.1ac7cb10_204686f4
+      camera: camera.front_2
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+      notification_title: Någon ringer på dörren
+      notification_message: Någon ringer på dörren
+      delay: 2
+- id: "1650136767572"
+  alias: garbage_collection update bin1 from rest
+  description: ""
+  trigger:
+    - platform: event
+      event_type: garbage_collection_loaded
+      event_data:
+        entity_id: sensor.karl_1
+  action:
+    - service: garbage_collection.add_date
+      data:
+        entity_id: "{{ trigger.event.data.entity_id }}"
+        date: '{{ states("sensor.karl_1_ssam") }}'
+    - service: garbage_collection.update_state
+      data:
+        entity_id: sensor.karl_1
+  mode: single
+- id: "1650138595863"
+  alias: garbage_collection update bin2 from rest
+  description: ""
+  trigger:
+    - platform: event
+      event_type: garbage_collection_loaded
+      event_data:
+        entity_id: sensor.karl_2
+  action:
+    - service: garbage_collection.add_date
+      data:
+        entity_id: "{{ trigger.event.data.entity_id }}"
+        date: '{{ states("sensor.karl_2_ssam") }}'
+    - service: garbage_collection.update_state
+      data:
+        entity_id: sensor.karl_2
+  mode: single
+- id: "1657819609863"
+  alias: New Automation
+  description: ""
+  use_blueprint:
+    path: vorion/send-camera-snapshot-notification-on-motion.yaml
+    input:
+      motion_sensor: binary_sensor.katt_motion
+      camera: camera.katt_sd
+      notify_device: 3551cd4e48c6414aaae03d0c87c9e27d
+- id: "1662141551257"
+  alias: Bathrrom
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.bathroom_motion_2
+      from: "Off"
+      to: "On"
+  condition: []
+  action:
+    - type: turn_on
+      device_id: 885f55739d730b4d0c383036d75b95b0
+      entity_id: light.badrum_1
+      domain: light
+    - type: turn_on
+      device_id: 1d04ee1dc1069d2ff7a68bf84a6bc2ad
+      entity_id: light.badrum_2
+      domain: light
+    - service: media_player.play_media
+      data:
+        media_content_type: music
+        media_content_id: http://edge-bauersefm-06-gos2.sharp-stream.com/mixmegapol_instream_se_mp3
+  mode: restart
+- id: "1663738261837"
+  alias: Restart HASS
+  description: Restart HASS when memory use is above 94%
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.memory_use_percent
+      above: 85
+  condition: []
+  action:
+    - service: homeassistant.restart
+      data: {}
+  mode: single
+- id: "1668115507906"
+  alias: Knubbis toggle
+  description: "
+
+    "
+  use_blueprint:
+    path: rhl2401/zigbee2mqtt_aqara_wireless_switch.yaml
+    input:
+      switch: sensor.knubbis_fjarr_action
+      press_single:
+        - type: toggle
+          device_id: ffad4a7a353f44935eec2038fc6ebded
+          entity_id: switch.knubbis
+          domain: switch
+- id: "1670493419486"
+  alias: Slå på Julbelysning, hemma
+  description: ""
+  trigger: []
+  condition:
+    - condition: state
+      entity_id: device_tracker.susanne_nasstrom
+      state: home
+    - condition: state
+      entity_id: person.erik_nasstrom
+      state: home
+  action:
+    - service: switch.turn_on
+      data: {}
+      target:
+        device_id: 197610fbf997ecc991c7495f4265f880
+  mode: single
+- id: "1674903187238"
+  alias: Sminkbord
+  description: ""
+  use_blueprint:
+    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    input:
+      action_sensor: sensor.sminkbord_fjarr_action
+      single_action:
+        - service: switch.toggle
+          data: {}
+          target:
+            entity_id: switch.sminkbord
+- id: "1674904406597"
+  alias: remote - kitchen cabinets
+  description: ""
+  use_blueprint:
+    path: EPMatt/ikea_e2001_e2002.yaml
+    input:
+      integration: Zigbee2MQTT
+      controller_entity: sensor.kitchen_remote_action
+      helper_last_controller_event: input_text.bankbelysning_wled
+      action_button_up_short:
+        - data: {}
+          target:
+            entity_id: light.bankbelysning
+          action: light.turn_on
+      action_button_down_short:
+        - data: {}
+          target:
+            entity_id: light.bankbelysning
+          action: light.turn_off
+      action_button_up_long:
+        - data:
+            brightness_step_pct: 10
+          target:
+            entity_id: light.bankbelysning
+          action: light.turn_on
+      action_button_down_long:
+        - data:
+            brightness_step_pct: -10
+          target:
+            entity_id: light.bankbelysning
+          action: light.turn_on
+- id: "1675687571612"
+  alias: Tänd i sovrummet
+  description: ""
+  trigger:
+    - platform: time
+      at: 06:00:00
+  condition:
+    - condition: state
+      entity_id: binary_sensor.arbetsdag
+      state: "on"
+  action:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.sminkbord
+  mode: single
+- id: "1675687592145"
+  alias: Bedroom - Wake light
+  description: ""
+  trigger:
+    - platform: time
+      at: 06:00:00
+  condition:
+    - condition: state
+      entity_id: binary_sensor.arbetsdag
+      state: "on"
+  action:
+    - data: {}
+      target:
+        entity_id: switch.sminkbord
+      action: switch.turn_on
+    - type: turn_on
+      device_id: 1b1de810ef86ec916fad9e0ced997d90
+      entity_id: abd0b8c3bf9b28d0c0d37961b62220e1
+      domain: light
+      brightness_pct: 100
+  mode: single
+- id: "1676913696321"
+  alias: Growlight - On
+  description: ""
+  trigger:
+    - platform: time
+      at: 06:00:00
+  condition: []
+  action:
+    - service: switch.turn_on
+      data: {}
+      target:
+        device_id: f95f9c84d329184cba08bec154c2b005
+  mode: single
+- id: "1676913768640"
+  alias: Growlight - Off
+  description: ""
+  trigger:
+    - platform: time
+      at: "23:59:59"
+  condition: []
+  action:
+    - service: switch.turn_off
+      data: {}
+      target:
+        device_id: f95f9c84d329184cba08bec154c2b005
+  mode: single
+- id: "1696004925936"
+  alias: bathroom light on
+  description: ""
+  triggers:
+    - entity_id:
+        - binary_sensor.badrum_rorelse_occupancy
+      to: "on"
+      trigger: state
+  conditions:
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: light.badrumspots
+          state: "off"
+  actions:
+    - data_template:
+        entity_id: light.badrumspots
+        brightness:
+          "{%- if now().strftime('%H')| int >= 19 %}\n  25\n{%- elif now().strftime('%H')|
+          int < 6 %}\n  25\n{%- else %}\n  255\n{%- endif %}\n"
+      action: light.turn_on
+    - data_template:
+        entity_id: light.badrumsskap
+        brightness:
+          "{%- if now().strftime('%H')| int >= 19 %}\n  25\n{%- elif now().strftime('%H')|
+          int < 6 %}\n  25\n{%- else %}\n  255\n{%- endif %}\n"
+      action: light.turn_on
+  mode: restart
+  initial_state: true
+- id: "1696004952712"
+  alias: bathroom music on
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.badrum_rorelse_occupancy
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: media_player.badrum
+      state: "off"
+  action:
+    - service: media_player.play_media
+      entity_id: media_player.badrum
+      data:
+        media_content_id: http://edge-bauersefm-06-gos2.sharp-stream.com/mixmegapol_instream_se_mp3
+        media_content_type: music
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.badrum
+        volume_level:
+          "{%- if now().strftime('%H')| int >= 19 %}\n  0.05\n{%- elif now().strftime('%H')|
+          int < 6 %}\n  0.05\n{%- else %}\n  0.2\n{%- endif %}\n"
+  mode: single
+  initial_state: true
+- id: "1696004980160"
+  alias: bathroom light off 10min
+  description: ""
+  triggers:
+    - entity_id:
+        - binary_sensor.badrum_rorelse_occupancy
+      to: "off"
+      for:
+        minutes: 10
+      trigger: state
+  conditions:
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: light.badrumspots
+          state: "on"
+  actions:
+    - action: light.turn_off
+      data: {}
+      target:
+        device_id: ef8865b0ad35783ee8dd6e05fc20de87
+    - entity_id: media_player.badrum
+      action: media_player.media_stop
+    - entity_id: light.badrumsskap
+      action: light.turn_off
+  mode: single
+  initial_state: true
+- id: "1728754124384"
+  alias: Sänglampor
+  description: ""
+  use_blueprint:
+    path: EPMatt/ikea_e1524_e1810.yaml
+    input:
+      integration: Zigbee2MQTT
+      controller_entity: sensor.sanglampor_fjarrkontroll_action
+      helper_last_controller_event: input_text.sanglampor_last_mode
+      action_button_left_short:
+        - action: scene.turn_on
+          metadata: {}
+          target:
+            entity_id: scene.sanglampor_red
+      action_button_up_short:
+        - action: light.toggle
+          target:
+            entity_id:
+              - light.sanglampor
+          data: {}
+      action_button_up_long:
+        - device_id: 1b1de810ef86ec916fad9e0ced997d90
+          domain: light
+          entity_id: abd0b8c3bf9b28d0c0d37961b62220e1
+          type: brightness_increase
+      action_button_down_short:
+        - action: light.toggle
+          target:
+            device_id: 1b1de810ef86ec916fad9e0ced997d90
+          data: {}
+      action_button_down_long:
+        - device_id: 1b1de810ef86ec916fad9e0ced997d90
+          domain: light
+          entity_id: abd0b8c3bf9b28d0c0d37961b62220e1
+          type: brightness_decrease
+      action_button_right_short:
+        - action: scene.turn_on
+          metadata: {}
+          target:
+            entity_id: scene.sanglampor_white
+      action_button_up_double:
+        - data: {}
+          target:
+            entity_id: light.sanglampor
+          action: light.toggle
+- id: "1736186277758"
+  alias: Count Toddler Sounds at Night
+  description: Increments the toddler sound count during nighttime hours.
+  triggers:
+    - event_type: esphome.toddler_sound
+      trigger: event
+  conditions:
+    - condition: time
+      after: "20:00:00"
+      before: 06:00:00
+  actions:
+    - target:
+        entity_id: input_number.toddler_sound_count
+      action: input_number.increment
+      data: {}
+    - action: counter.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: counter.toddler_sound_count_2
+- id: "1736186382215"
+  alias: Reset Toddler Sound Count
+  description: Resets the toddler sound count at 7:59 PM daily.
+  triggers:
+    - at: "19:59:00"
+      trigger: time
+  actions:
+    - target:
+        entity_id: input_number.toddler_sound_count
+      data:
+        value: 0
+      action: input_number.set_value
+- id: "1738939157470"
+  alias: Notis - Kolsyrepatron billigt
+  description: ""
+  triggers:
+    - entity_id: sensor.kolsyrepatron_rusta_2
+      below: "31"
+      trigger: numeric_state
+  conditions: []
+  actions:
+    - data:
+        message: Kolsyrepatron
+        title:
+          Nu kostar det  {{ states('sensor.kolsyrepatron_rusta_2') }}kr på Rusta
+          igen.
+      action: notify.mobile_app_in2023
+    - data:
+        message:
+          Nu kostar en kolsyretub {{ states('sensor.kolsyrepatron_rusta_2') }}kr
+          i inbyte.
+      action: notify.discord
+  mode: single
+- id: "1739203821594"
+  alias: Sminkbord
+  description: ""
+  triggers:
+    - domain: mqtt
+      device_id: 5b3025b6a6162349ce2bcb2f9d1fa384
+      type: action
+      subtype: brightness_move_up
+      trigger: device
+  conditions: []
+  actions:
+    - type: toggle
+      device_id: ffad4a7a353f44935eec2038fc6ebded
+      entity_id: 822730532ea37d1bc9a5291c398f669f
+      domain: switch
+  mode: single
+- id: "1744402760527"
+  alias: "Växtbelysning: On"
+  description: ""
+  triggers:
+    - trigger: time
+      at: 06:00:00
+  conditions: []
+  actions:
+    - type: turn_on
+      device_id: 954518be4ce4ebc39ddc63f45e829b19
+      entity_id: b87e104899a650c248938ad9a5c66566
+      domain: switch
+    - type: turn_on
+      device_id: d5342162a9cefa929850dd2d9e036891
+      entity_id: a22260b0476b872b06abbb8e4fc662d4
+      domain: switch
+  mode: single
+- id: "1744402809921"
+  alias: "Växtbelysning: Off"
+  description: ""
+  triggers:
+    - trigger: time
+      at: "23:59:59"
+  conditions: []
+  actions:
+    - type: turn_off
+      device_id: 954518be4ce4ebc39ddc63f45e829b19
+      entity_id: b87e104899a650c248938ad9a5c66566
+      domain: switch
+    - type: turn_off
+      device_id: d5342162a9cefa929850dd2d9e036891
+      entity_id: a22260b0476b872b06abbb8e4fc662d4
+      domain: switch
+  mode: single
+- id: "1748183724186"
+  alias: Shelly update price
+  description: ""
+  triggers:
+    - entity_id:
+        - sensor.electricity_price_billa_katrinelund_1
+      trigger: state
+      enabled: false
+    - trigger: time_pattern
+      minutes: /5
+  conditions: []
+  actions:
+    - data:
+        price: "{{ states('sensor.electricity_price_billa_katrinelund_1') }}"
+      action: rest_command.update_shelly_price
+  mode: single
+- id: "1753969874590"
+  alias: Tvätten är klar
+  description: ""
+  triggers:
+    - type: energy
+      device_id: 818267be5e33d7dd7a17ce88c3e4e4fd
+      entity_id: fcc07f107450ec26b2ab4f4836679928
+      domain: sensor
+      trigger: device
+      below: 0
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+  conditions: []
+  actions:
+    - action: notify.mobile_app_pixel_7_pro
+      metadata: {}
+      data:
+        message: Tvätten är klar
+    - action: notify.discord
+      metadata: {}
+      data:
+        message: Tvätten är klar
+  mode: single
+- id: "1760079878928"
+  alias: Vitrinskåp på
+  description: ""
+  triggers:
+    - trigger: time
+      at: 06:00:00
+  conditions: []
+  actions:
+    - type: turn_on
+      device_id: 3a8ce4f00398156c82708c9784562313
+      entity_id: e2ec46b5383d4a56f8dda8976ba255eb
+      domain: light
+      brightness_pct: 40
+  mode: single
+- id: "1770631435426"
+  alias: Tänd belysning
+  description: Tänd diverse extra lampor på morgonen
+  triggers:
+    - trigger: time
+      at: 05:30:00
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+  conditions: []
+  actions:
+    - action: light.turn_on
+      metadata: {}
+      target:
+        entity_id:
+          - light.vardagsrum_sofflampa
+          - light.vardagsrum_vagglampa
+          - light.vardagsrum_fonsterlampor
+      data:
+        brightness_pct: 50
+    - action: light.turn_on
+      metadata: {}
+      target:
+        entity_id: light.vitrinskap
+      data:
+        brightness_pct: 71
+  mode: single
+- id: "1770839417766"
+  alias: Släck belysning
+  description: Tänd diverse extra lampor på morgonen
+  triggers:
+    - trigger: time
+      at: "22:00:00"
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+  conditions: []
+  actions:
+    - action: light.turn_off
+      metadata: {}
+      target:
+        entity_id:
+          - light.vardagsrum_sofflampa
+          - light.vardagsrum_vagglampa
+          - light.vitrinskap
+          - light.vardagsrum_fonsterlampor
+      data: {}
+  mode: single

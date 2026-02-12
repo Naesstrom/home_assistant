@@ -1,0 +1,19 @@
+  - alias: "Media player stopped"
+    id: dRGHMqrZcmf49nWV2aJyT7
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: media_player.nvidia_shield
+        from: 'playing'
+        to: 'idle'
+      - platform: state
+        entity_id: media_player.livingroom_tv
+        from: 'playing'
+        to: 'idle'
+    condition:
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
+    action:
+        service: scene.turn_on
+        entity_id: scene.livingroom_normal

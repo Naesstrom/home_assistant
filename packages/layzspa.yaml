@@ -1,0 +1,109 @@
+# example Json
+#{
+#  "CONTENT": "STATES",
+#  "LCK": 0,
+#  "PWR": 1,
+#  "UNT": 1,
+#  "AIR": 0,
+#  "GRN": 1,
+#  "RED": 0,
+#  "FLT": 1,
+#  "TGT": 37,
+#  "TMP": 38,
+#  "CH1": 32,
+#  "CH2": 32,
+#  "CH3": 32
+#}
+
+mqtt:
+  binary_sensor:
+    - name: "Pool Heating"
+      state_topic: "BW_2.0.0/message"
+      device_class: heat
+      payload_on: "1"
+      payload_off: "0"
+      value_template: "{{ value_json.RED }}"
+
+    - name: "Pool On"
+      state_topic: "BW_2.0.0/message"
+      device_class: power
+      payload_on: "1"
+      payload_off: "0"
+      value_template: "{{ value_json.PWR }}"
+
+    - name: "Pool Locked"
+      state_topic: "BW_2.0.0/message"
+      device_class: lock
+      payload_on: "0"
+      payload_off: "1"
+      value_template: "{{ value_json.LCK }}"
+
+    - name: "Pool Bubbles"
+      state_topic: "BW_2.0.0/message"
+      #device_class: gas
+      payload_on: "1"
+      payload_off: "0"
+      value_template: "{{ value_json.AIR }}"
+
+    - name: "Pool Pump"
+      state_topic: "BW_2.0.0/message"
+      #device_class: gas
+      payload_on: "1"
+      payload_off: "0"
+      value_template: "{{ value_json.FLT }}"
+
+  sensor:
+    - name: "Pool Temp"
+      state_topic: "BW_2.0.0/message"
+      unit_of_measurement: "ºC"
+      value_template: "{{ value_json.TMP }}"
+    - name: "Pool target Temp"
+      state_topic: "BW_2.0.0/message"
+      unit_of_measurement: "ºC"
+      value_template: "{{ value_json.TGT }}"
+
+  switch:
+    - unique_id: poolheat_switch
+      name: "Pool heating"
+      state_topic: "BW_2.0.0/message"
+      value_template: "{{ value_json.RED }}"
+      command_topic: "BW_2.0.0/command"
+      state_on: "1"
+      state_off: "0"
+      #availability:
+      #  - topic: "home/bedroom/switch1/available"
+      payload_on: '{"CMD":3,"VALUE":1,"XTIME":1603466443,"INTERVAL":0}'
+      payload_off: '{"CMD":3,"VALUE":0,"XTIME":1603466443,"INTERVAL":0}'
+      optimistic: false
+      qos: 0
+      retain: true
+
+    - unique_id: poolair_switch
+      name: "Pool Bubbles"
+      state_topic: "BW_2.0.0/message"
+      value_template: "{{ value_json.AIR }}"
+      command_topic: "BW_2.0.0/command"
+      state_on: "1"
+      state_off: "0"
+      #availability:
+      #  - topic: "home/bedroom/switch1/available"
+      payload_on: '{"CMD":2,"VALUE":true,"XTIME":1603466443,"INTERVAL":0}'
+      payload_off: '{"CMD":2,"VALUE":true,"XTIME":1603466443,"INTERVAL":0}'
+      optimistic: false
+      qos: 0
+      retain: true
+
+    - unique_id: pool_pump_switch
+      name: "Pool Pump"
+      state_topic: "BW_2.0.0/message"
+      value_template: "{{ value_json.FLT }}"
+      command_topic: "BW_2.0.0/command"
+      state_on: "1"
+      state_off: "0"
+      #availability:
+      #  - topic: "home/bedroom/switch1/available"
+      payload_on: '{"CMD":4,"VALUE":1,"XTIME":1603466443,"INTERVAL":0}'
+      payload_off: '{"CMD":4,"VALUE":0,"XTIME":1603466443,"INTERVAL":0}'
+      optimistic: false
+      qos: 0
+      retain: true

@@ -1,0 +1,4 @@
+sensor.matsedel_mandag:
+  friendly_name: Måndag
+sensor.electricity_price_billa_katrinelund_1:
+  state_class: measurement

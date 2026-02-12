@@ -1,0 +1,72 @@
+blueprint:
+  name: deCONZ Simple Alarm Control Panel
+  description: 'Provide a mechanism to validate user input code prior to setting entity
+    state.
+
+
+    The Automation will:
+
+    1. Trigger on a ´deconz_alarm_event´.
+
+    2. Verify code is an allowed code.
+
+    3. Update device state to reflect event.
+
+    '
+  domain: automation
+  input:
+    alarm_panel:
+      name: Alarm control panel
+      description: Alarm panel to control
+      selector:
+        device:
+          entity:
+            integration: deconz
+            domain: alarm_control_panel
+    allowed_codes:
+      name: Allowed codes
+      description: Four digit codes to allow with user input
+      selector:
+        text:
+          multiline: true
+  source_url: https://community.home-assistant.io/t/deconz-simple-alarm-control-panel-blueprint/305397
+mode: single
+variables:
+  alarm_panel_device_id: !input 'alarm_panel'
+  user_code: !input 'allowed_codes'
+trigger:
+  platform: event
+  event_type: deconz_alarm_event
+  event_data:
+    device_id: !input 'alarm_panel'
+condition:
+- condition: template
+  value_template: '{{ trigger.event.data.code in user_code }}'
+action:
+- variables:
+    event: '{{ trigger.event.data.event }}'
+- choose:
+  - conditions:
+    - '{{ event == "armed_away" }}'
+    sequence:
+    - service: alarm_control_panel.alarm_arm_away
+      target:
+        device_id: '{{ alarm_panel_device_id }}'
+  - conditions:
+    - '{{ event == "armed_night" }}'
+    sequence:
+    - service: alarm_control_panel.alarm_arm_night
+      target:
+        device_id: '{{ alarm_panel_device_id }}'
+  - conditions:
+    - '{{ event == "armed_home" }}'
+    sequence:
+    - service: alarm_control_panel.alarm_arm_home
+      target:
+        device_id: '{{ alarm_panel_device_id }}'
+  - conditions:
+    - '{{ event == "disarmed" }}'
+    sequence:
+    - service: alarm_control_panel.alarm_disarm
+      target:
+        device_id: '{{ alarm_panel_device_id }}'

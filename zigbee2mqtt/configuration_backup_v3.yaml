@@ -1,0 +1,179 @@
+homeassistant:
+  enabled: true
+mqtt:
+  server: mqtt://core-mosquitto
+  user: iot
+  password: Ghst2008.
+  keepalive: 60
+  reject_unauthorized: true
+  version: 4
+  base_topic: zigbee2mqtt
+serial:
+  port: /dev/ttyUSB0
+frontend:
+  enabled: true
+  port: 8099
+advanced:
+  log_syslog:
+    app_name: Zigbee2MQTT
+    eol: /n
+    host: localhost
+    localhost: localhost
+    path: /dev/log
+    pid: process.pid
+    port: 123
+    protocol: tcp4
+    type: '5424'
+  transmit_power: 9
+  channel: 25
+  last_seen: ISO_8601_local
+  network_key:
+    - 146
+    - 137
+    - 245
+    - 10
+    - 57
+    - 133
+    - 57
+    - 127
+    - 33
+    - 96
+    - 253
+    - 174
+    - 112
+    - 167
+    - 25
+    - 130
+  pan_id: 13517
+  log_level: info
+device_options: {}
+availability:
+  enabled: true
+devices:
+  '0x5c0272fffe3cf5a2':
+    friendly_name: Lysröret knapp
+  '0x000d6ffffe626889':
+    friendly_name: Kontor Spotlight 2
+  '0x000d6ffffe61f518':
+    friendly_name: Kontor Spotlight 3
+  '0x000d6ffffe63c1ca':
+    friendly_name: Kontor Spotlight 1
+  '0x000d6ffffe17a305':
+    friendly_name: Kontor fjärrkontroll
+    description: |
+      Batteri bytt Jun 2022
+  '0x00158d000486ad7c':
+    friendly_name: Kontor - Termometer
+    description: Batteri bytt Jun 2022
+  '0x00158d0002d79928':
+    friendly_name: Utomhus
+    description: Batteri bytt Jun 2022
+  '0x00158d0006792a17':
+    friendly_name: Sminkbord Fjärr
+    description: Batteri bytt Jun 2022
+    legacy: false
+  '0x00158d00044dbc08':
+    friendly_name: Kök - Rörelsesensor
+  '0x00158d0004865a4a':
+    friendly_name: Vardagsrum
+    description: Batteri bytt Jun 2022
+  '0x00158d000488a14a':
+    friendly_name: Kök
+    description: Batteri bytt Jun 2022
+  '0x00158d00048741cc':
+    friendly_name: Pannrum
+    description: |
+      Batteri bytt Jun 2022
+      Jan 2024
+  '0x04cd15fffe8c9652':
+    friendly_name: Sovrum 1
+  '0x04cd15fffe92f78d':
+    friendly_name: Sovrum 2
+  '0x84fd27fffeaae4cd':
+    friendly_name: Fjärr - Sollampa
+  '0x14b457fffe918f36':
+    friendly_name: '0x14b457fffe918f36'
+  '0xccccccfffe027866':
+    friendly_name: hall
+  '0xb4e3f9fffefca510':
+    friendly_name: tavelbelysning
+  '0x00158d00067bd507':
+    friendly_name: '0x00158d00067bd507'
+  '0x086bd7fffe518467':
+    friendly_name: Taklampa vardagsrum
+  '0x00124b0025194f80':
+    friendly_name: Atles rum - rörelse
+  '0x588e81fffe8e610e':
+    friendly_name: Sminkbord
+  '0x00124b00291175a7':
+    friendly_name: Badrumsdörr
+  '0x000d6ffffe7a2fcf':
+    friendly_name: '0x000d6ffffe7a2fcf'
+  '0x04cd15fffebf66d6':
+    friendly_name: Atles rum - taklampa
+  '0x9035eafffe3019fd':
+    friendly_name: Atles rum - fjärrkontroll
+  '0x04cd15fffebf63cc':
+    friendly_name: Storms rum - taklampa
+  '0x8cf681fffe54ecdc':
+    friendly_name: Storms rum - fjärrkontroll
+  '0x003c84fffe420ecb':
+    friendly_name: Bankbelysning
+  '0x540f57fffe4169ea':
+    friendly_name: Sovrum
+  '0x1c34f1fffecc98ae':
+    friendly_name: Badrumsskåp
+  '0x00158d0006fab608':
+    friendly_name: Storms rum
+  '0x00158d00073a168b':
+    friendly_name: Sovrummet
+  '0x00158d00073a1423':
+    friendly_name: Atles rum
+  '0x00158d00073a2299':
+    friendly_name: Passage
+  '0x00158d00044db9c8':
+    friendly_name: Badrum - Rörelsesensor
+  '0xf082c0fffe0a1db1':
+    friendly_name: Hall - Vägg
+  '0xf082c0fffe6cd2be':
+    friendly_name: Vardagsrum - Sofflampa
+  '0x385cfbfffeba343b':
+    friendly_name: Hall - Taklampa
+  '0x00124b0025453fea':
+    friendly_name: Badrum - Rörelse
+  '0x90fd9ffffe826077':
+    friendly_name: Hall - Fjärrkontroll
+  '0x8c6fb9fffeca7e78':
+    friendly_name: Vallhorn
+  '0x8c6fb9fffe1be0cc':
+    friendly_name: Vallhorn 2
+  '0x00124b002a565822':
+    friendly_name: Pannrum2
+  '0x00124b002a533641':
+    friendly_name: Willab
+  '0x881a14fffef0c663':
+    friendly_name: Diskho - vatten
+  '0x9035eafffe27e124':
+    friendly_name: Läshörnan
+  '0x048727fffe7a0015':
+    friendly_name: Klädkammare
+  '0x0ceff6fffeb5d54e':
+    friendly_name: Sussas sänglampa
+  '0x881a14fffe56eb0a':
+    friendly_name: Eriks sänglampa
+  '0x842712fffee4921e':
+    friendly_name: Sänglampor - fjärrkontroll
+  '0xecf64cfffef313ac':
+    friendly_name: '0xecf64cfffef313ac'
+  '0x8c65a3fffe1045ac':
+    friendly_name: '0x8c65a3fffe1045ac'
+groups:
+  '1':
+    friendly_name: office_lights
+  '2':
+    friendly_name: lysrör
+  '3':
+    friendly_name: Sollampa
+  '4':
+    friendly_name: Sänglampor
+version: 3

@@ -1,0 +1,53 @@
+# correcting telldus values
+template:
+  - sensor:
+      # Kylskåpet (Flyttad från legacy-sensor)
+      - name: "Telldus Fridge"
+        unique_id: 0svMaG4jWyN383KVrT5deQ
+        unit_of_measurement: "°C"
+        state_class: measurement
+        state: >
+          {% set temp = states('sensor.alectov3_30c7_temp') | float(0) %}
+          {% if temp >= 5 %}
+            {{ temp | round(1) }}
+          {% else %}
+            {{ (temp + 39.5) | round(1) }}
+          {% endif %}
+
+      # Källartrappan
+      - name: "Telldus cellar stairs"
+        unique_id: TH9rRtfY2G9jXW0HyJ863X324
+        unit_of_measurement: "°C"
+        state_class: measurement
+        state: >
+          {% set temp = states('sensor.alectov3_3087_temp') | float(0) %}
+          {% if temp >= 5 %}
+            {{ temp | round(1) }}
+          {% else %}
+            {{ (temp + 40) | round(1) }}
+          {% endif %}
+
+      # Källaren
+      - name: "Telldus Cellar"
+        unique_id: TH9rRtfY2G9jXW0HyJ863X324asdt5
+        unit_of_measurement: "°C"
+        state_class: measurement
+        state: "{{ (states('sensor.alectov3_3088_temp') | float(0) + 40) | round(1) }}"
+
+      # Hönshuset
+      - name: "Temperatur Hönshus"
+        unique_id: temp_chickencoop
+        unit_of_measurement: "°C"
+        state_class: measurement
+        icon: mdi:thermometer
+        state: "{{ (states('sensor.alectov3_3097_temp') | float(0) + 40) | round(2) }}"#  - sensor:
+#    - name: "Telldus cellar"
+#      unique_id: TH9rRtfY2G9jXW0HyJ863X324
+#      state: >
+#        {% if states('sensor.alectov3_3088_temp') |float >= 5 %}
+#          {{ (states('sensor.alectov3_3088_temp') | float) | round(1) }}
+#        {% else %}
+#          {{ (states('sensor.alectov3_3088_temp') | float + 40 | float) | round(1) }}
+#        {% endif %}
+#      unit_of_measurement: "°C"
+#      state_class: measurement

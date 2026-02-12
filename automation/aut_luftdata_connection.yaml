@@ -1,0 +1,29 @@
+- alias: "Luftdata Lost Connection"
+  id: gMeZzq4JRWXQTn7CuyFGsx
+  initial_state: true
+  trigger:
+    - entity_id: device_tracker.luftdata
+      from: "home"
+      platform: state
+      to: "not_home"
+  action:
+    - data:
+        message: Luftdata lost connection
+        target:
+          - channel/katrinelund
+      service: notify.discord
+
+- alias: "Luftdata Regained Connection"
+  id: bQSJ9xqcwGCr7ekmRaMz3h
+  initial_state: true
+  trigger:
+    - entity_id: device_tracker.luftdata
+      from: "not_home"
+      platform: state
+      to: "home"
+  action:
+    - data:
+        message: Luftdata regained connection
+        target:
+          - channel/katrinelund
+      service: notify.discord

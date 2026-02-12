@@ -1,0 +1,10 @@
+### sensors.yaml
+#Time and Date Sensor
+- platform: time_date
+  display_options:
+    - "time_date"
+    - "time"
+    - "time_utc"
+    - "date"
+    - "date_time_iso"
+    - "date_time_utc"

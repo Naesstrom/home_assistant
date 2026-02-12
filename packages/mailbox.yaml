@@ -1,0 +1,47 @@
+automation:
+- alias: mailbox
+  id: TjD5WqJMNbzp8XQvZLm76c
+  initial_state: true
+  trigger:
+  - entity_id: switch.brevladan
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+    - after: '11:00'
+      before: '15:00'
+      condition: time
+  action:
+    - service: tts.google_say
+      entity_id: media_player.office
+      data:
+        message: "Brevlådan öppnades"
+        language: sv
+    - service: notify.discord_webhook
+      data:
+        message: Brevlådan öppnades
+        target: 476413377623752704
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.mail
+
+input_boolean:
+  mail:
+    name: mail
+    initial: off
+    icon: mdi:mailbox
+
+template:
+  - sensor:
+      - name: "Mailbox"
+        unique_id: mailbox_status
+        state: >-
+          {{ 'Mail' if is_state('input_boolean.mail', 'on') else 'Empty' }}
+        icon: >-
+          {{ 'mdi:mailbox-up' if is_state('input_boolean.mail', 'on') else 'mdi:mailbox-outline' }}
+#customize:
+#  switch.brevladan:
+#    assumed_state: true
+#    friendly_name: Brevlådan
+#    icon: mdi:mailbox
+#    sensor_class: 'opening'

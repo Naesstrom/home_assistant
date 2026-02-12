@@ -1,0 +1,30 @@
+automation:
+  - alias: Octoprint:Fail
+    id: DvNygMVxWcFuLBndaJQ8rH
+    initial_state: true
+    trigger:
+      - entity_id: binary_sensor.octoprint_printing_error
+        from: "off"
+        platform: state
+        to: "on"
+    action:
+      - data:
+          message: Något blev fel med din 3d utskrift.
+          target:
+            - channel/katrinelund
+        service: notify.discord
+
+  - alias: "Octoprint: Done"
+    id: rkBC5cDtQPJj2hamq4LF6N
+    initial_state: true
+    trigger:
+      - entity_id: sensor.octoprint_current_state
+        from: "Printing"
+        platform: state
+        to: "operational"
+    action:
+      - data:
+          message: Din 3d utskrift är klar.
+          target:
+            - channel/katrinelund
+        service: notify.discord

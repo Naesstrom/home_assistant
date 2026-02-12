@@ -1,0 +1,45 @@
+- platform: rflink
+
+  device_defaults:
+    fire_event: true
+    signal_repetitions: 2
+
+  devices:
+    newkaku_0000c6c2_1:
+      name: Ceiling fan
+    conrad_00785c_0a:
+      name: Motion sensor kitchen
+    newkaku_00dd20f2_1:
+      name: Vägglampa
+    newkaku_00dd20f2_2:
+      name: Skåpsbelysning
+    newkaku_00dd20f2_3:
+      name: sovrum_3_trasig
+    kaku_000049_6:
+      #Biltema 1
+      name: Vardagsrum 3
+    kaku_000049_4:
+      name: Biltema 2
+    kaku_000049_7:
+      name: Biltema 3
+    kaku_000041_8:
+      #Biltema 1
+      name: Växtlampa
+    newkaku_015183ae_a:
+      name: Dörr Framsidan
+    newkaku_0151856e_a:
+      name: Dörr Altan
+    newkaku_0165526e_a:
+      name: Dörr Groventre
+    newkaku_033187ce_1:
+      name: Motorvärmare
+    newkaku_003cb688_1:
+      name: Vardagsrum 2
+    newkaku_00d3b27e_1:
+      name: Utomhus
+    newkaku_01a203f2_2:
+      name: Brevlådan
+    newkaku_0197e15a_a:
+      name: Bathroom Door
+    newkaku_0151815e_a:
+      name: Altan Skjutdörr

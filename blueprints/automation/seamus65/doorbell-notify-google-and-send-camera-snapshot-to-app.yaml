@@ -1,0 +1,99 @@
+blueprint:
+  name: Doorbell - Notify Google and send camera snapshot to app
+  description: Make an announcement over Google devices when the doorbell is pushed
+    and send a camera snapshot to your app.
+  domain: automation
+  input:
+    doorbell:
+      name: Doorbell
+      description: This is the doorbell binary sensor
+      selector:
+        entity:
+          domain: binary_sensor
+    google_device:
+      name: Google
+      description: The Google device to make the announcement on. Make a comma seperated
+        list to announce on multiple devices.
+      selector:
+        entity:
+          domain: media_player
+      default: ''
+    message:
+      name: Message (Optional)
+      description: 'Default: "There is Somebody at the Door!"'
+      default: There is Somebody at the Door
+    camera:
+      name: Camera
+      description: The camera which creates the snapshot
+      selector:
+        entity:
+          domain: camera
+    notify_device:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive
+        notifications
+      selector:
+        device:
+          integration: mobile_app
+    is_ios:
+      name: Is it an iOS device?
+      description: Toggle if your selected device runs iOS, default is Android
+      selector:
+        boolean: {}
+      default: false
+    notification_title:
+      name: Notification title (Optional)
+      description: 'Default: "There is Somebody at the Door!"'
+      default: There is Somebody at the Door!
+    notification_message:
+      name: Notification message (Optional)
+      description: 'Default: "There is Somebody at the Door!"'
+      default: There is Somebody at the Door!
+    delay:
+      name: Delay (Optional)
+      description: Wait before creating camera snapshot
+      default: ''
+      selector:
+        number:
+          min: 0.0
+          max: 60.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+  source_url: https://community.home-assistant.io/t/doorbell-notify-google-and-send-camera-snapshot-to-app/257953
+mode: single
+trigger:
+- platform: state
+  entity_id: !input 'doorbell'
+  from: 'off'
+  to: 'on'
+variables:
+  camera: !input 'camera'
+  notify_device: !input 'notify_device'
+  is_ios: !input 'is_ios'
+  notification_title: !input 'notification_title'
+  notification_message: !input 'notification_message'
+  delay: !input 'delay'
+  snapshot_create_file_path: /config/www/tmp/snapshot_{{ states[camera].object_id
+    }}.jpg
+  snapshot_access_file_path: '{{ snapshot_create_file_path | replace(''/config/www'',''/local'')
+    }}'
+action:
+- service: tts.cloud_say
+  data:
+    entity_id:
+    - !input 'google_device'
+    message: !input 'message'
+- delay: '{{ delay }}'
+- service: camera.snapshot
+  entity_id: !input 'camera'
+  data:
+    filename: '{{ snapshot_create_file_path }}'
+- device_id: !input 'notify_device'
+  domain: mobile_app
+  type: notify
+  title: '{{ notification_title }}'
+  message: '{{ notification_message }}'
+  data: '{% set android_data = {"image": "%s"} | format(snapshot_access_file_path)
+    %} {% set ios_data = {"attachment": {"url": "%s", "content_type": "JPEG"}} | format(snapshot_access_file_path)
+    %} {{ ios_data if is_ios else android_data }}'

@@ -1,0 +1,128 @@
+shelly:
+  cloud_auth_key: !secret shelly
+  cloud_server: "https://shelly-28-eu.shelly.cloud"
+  discovery: true
+  additional_information: true
+  sensors:
+    - all
+  attributes:
+    - all
+
+#  discover_by_ip:
+#    - "192.168.1.60"
+#    - "192.168.1.61"
+#    - "192.168.1.62"
+#    - "192.168.1.63"
+#    - "192.168.1.64"
+#    - "192.168.1.65"
+#    - "192.168.1.66"
+#    - "192.168.1.67"
+#    - "192.168.1.68"
+#    - "192.168.1.69"
+homeassistant:
+  customize:
+    #### Varmvattenberedare ####
+    sensor.shelly_shplg_s_0d9f88_total_consumption:
+      last_reset: "2021-09-11T16:20:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shplg_s_0d9f88_current_consumption:
+      last_reset: "2021-09-11T16:20:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### Diskmaskin ####
+    sensor.shelly_shplg_s_0cd5a5_total_consumption:
+      last_reset: "2021-09-11T16:20:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shplg_s_0cd5a5_current_consumption:
+      last_reset: "2021-09-11T16:20:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### Belysning badrum ####
+    sensor.shelly_shsw_25_e8db84d2e831_2_total_consumption:
+      last_reset: "2021-09-11T16:20:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shsw_25_e8db84d2e831_2_current_consumption:
+      last_reset: "2021-09-11T16:20:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### Ventilation badrum ####
+    sensor.shelly_shsw_25_e8db84d2e831_1_total_consumption:
+      last_reset: "2021-09-11T16:20:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shsw_25_e8db84d2e831_1_current_consumption:
+      last_reset: "2021-09-11T16:20:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### 3D Skrivare ####
+    sensor.shelly_shplg_s_6f3fe7_total_consumption:
+      last_reset: "2021-09-11T16:30:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shplg_s_6f3fe7_current_consumption:
+      last_reset: "2021-09-11T16:30:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### Värmepump ####
+    sensor.shelly_shplg_s_0cd781_total_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shplg_s_0cd781_current_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### Ugn ####
+    sensor.shelly_shsw_pm_8caab574d43c_total_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shsw_pm_8caab574d43c_current_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### Server ####
+    sensor.shelly_shplg_s_6f384f_total_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shplg_s_6f384f_current_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### Badrum - Värme ####
+    sensor.shelly_shplg_s_c1024d_total_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shplg_s_c1024d_current_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: power
+      state_class: measurement
+
+    #### Spabad ####
+    sensor.shelly_shsw_pm_e8db84d2e267_total_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: energy
+      state_class: total_increasing
+    sensor.shelly_shsw_pm_e8db84d2e267_current_consumption:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: power
+      state_class: measurement
+
+      #### Tibber price stats
+    sensor.electricity_price_billa_katrinelund_1:
+      #      last_reset: "2021-07-30T00:00:00+00:00"
+      device_class: monetary
+      state_class: measurement

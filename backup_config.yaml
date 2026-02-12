@@ -1,0 +1,299 @@
+# yaml-language-server: $schema=https://ccab4aaf-frigate:5000/api/config/schema
+database:
+  path: /config/frigate.db
+
+mqtt:
+  host: 192.168.1.119
+  user: iot
+  password: Ghst2008.
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+record: # <----- Enable recording
+  enabled: true
+  events:
+    retain:
+      default: 1
+
+snapshots: # <----- Enable snapshots
+  enabled: true
+  timestamp: true
+  bounding_box: true
+  retain:
+    default: 1
+
+cameras:
+  dogyard: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.91:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.91:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+    record: # <----- Enable recording
+      enabled: true
+      events:
+        retain:
+          default: 2
+    snapshots: # <----- Enable snapshots
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      retain:
+        default: 2
+
+    objects:
+      track:
+        - person
+        - car
+        - bicycle
+        - cat
+        - dog
+  parking: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.92:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.92:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+      fps: 5
+    record: # <----- Enable recording
+      enabled: true
+      events:
+        retain:
+          default: 2
+    snapshots: # <----- Enable snapshots
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      retain:
+        default: 2
+
+    motion:
+      mask:
+        - 465,79,467,0,0,0,0,106,253,120,253,149,490,165,492,83
+    objects:
+      track:
+        - person
+        - car
+        - bicycle
+        - cat
+        - dog
+  Chicken_run: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.98:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.98:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+
+
+    motion:
+      mask:
+        - 0,360,232,360,251,265,188,0,0,0
+    objects:
+      track:
+        - person
+        - cat
+        - chicken
+  Chicken_coop: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.97:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.97:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+
+
+    motion:
+      mask:
+        - 0,360,232,360,251,265,188,0,0,0
+    objects:
+      track:
+        - person
+        - cat
+        - chicken
+  Kitchen: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.89:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.89:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+
+
+    motion:
+      mask:
+        - 0,360,232,360,251,265,188,0,0,0
+    objects:
+      track:
+        - person
+        - cat
+        - dog
+  Dining_room: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.99:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.99:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+
+
+    motion:
+      mask:
+        - 0,360,232,360,251,265,188,0,0,0
+    objects:
+      track:
+        - person
+        - cat
+        - dog
+  Atle: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.93:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.93:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+    record: # <----- Enable recording
+      enabled: true
+      events:
+        retain:
+          default: 2
+    snapshots: # <----- Enable snapshots
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      retain:
+        default: 2
+
+    objects:
+      track:
+        - person
+        - car
+        - bicycle
+        - cat
+        - dog
+  Storm: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.94:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.94:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+    record: # <----- Enable recording
+      enabled: true
+      events:
+        retain:
+          default: 2
+    snapshots: # <----- Enable snapshots
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      retain:
+        default: 2
+
+    objects:
+      track:
+        - person
+        - car
+        - bicycle
+        - cat
+        - dog
+  Bedroom: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.88:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.88:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+    record: # <----- Enable recording
+      enabled: true
+      events:
+        retain:
+          default: 2
+    snapshots: # <----- Enable snapshots
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      retain:
+        default: 2
+
+    motion:
+      mask:
+        - 0,360,232,360,251,265,188,0,0,0
+    objects:
+      track:
+        - person
+        - cat
+        - dog
+  living_room: # <------ Name the camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.95:554/stream2 # <----- Update for your camera
+          roles:
+            - detect
+        - path: rtsp://homeassistant:Ghst2008.@192.168.1.95:554/stream1 # <----- Add high res stream
+          roles:
+            - record
+    detect:
+      width: 640 # <---- update for your camera's resolution
+      height: 360 # <---- update for your camera's resolution
+
+
+    motion:
+      mask:
+        - 0,360,232,360,251,265,188,0,0,0
+    objects:
+      track:
+        - person
+        - cat
+        - chicken
+version: 0.14

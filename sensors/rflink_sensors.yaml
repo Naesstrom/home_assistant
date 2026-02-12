@@ -1,0 +1,19 @@
+- platform: rflink
+  automatic_add: false
+
+  devices:
+    sensor.alectov3_30c7_bat:
+      sensor_type: battery
+    sensor.alectov3_30c7_hum:
+      sensor_type: humidity
+    sensor.alectov3_30c7_temp:
+      sensor_type: temperature
+    sensor.alectov3_30c7_update_time:
+      sensor_type: timestamp
+
+    sensor.alectov3_30c8_bat:
+      sensor_type: battery
+    sensor.alectov3_30c8_temp:
+      sensor_type: temperature
+    sensor.alectov3_30c8_update_time:
+      sensor_type: timestamp

@@ -1,0 +1,51 @@
+blueprint:
+  name: Tibber Price based action
+  description: Execute an action if price is VERY_EXPENSIVE, and then execute another
+    action when price is NORMAL or less.
+  domain: automation
+  input:
+    tibber_price:
+      name: Tibber price entity
+      selector:
+        entity:
+          domain: sensor
+          integration: tibber
+    highprice_action:
+      name: High price actions
+      selector:
+        action: {}
+    lowprice_action:
+      name: Low price actions
+      selector:
+        action: {}
+  source_url: https://github.com/zyberzero/homeassistant-blueprints/blob/main/tibber.yaml
+trigger:
+- platform: state
+  entity_id: !input 'tibber_price'
+condition: []
+action:
+- choose:
+  - conditions:
+    - condition: state
+      entity_id: !input 'tibber_price'
+      state: VERY_EXPENSIVE
+      attribute: price_level
+    sequence: !input 'highprice_action'
+  - conditions:
+    - condition: or
+      conditions:
+      - condition: state
+        state: NORMAL
+        entity_id: !input 'tibber_price'
+        attribute: price_level
+      - condition: state
+        entity_id: !input 'tibber_price'
+        state: VERY_CHEAP
+        attribute: price_level
+      - condition: state
+        entity_id: !input 'tibber_price'
+        state: CHEAP
+        attribute: price_level
+    sequence: !input 'lowprice_action'
+  default: []
+mode: single

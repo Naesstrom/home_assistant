@@ -1,0 +1,197 @@
+template:
+  - sensor:
+      # Eriks Motorvärmare
+      - name: "Eriks Carheater daily cost"
+        unique_id: eriks_carheater_daily_cost
+        unit_of_measurement: "kr"
+        state: >-
+          {% set price = states('sensor.electricity_price_billa_katrinelund_1') | float(0) %}
+          {% set energy = states('sensor.carheater_erik_daily_energy') | float(0) %}
+          {{ ((price + 0.6543) * energy) | round(2) }}
+
+      # Sussas Motorvärmare
+      - name: "Sussas Carheater daily cost"
+        unique_id: sussas_carheater_daily_cost
+        unit_of_measurement: "kr"
+        state: >-
+          {% set price = states('sensor.electricity_price_billa_katrinelund_1') | float(0) %}
+          {% set energy = states('sensor.carheater_sussa_daily_energy') | float(0) %}
+          {{ ((price + 0.6543) * energy) | round(2) }}
+## Input switches
+input_boolean:
+  workdays_only_sussa:
+    name: Only active on workdays sussa
+    initial: true
+  workdays_only_erik:
+    name: Only active on workdays erik
+    initial: true
+  run_carheaters:
+    name: Should carheaters be active
+    icon: mdi:car-seat-heater
+  sussas_carheater:
+    name: Should Sussas carheater be active
+    icon: mdi:car-seat-heater
+  eriks_carheater:
+    name: Should Eriks carheater be active
+    icon: mdi:car-seat-heater
+
+automation:
+  - alias: "Engine heater activate erik"
+    id: gkd3cfHEy46zBxmThvWLP2
+    initial_state: on
+    trigger:
+      platform: time
+      at: '04:00:00'
+    condition:
+      - condition: state
+        entity_id: input_boolean.run_carheaters
+        state: 'on'
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.arbetsdag
+            state: 'on'
+          - condition: template
+            value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
+          - condition: state
+            entity_id: input_boolean.eriks_carheater
+            state: 'on'
+          - condition: state
+            entity_id: input_boolean.vacation
+            state: 'off'
+
+            #        - condition: numeric_state
+#          entity_id: 'sensor.outside_temperature'
+#          below: 5
+    # If the above conditions are fulfilled, ie. you are home and it's a workday
+    # then activate the heater on your selected time
+    action:
+      - service: switch.turn_on
+        # Don't forget to select the correct switch
+        entity_id: switch.carheater_erik_relay
+
+  - alias: "Engine heater activate sussa"
+    id: JwfLm4nbKy3DG67gjc9PEY
+    initial_state: on
+    trigger:
+      platform: time
+      at: '04:00:00'
+    condition:
+      - condition: state
+        entity_id: input_boolean.run_carheaters
+        state: 'on'
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.arbetsdag
+            state: 'on'
+          - condition: template
+            value_template: "{{states.weather.smhi_home.attributes.temperature < 10}}"
+          - condition: state
+            entity_id: input_boolean.sussas_carheater
+            state: 'on'
+            # If the above conditions are fulfilled, ie. you are home and it's a workday
+            # then activate the heater on your selected time
+          - condition: state
+            entity_id: input_boolean.vacation
+            state: 'off'
+    action:
+      - service: switch.turn_on
+        # Don't forget to select the correct switch
+        entity_id: switch.carheater_sussa_relay
+
+
+  # Automation 2 turns off the car heater at the set delay.
+  - alias: "Engine heater deactivate both"
+    id: GNHa5n6y7BRkvFu8YsQg49
+    initial_state: on
+    trigger:
+      platform: time
+      at: '08:30:00'
+    condition:
+      - condition: state
+        entity_id: input_boolean.run_carheaters
+        state: 'on'
+    action:
+      - service: switch.turn_off
+        # Don't forget to select the correct switch
+        entity_id:
+          - switch.carheater_erik_relay
+          - switch.carheater_sussa_relay
+
+  - alias: 'Check Sussas heater'
+    id: P5SM2EQAFcKrfqWga3CUTx
+    trigger:
+      platform: time
+      at: "20:30:00"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.arbetsdag_imorgon
+        state: 'on'    
+      - condition: state
+        entity_id: input_boolean.run_carheaters
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.vacation
+        state: 'off' 
+    action:
+      - service: switch.turn_on
+        entity_id: switch.carheater_sussa_relay
+      - delay: "00:01:00"
+      - condition: template
+        value_template: "{{ (states('sensor.carheater_sussa_power') | int) == 0 }}"
+      - service: notify.discord_webhook
+        data:
+          message: Sladden till Sussas motorvärmare är inte ansluten
+          target: 476413377623752704
+      - service: tts.google_say
+        entity_id: media_player.google_home_group
+        data:
+          message: Sussas motorvärmare är inte ansluten!
+          language: 'sv'
+      - service: switch.turn_off
+        entity_id: switch.carheater_sussa_relay
+
+  - alias: 'Check Eriks heater'
+    id: uaTw3VjUznBtRkGCsJ47qy
+    trigger:
+      platform: time
+      at: "20:31:00"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.arbetsdag_imorgon
+        state: 'on'    
+      - condition: state
+        entity_id: input_boolean.run_carheaters
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.vacation
+        state: 'off' 
+    action:
+      - service: switch.turn_on
+        entity_id: switch.carheater_erik_relay
+      - delay: "00:01:00"
+      - condition: template
+        value_template: "{{ (states('sensor.carheater_erik_power') | int) == 0 }}"
+      - service: notify.discord_webhook
+        data:
+          message: Sladden till Eriks motorvärmare är inte ansluten
+          target: 476413377623752704
+      - service: tts.google_say
+        entity_id: media_player.google_home_group
+        data:
+          message: Eriks motorvärmare är inte ansluten!
+          language: 'sv'
+      - service: switch.turn_off
+        entity_id: switch.carheater_erik_relay
+
+  - alias: 'Turn off heaters after checking'
+    id: Hu492bWjsPTLzKqw3xyGEh
+    trigger:
+      platform: time
+      at: "20:35:00"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.carheater_sussa_relay
+      - service: switch.turn_off
+        entity_id: switch.carheater_erik_relay

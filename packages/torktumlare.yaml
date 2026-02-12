@@ -1,0 +1,24 @@
+automation:
+  - alias: "Torktumlare"
+    id: TWpLZEqvFhgcRKasdasf4rt3S7mMPj8
+    initial_state: true
+    trigger:
+      - entity_id: binary_sensor.torktumlare_running
+        from: "on"
+        platform: state
+        to: "off"
+    action:
+      - service: notify.discord
+        data:
+          message: Tummlaren är klar!
+          target:
+            - channel/katrinelund
+      - service: notify.discord_webhook
+        data:
+          message: Tummlaren är klar!
+          target: 476413377623752704
+      - service: tts.google_say
+        entity_id: media_player.mass_nestaudio0897
+        data:
+          message: Tummlaren är klar!
+          language: "sv"

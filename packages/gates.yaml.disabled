@@ -1,0 +1,114 @@
+#----------- SWITCH -----------#
+### First thing to do is rename the RFLink switches ###
+switch:
+  - platform: rflink
+    devices:
+      newkaku_019e173e_2:
+        name: gate_front
+      newkaku_019e1c42_2:
+        name: gate_side
+
+#----------- CUSTOMIZE -----------#
+### Great, now we can change the class to opening just to make it prettier :D ###
+homeassistant:
+  customize:
+    switch.gate_front:
+      assumed_state: true
+      friendly_name: "Grind: Framsidan"
+      icon: mdi:gate
+      sensor_class: 'opening'
+    switch.gate_side:
+      assumed_state: true
+      friendly_name: "Grind: Parkering"
+      icon: mdi:gate
+      sensor_class: 'opening'
+
+#----------- SENSOR -----------#
+  ### Since I was stupid enough to buy NC contacts we do some magic here ###
+sensor:
+  - platform: template
+    sensors:
+      front_gate:
+        friendly_name: "Grind: Framsidan"
+        value_template: >-
+          {% if is_state('switch.gate_front', 'on') %}
+          Closed
+          {% else %}
+          Open
+          {% endif %}
+        icon_template: >
+          {% if is_state('switch.gate_front', 'on') %}
+          mdi:door-closed
+          {% else %}
+          mdi:door-open
+          {% endif %}
+      side_gate:
+        friendly_name: "Grind: Parkering"
+        value_template: >-
+          {% if is_state('switch.gate_side', 'on') %}
+          Closed
+          {% else %}
+          Open
+          {% endif %}
+        icon_template: >
+          {% if is_state('switch.gate_side', 'on') %}
+          mdi:door-closed
+          {% else %}
+          mdi:door-open
+          {% endif %}
+#----------- AUTOMATION -----------#
+### What good would it do if we didn't make some automations to ###
+automation:
+  - alias: 'Grind: Framsidan'
+    condition:
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: 'person.erik'
+          state: 'away'
+        - condition: state
+          entity_id: 'person.sussa'
+          state: 'away'
+        - condition: state
+          entity_id: 'binary_switch.night'
+          state: 'on'
+    trigger:
+    - entity_id: sensor.front_gate
+      from: 'Closed'
+      platform: state
+      to: 'Open'
+    action:
+      - service: notify.discord
+        data:
+          message: "VARNING! Grinden på framsidan öppnades"
+          target:
+          - channel/katrinelund
+      - service: notify.discord_webhook
+        data:
+          message: Grinden på framsidan öppnades
+          target: 476413377623752704
+  - alias: 'Grind: Framsidan notify'
+    trigger:
+    - entity_id: sensor.front_gate
+      from: 'Closed'
+      platform: state
+      to: 'Open'
+    action:
+      - service: notify.discord
+        data:
+          message: "Grinden på framsidan öppnades"
+          target:
+          - channel/katrinelund
+      - service: notify.discord_webhook
+        data:
+          message: Grinden på framsidan öppnades
+          target: 476413377623752704
+#----------- GROUP -----------#
+### And Finally we can group them together ###
+group:
+  gates:
+    name: Gate status
+    control: hidden
+    entities:
+    - sensor.front_gate
+    - sensor.side_gate

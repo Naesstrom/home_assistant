@@ -1,0 +1,29 @@
+- alias: "Erik is Home"
+  id: MEyP975t8nVvHwFcJUXKbr
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: person.erik
+      from: "not_home"
+      to: "home"
+  action:
+    - action: notify.send_message
+      target:
+        entity_id: notify.discord_katrinelund # Se till att namnet matchar din Discord-entitet
+      data:
+        message: "Erik kom just hem"
+
+- alias: "Sussa is Home"
+  id: qayEk7YHhv39gFPRVBUKn6
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: person.sussa
+      from: "not_home"
+      to: "home"
+  action:
+    - action: notify.send_message
+      target:
+        entity_id: notify.discord_katrinelund
+      data:
+        message: "Sussa kom just hem"

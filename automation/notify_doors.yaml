@@ -1,0 +1,44 @@
+- alias: "Dörr: Framsidan"
+  id: EXQWTPdU5L4mnA9G2KagYb
+  initial_state: true
+  trigger:
+    - entity_id: switch.dorr_framsidan
+      from: "off"
+      platform: state
+      to: "on"
+  action:
+    - data:
+        message: Dörren på framsidan öppnades
+        target:
+          - channel/katrinelund
+      service: notify.discord
+
+- alias: "Dörr: Groventré"
+  id: qmEMysAaNYxHcXUzT69uWw
+  initial_state: true
+  trigger:
+    - entity_id: switch.dorr_groventre
+      from: "off"
+      platform: state
+      to: "on"
+  action:
+    - data:
+        message: Groventrén öppnades
+        target:
+          - channel/katrinelund
+      service: notify.discord
+
+- alias: "Dörr: Altanen"
+  id: 3xfBvQdGzgXDUYWjMAwZeF
+  initial_state: true
+  trigger:
+    - entity_id: switch.dorr_altan
+      from: "off"
+      platform: state
+      to: "on"
+  action:
+    - data:
+        message: Altandörren öppnades
+        target:
+          - channel/katrinelund
+      service: notify.discord

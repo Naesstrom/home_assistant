@@ -1,0 +1,11 @@
+template:
+  - sensor:
+      - name: "Eriks distans från hemmet"
+        unique_id: erik_distance_home
+        state: "{{ state_attr('sensor.erik_presence', 'distance') }}"
+        unit_of_measurement: "km" # Lägg till enhet om attributet ger ett siffervärde
+
+      - name: "Sussas distans från hemmet"
+        unique_id: sussa_distance_home
+        state: "{{ state_attr('sensor.sussa_presence', 'distance') }}"
+        unit_of_measurement: "km"

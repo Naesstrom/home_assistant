@@ -1,0 +1,167 @@
+###################################################
+#                                                 #
+# Home Assistant Main Configuration File          #
+#                                                 #
+###################################################
+
+homeassistant:
+  packages: !include_dir_named packages
+  allowlist_external_dirs:
+    - "/config/tmp/snapshots"
+    - "/config/tmp/timelapse"
+    - "/config/www"
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24
+  ip_ban_enabled: False
+  login_attempts_threshold: 2
+
+energy:
+
+# Enable the config screen
+default_config:
+
+#Added in 0.87
+system_health:
+
+#added in 0.88
+person:
+
+browser_mod:
+
+#added in 0.94
+ssdp:
+
+#added in 0.94
+zeroconf:
+
+#Enable Cloud service
+cloud:
+
+dhcp:
+
+# Enables the frontend
+frontend:
+
+#tibber_custom:
+
+# Removed in 2023.8
+# discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time.
+history: !include history.yaml
+logger: !include logger.yaml
+#recorder:
+recorder: !include recorder.yaml
+# View all events in a logbook
+logbook: !include loogbook.yaml
+
+# Track the sun
+sun:
+
+# Setup TTS
+tts:
+  - platform: google_translate
+    service_name: google_say
+    cache: true
+    cache_dir: /config/www/tts
+    time_memory: 300
+    #base_url: !secret tts_base_url
+  - platform: google_translate
+    cache: true
+    cache_dir: /config/www/tts
+    time_memory: 300
+    #base_url: !secret tts_base_url
+    service_name: google_translate
+
+python_script:
+
+#pyscript:
+#  allow_all_imports: true
+
+#Added in 0.90
+stream:
+
+ifttt:
+  key: !secret iftttapi
+
+#google:
+#  client_id: !secret google_client_id
+#  client_secret: !secret google_client_secret
+
+rflink:
+  port: /dev/serial/by-id/usb-Arduino__www.arduino.cc__Arduino_Mega_2560_55639313633351104170-if00
+  ignore_devices:
+    - doorbell_*
+    - mertik*
+
+alarm_control_panel:
+  - platform: manual_mqtt
+    state_topic: home/alarm
+    command_topic: home/alarm/set
+    pending_time: 60
+    trigger_time: 1800
+    disarm_after_trigger: false
+    delay_time: 30
+    armed_home:
+      pending_time: 0
+      delay_time: 0
+    armed_away:
+      pending_time: 60
+      delay_time: 30
+
+influxdb:
+  host: 192.168.1.15
+  port: 8086
+  database: home_assistant
+  username: !secret influx_username
+  password: !secret influx_password
+  default_measurement: "units"
+  tags:
+    instance: prod
+    source: hass
+
+#### Automations ####
+automation dir: !include_dir_merge_list automation
+automation: !include automations.yaml
+
+#### Scenes ####
+scene dir: !include_dir_merge_list scenes
+scene: !include scenes.yaml
+
+#### Scripts ####
+script dir: !include_dir_merge_named scripts
+script: !include scripts.yaml
+
+#### Merged folders (named) ####
+group: !include_dir_merge_named groups
+input_select: !include_dir_merge_named input_select
+
+#### Merged folders (Lists) ####
+notify: !include_dir_merge_list notifications
+sensor: !include_dir_merge_list sensors
+switch: !include_dir_merge_list switch
+light: !include_dir_merge_list light
+binary_sensor: !include_dir_merge_list binary_sensor
+# cover: !include_dir_merge_list covers
+# lock: !include_dir_merge_list locks
+camera: !include_dir_merge_list cameras
+
+ffmpeg:
+
+remember_the_milk:
+  - name: naesstrom
+    api_key: !secret rtm_api_key
+    shared_secret: !secret rtm_secret
+
+rest_command:
+  update_shelly_price:
+    url: "https://shelly-138-eu.shelly.cloud/v2/user/pp-ltu/eyJpZCI6NDk5MzI5LCJzbiI6NzE4NTM4NTQ2MH0.Ux1DkC4DO1xGgQH5cBMR1m49bU_DxmWadckBWTMdKy0"
+    method: post
+    content_type: "application/json"
+    payload: '{"price": {{ price }} }'

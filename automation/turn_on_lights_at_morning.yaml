@@ -1,0 +1,23 @@
+- alias: 'Lamp: Turn on at 0600'
+  id: Hqetx9cmbM8p5nNahYDgCy
+  initial_state: true
+  trigger:
+    platform: time
+    at: 06:00:00
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.arbetsdag
+      state: 'on'
+    - condition: sun
+      before: sunrise
+    - condition: state
+      entity_id: input_boolean.vacation
+      state: 'off' 
+  action:
+  - service: switch.turn_on
+    entity_id:
+    - switch.skapsbelysning
+  - service: scene.turn_on
+    entity_id: scene.livingroom_normal

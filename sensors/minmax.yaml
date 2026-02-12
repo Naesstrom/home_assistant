@@ -1,0 +1,8 @@
+#  - platform: min_max
+#    name: mean indoor temp
+#    type: mean
+#    entity_ids:
+#      - sensor.office_temperature
+#      - sensor.bedroom_temperature
+#      - sensor.kitchen_temperature
+#      - sensor.livingroom_temperature

@@ -1,0 +1,66 @@
+- alias: kitchen movement
+  id: Y7XE6DR9PvGQnpjazb8H5F
+  trigger:
+    platform: state
+    entity_id: binary_sensor.hall_rorelsesensor_occupancy
+    to: 'on'
+  condition:
+   condition: and
+   conditions:
+    - condition: time
+      after: 03:00
+      before: 05:00
+    - condition: template
+      value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.kitchen_movement.attributes.last_triggered) | int > 180 }}'
+  action:
+    - service: media_player.volume_set
+      entity_id: media_player.bedroom_speakers
+      data:
+        volume_level: '0.3'
+    - service: tts.google_say
+      entity_id: media_player.bedroom_speakers
+      data:
+        message: 'Movement detected in the Kitchen'
+        
+    #Play on kitchen speakers
+    - service: media_player.volume_set
+      entity_id: media_player.kitchen_speakers
+      data:
+        volume_level: '0.3'
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_speakers
+      data:
+        media_content_type: "music"
+        media_content_id: "https://www.tones7.com/media/army_wake_up.mp3"
+
+    - service: media_player.volume_set
+      entity_id: media_player.office
+      data:
+        volume_level: '0.6'
+    - service: media_player.play_media
+      entity_id: media_player.office
+      data:
+        media_content_id: https://www.tones7.com/media/army_wake_up.mp3
+        media_content_type: music
+
+
+    - service: media_player.volume_set
+      entity_id: media_player.entre
+      data:
+        volume_level: '0.6'
+    - service: media_player.play_media
+      entity_id: media_player.entre
+      data:
+        media_content_id: https://www.tones7.com/media/army_wake_up.mp3
+        media_content_type: music
+        
+    - service: media_player.volume_set
+      entity_id: media_player.vardagsrum
+      data:
+        volume_level: '0.6'
+    - service: media_player.play_media
+      entity_id: media_player.vardagsrum
+      data:
+        media_content_id: https://www.tones7.com/media/army_wake_up.mp3
+        media_content_type: music

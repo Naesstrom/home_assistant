@@ -1,0 +1,6 @@
+#  - platform: rest
+#    name: Current week
+#    resource: http://vecka.nu
+#    value_template: '{{ value_json.week }}'
+#    headers:
+#      Accept: application/json

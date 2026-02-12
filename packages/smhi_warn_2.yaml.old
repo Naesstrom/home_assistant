@@ -1,0 +1,22 @@
+sensor:
+  - platform: smhialert
+    district: '018'
+    language: 'sv'
+
+automation:
+  - id: smhialert
+    alias: 'SMHI Alert'
+    initial_state: true
+    trigger:
+      platform: state
+      entity_id: sensor.smhialert
+      to: "Alert"
+    action:
+      - service: notify.discord_webhook
+        data_template:
+           title: "SMHI Alert!"
+           message: '{{states.sensor.smhialert.attributes.notice}}'
+      - service: notify.discord
+        data_template:
+           title: 'SMHI Alert!'
+           message: '{{states.sensor.smhialert.attributes.notice}}'

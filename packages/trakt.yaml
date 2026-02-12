@@ -1,0 +1,11 @@
+trakt_tv:
+  language: sv
+  timezone: Europe/Stockholm
+  sensors:
+    upcoming:
+      show:
+        days_to_fetch: 30
+        max_medias: 10
+      movie:
+        days_to_fetch: 45
+        max_medias: 5

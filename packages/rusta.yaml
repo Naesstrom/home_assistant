@@ -1,0 +1,22 @@
+automation:
+  - alias: Notis - Kolsyrepatron billigt
+    id: DsUcMXRGQn9mhz8KJjP4AT
+    description: ""
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.kolsyrepatron_rusta_2
+        below: "31"
+    #    condition: []
+    action:
+      - service: notify.mobile_app_in2023
+        data:
+          message: Kolsyrepatron
+          title: >-
+            Nu kostar det  {{ states('sensor.kolsyrepatron_rusta_2') }}kr på Rusta
+            igen.
+      - service: notify.discord
+        data:
+          message: >-
+            Nu kostar en kolsyretub {{ states('sensor.kolsyrepatron_rusta_2') }}kr i
+            inbyte.
+    mode: single

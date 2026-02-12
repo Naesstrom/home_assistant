@@ -1,0 +1,40 @@
+mqtt:
+  sensor:
+    - state_topic: "home/bedroom/temperature"
+#sensor 4:
+    - name: "kitchen_temp"
+      state_topic: "/ESP01/temp/Temperature"
+      qos: 0
+      unit_of_measurement: "°C"
+
+#sensor 5:
+    - name: "temp2"
+      state_topic: "/ESP02/temp2/Temperature"
+      qos: 0
+      unit_of_measurement: "°C"
+
+#sensor 6:
+    - name: "hum2"
+      state_topic: "/ESP02/temp2/Humidity"
+      qos: 0
+      unit_of_measurement: "%"
+
+### Sparsnäs sensors###
+    - state_topic: "home/sparsnas"
+      name: "Sparsnäs energy consumption momentary"
+      unit_of_measurement: "W"
+      value_template: '{{ value_json.Watt | round(1) }}'
+    - state_topic: "home/sparsnas"
+      name: "Sparsnäs energy consumption over time"
+      unit_of_measurement: "kWh"
+      value_template: '{{ value_json.kWh | round(1) }}'
+    - state_topic: "home/sparsnas"
+      name: "Sparsnäs Battery remaining"
+      unit_of_measurement: "%"
+      value_template: '{{ value_json.battery | round(1) }}'
+
+#sensor 6:
+    - name: "ring_rain_day"
+      state_topic: "/rain/ringvattnet/daily"
+      qos: 0
+      unit_of_measurement: "mm"

@@ -1,0 +1,3 @@
+#ourgroceries:
+#  username: !secret our_groceries_username
+#  password: !secret our_groceries_password

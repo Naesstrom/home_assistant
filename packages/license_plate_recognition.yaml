@@ -1,0 +1,23 @@
+#camera:
+#  - platform: local_file
+#    file_path: /config/www/car-plate.jpg
+#    name: car_cam
+
+image_processing:
+  - platform: platerecognizer
+    api_token: !secret platerecognizer
+    regions:
+      - se
+      - pl
+    watched_plates:
+      - RSE005
+      - CWB309
+    save_file_folder: /config/www/plates/
+    save_timestamped_file: True
+    always_save_latest_file: True
+    mmc: false
+    detection_rule: strict
+    #    region: strict
+
+    source:
+      - entity_id: camera.car_cam

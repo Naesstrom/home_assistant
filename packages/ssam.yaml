@@ -1,0 +1,8 @@
+rest:
+  scan_interval: 604800
+  resource: https://edpfuture.ssam.se/FutureWeb/SimpleWastePickup/GetWastePickupSchedule?address=Billa+Katrinelund+1,+%C3%85ryd+(28683)
+  sensor:
+    - name: "Kärl 1 SSAM"
+      value_template: "{{ value_json.RhServices[0].NextWastePickup }}"
+    - name: "Kärl 2 SSAM"
+      value_template: "{{ value_json.RhServices[1].NextWastePickup }}"

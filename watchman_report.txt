@@ -1,0 +1,244 @@
+-== Watchman Report ==- 
+
+-== Missing 3 action(s) from 40 found in your config:
++--------------------------------+---------+--------------------------------------------------------------+
+| Action ID                      | State   | Location                                                     |
++--------------------------------+---------+--------------------------------------------------------------+
+| tts.google_translate_say       | missing | automation/TTS_notifications.yaml:10,26,42                   |
+| notify.ringvattnet             | missing | automation/automations_ringvattnet.yaml:9,22,35              |
+| notify.all                     | missing | automations.yaml:101,119,144                                 |
++--------------------------------+---------+--------------------------------------------------------------+
+
+-== Missing 144 entity(ies) from 273 found in your config:
++--------------------------------+---------+--------------------------------------------------------------+
+| Entity ID                      | State   | Location                                                     |
++--------------------------------+---------+--------------------------------------------------------------+
+| light.tradfri_bulb_gu10_w_400l | unavail | .storage/core.config_entries:67                              |
+| m ('TRADFRI bulb GU10 W        |         |                                                              |
+| 400lm')                        |         |                                                              |
+| light.tradfri_bulb_gu10_w_400l | unavail | .storage/core.config_entries:67                              |
+| m_2 ('TRADFRI bulb GU10 W      |         |                                                              |
+| 400lm 2')                      |         |                                                              |
+| light.tradfri_bulb_gu10_w_400l | unavail | .storage/core.config_entries:67                              |
+| m_3 ('TRADFRI bulb GU10 W      |         |                                                              |
+| 400lm 3')                      |         |                                                              |
+| binary_sensor.octoprint_printi | disable | automation/TTS_notifications.yaml:38                         |
+| ng_error                       | d       |                                                              |
+| device_tracker.luftdata        | missing | automation/aut_luftdata_connection.yaml:5,20                 |
+| sensor.pumphus_temperature     | missing | automation/automations_ringvattnet.yaml:6,11,19,24           |
+| sensor.ute_temperature         | missing | automation/automations_ringvattnet.yaml:11                   |
+| sensor.frys_forrad_temperature | missing | automation/automations_ringvattnet.yaml:32,37                |
+| sensor.rain_cum                | missing | automation/daily_rain.yaml:12                                |
+| binary_sensor.kitchen_motion   | unavail | automation/kitchen_night.yaml:6,23                           |
+| ('node_kitchen Kitchen         |         |                                                              |
+| Motion')                       |         |                                                              |
+| light.kitchen_lights           | missing | automation/kitchen_night.yaml:15,32,39                       |
+| media_player.vardagsrum_2      | unavail | automation/mediaplayer_paus.yaml:6                           |
+| ('Vardagsrum')                 |         |                                                              |
+| media_player.livingroom_tv     | unavail | automation/mediaplayer_paus.yaml:10                          |
+| ('Vardagsrum TV')              |         |                                                              |
+| scene.livingroom_normal        | unavail | automation/mediaplayer_paus.yaml:19                          |
+| ('Livingroom normal')          |         |                                                              |
+| scene.livingroom_dim           | unavail | automation/mediaplayer_play_from_idle.yaml:19                |
+| ('Livingroom dim')             |         |                                                              |
+| media_player.nvidia_shield     | unavail | automation/mediaplayer_stop.yaml:6                           |
+| ('Nvidia Shield')              |         |                                                              |
+| media_player.kitchen_speakers  | unavail | automation/movement.yaml:27,32                               |
+| ('Kökshögtalarna')             |         |                                                              |
+| switch.dorr_framsidan ('Dörr   | unavail | automation/notify_doors.yaml:5                               |
+| Framsidan')                    |         |                                                              |
+| switch.dorr_groventre ('Dörr   | unavail | automation/notify_doors.yaml:20                              |
+| Groventre')                    |         |                                                              |
+| switch.dorr_altan ('Dörr       | unavail | automation/notify_doors.yaml:35                              |
+| Altan')                        |         |                                                              |
+| notify.discord_katrinelund     | missing | automation/notify_presence.yaml:12,27                        |
+| group.erik                     | missing | automation/presence_automation.yaml:6,75                     |
+| group.sussa                    | missing | automation/presence_automation.yaml:10,79                    |
+| light.blomlampa ('blomlampa')  | unavail | automation/turn_off_bedroom_lights.yaml:10                   |
+| switch.skapsbelysning          | unavail | automation/turn_off_lights_midnight.yaml:12                  |
+| ('Skåpsbelysning')             |         |                                                              |
+| switch.vagglampa ('Vägglampa') | unavail | automation/turn_on_lights_evening.yaml:14                    |
+| binary_sensor.front_door       | unavail | automations.yaml:8                                           |
+| ('Huvudentre')                 |         |                                                              |
+| switch.yaml                    | missing | automations.yaml:33,52                                       |
+| binary_sensor.hundgard_motion  | missing | automations.yaml:66,75,87                                    |
+| camera.hundgard_hd             | missing | automations.yaml:67,88                                       |
+| camera.hundgard_sd             | missing | automations.yaml:76                                          |
+| switch.brevladan ('Brevlådan') | unavail | automations.yaml:96                                          |
+| binary_sensor.side_door        | unavail | automations.yaml:130                                         |
+| ('Groventre')                  |         |                                                              |
+| media_player.rasplex_2         | missing | automations.yaml:131                                         |
+| binary_sensor.lumi_lumi_sensor | missing | automations.yaml:155                                         |
+| _motion_aq2_6f644604_ias_zone  |         |                                                              |
+| sensor.front_door              | missing | automations.yaml:166                                         |
+| camera.nybygget_sd             | missing | automations.yaml:183,202                                     |
+| binary_sensor.door_pushbutton  | unavail | automations.yaml:210                                         |
+| ('Door Pushbutton')            |         |                                                              |
+| lock.front_door ('Front Door') | unavail | automations.yaml:218                                         |
+| binary_sensor.doorbell         | unavail | automations.yaml:226                                         |
+| ('Doorbell')                   |         |                                                              |
+| media_player.1ac7cb10_204686f4 | missing | automations.yaml:227                                         |
+| camera.front_2                 | missing | automations.yaml:228                                         |
+| sensor.karl_1                  | missing | automations.yaml:240,248                                     |
+| sensor.karl_2                  | missing | automations.yaml:257,265                                     |
+| binary_sensor.katt_motion      | missing | automations.yaml:273                                         |
+| camera.katt_sd                 | missing | automations.yaml:274                                         |
+| binary_sensor.bathroom_motion_ | unavail | automations.yaml:282                                         |
+| 2 ('node_bathroom Bathroom     |         |                                                              |
+| Motion')                       |         |                                                              |
+| light.badrum_1 ('Badrum 1')    | unavail | automations.yaml:289                                         |
+| light.badrum_2 ('Badrum 2')    | unavail | automations.yaml:293                                         |
+| sensor.knubbis_fjarr_action    | missing | automations.yaml:320                                         |
+| switch.knubbis                 | missing | automations.yaml:324                                         |
+| device_tracker.susanne_nasstro | missing | automations.yaml:332                                         |
+| m                              |         |                                                              |
+| person.erik_nasstrom           | missing | automations.yaml:335                                         |
+| sensor.sminkbord_fjarr_action  | missing | automations.yaml:349                                         |
+| sensor.kitchen_remote_action   | unknown | automations.yaml:362                                         |
+| ('kitchen_remote Action')      |         |                                                              |
+| sensor.sanglampor_fjarrkontrol | missing | automations.yaml:538                                         |
+| l_action                       |         |                                                              |
+| sensor.matsedel_mandag         | unknown | customize.yaml:1                                             |
+| ('Måndag')                     |         |                                                              |
+| switch.bathroom_door           | unavail | customize/cust_doors.yaml:16                                 |
+| ('Bathroom Door')              |         |                                                              |
+| switch.altan_skjutdorr ('Altan | unavail | customize/cust_doors.yaml:21                                 |
+| Skjutdörr')                    |         |                                                              |
+| sensor.tanka_station           | missing | customize/cust_fuel.yaml:1                                   |
+| sensor.tanka_plats             | missing | customize/cust_fuel.yaml:3                                   |
+| sensor.tanka_pris              | missing | customize/cust_fuel.yaml:5                                   |
+| sensor.tanka_uppdaterad        | missing | customize/cust_fuel.yaml:7                                   |
+| sensor.speedtest_download      | missing | customize/cust_system.yaml:1                                 |
+| sensor.speedtest_upload        | missing | customize/cust_system.yaml:4                                 |
+| script.radio                   | missing | customize/cust_system.yaml:7                                 |
+| sensor.average_load_1m         | missing | customize/cust_system.yaml:11                                |
+| sensor.average_load_5m         | missing | customize/cust_system.yaml:13                                |
+| sensor.average_load_15m        | missing | customize/cust_system.yaml:15                                |
+| person.erik_presence           | missing | history.yaml:6                                               |
+| person.sussa_presence          | missing | history.yaml:7                                               |
+| person.erik_xz2                | missing | history.yaml:8                                               |
+| device_tracker.galaxy_s9       | missing | history.yaml:9                                               |
+| device_tracker.galaxy_s9_bt    | missing | history.yaml:10                                              |
+| sensor.attic_temperature       | unavail | history.yaml:13                                              |
+| ('Attic Temperature')          |         |                                                              |
+| sensor.bathroom_temperature    | unavail | history.yaml:14                                              |
+| ('node_bathroom Bathroom       |         |                                                              |
+| Temperature')                  |         |                                                              |
+| sensor.bedroom_temperature_2   | missing | history.yaml:15                                              |
+| sensor.kitchen_temperature_2   | unavail | history.yaml:16                                              |
+| ('node_kitchen Kitchen         |         |                                                              |
+| Temperature')                  |         |                                                              |
+| sensor.livingroom_temperature  | unavail | history.yaml:17                                              |
+| ('Livingroom Temperature')     |         |                                                              |
+| sensor.office_temperature      | unavail | history.yaml:18                                              |
+| ('node_office Office           |         |                                                              |
+| Temperature')                  |         |                                                              |
+| sensor.steam_76561198126756526 | missing | loogbook.yaml:5                                              |
+| sensor.carheater_erik_daily_en | unavail | packages/carheaters.yaml:7                                   |
+| ergy ('Carheater: Erik - Daily |         |                                                              |
+| Energy')                       |         |                                                              |
+| sensor.carheater_sussa_daily_e | unavail | packages/carheaters.yaml:16                                  |
+| nergy ('Carheater: Sussa -     |         |                                                              |
+| Daily Energy')                 |         |                                                              |
+| switch.carheater_erik_relay    | unavail | packages/carheaters.yaml:71,119,172,186,197                  |
+| ('Carheater: Erik - Relay')    |         |                                                              |
+| switch.carheater_sussa_relay   | unavail | packages/carheaters.yaml:101,120,139,153,195                 |
+| ('Carheater: Sussa - Relay')   |         |                                                              |
+| sensor.carheater_sussa_power   | unavail | packages/carheaters.yaml:142                                 |
+| ('Carheater: Sussa - Power')   |         |                                                              |
+| sensor.carheater_erik_power    | unavail | packages/carheaters.yaml:175                                 |
+| ('Carheater: Erik - Power')    |         |                                                              |
+| sensor.golvvarme_framledning   | missing | packages/elomin_metrics.yaml:89                              |
+| sensor.golvvarme_retur         | missing | packages/elomin_metrics.yaml:89                              |
+| sensor.elomin_radiator_power   | missing | packages/elomin_metrics.yaml:131                             |
+| sensor.golvvarme_drifttid      | missing | packages/elomin_metrics.yaml:238,241,244                     |
+| sensor.front_door_lock         | missing | packages/front_door_package.yaml:74                          |
+| group.erik_device_trackers     | missing | packages/front_door_package.yaml:95                          |
+| sensor.hacs                    | missing | packages/hacs.yaml:6                                         |
+| camera.car_cam                 | missing | packages/license_plate_recognition.yaml:23                   |
+| sensor.matsedel_tisdag         | unknown | packages/matsedel_package.yaml:6                             |
+| ('Tisdag')                     |         |                                                              |
+| sensor.matsedel_onsdag         | unknown | packages/matsedel_package.yaml:9                             |
+| ('Onsdag')                     |         |                                                              |
+| sensor.matsedel_torsdag        | unknown | packages/matsedel_package.yaml:12                            |
+| ('Torsdag')                    |         |                                                              |
+| sensor.matsedel_fredag         | unknown | packages/matsedel_package.yaml:15                            |
+| ('Fredag')                     |         |                                                              |
+| sensor.matsedel_lordag         | unknown | packages/matsedel_package.yaml:18                            |
+| ('Lördag')                     |         |                                                              |
+| sensor.matsedel_sondag         | unknown | packages/matsedel_package.yaml:21                            |
+| ('Söndag')                     |         |                                                              |
+| sensor.octoprint_current_state | disable | packages/octoprint.yaml:21                                   |
+|                                | d       |                                                              |
+| media_player.googlehome4544    | missing | packages/radio.yaml:121,134,230                              |
+| media_player.googlehome0719    | missing | packages/radio.yaml:121,134,230                              |
+| media_player.kitchen_speaker   | missing | packages/radio.yaml:121,134,230                              |
+| sensor.sunrise ('Sunrise')     | unavail | packages/sun.yaml:5,9,21,26,31                               |
+| sensor.sunset ('Sunset')       | unavail | packages/sun.yaml:13,17,21,26,31                             |
+| sensor.alectov3_30c7_temp      | unavail | packages/telldus_correction.yaml:9                           |
+| ('alectov3_30c7_temp')         |         |                                                              |
+| sensor.alectov3_3087_temp      | unavail | packages/telldus_correction.yaml:22                          |
+| ('alectov3_3087_temp')         |         |                                                              |
+| sensor.alectov3_3088_temp      | unavail | packages/telldus_correction.yaml:35                          |
+| ('alectov3_3088_temp')         |         |                                                              |
+| sensor.alectov3_3097_temp      | unavail | packages/telldus_correction.yaml:43                          |
+| ('Hönshus temperatur_telldus') |         |                                                              |
+| sensor.utomhus_temperature     | missing | packages/temp_nu.yaml:3                                      |
+| binary_sensor.torktumlare_runn | unavail | packages/torktumlare.yaml:6                                  |
+| ing ('torktumlare              |         |                                                              |
+| torktumlare_running')          |         |                                                              |
+| media_player.mass_nestaudio089 | missing | packages/torktumlare.yaml:21                                 |
+| 7                              |         |                                                              |
+| sensor.sparsnas_energy_consump | missing | packages/utility_meters.yaml:3,6                             |
+| tion_momentary_3               |         |                                                              |
+| binary_sensor.washing_machine_ | unavail | packages/washing_machine.yaml:6                              |
+| stat ('washing_machine_stat')  |         |                                                              |
+| sensor.greenhouse_temperature_ | missing | packages/weatherstats_package.yaml:5                         |
+| 2                              |         |                                                              |
+| sensor.greenhouse_statistics_m | missing | packages/weatherstats_package.yaml:16                        |
+| ean                            |         |                                                              |
+| sensor.side_door               | missing | packages/welcome_home.yaml:8                                 |
+| automation.engine_heater_deact | missing | recorder.yaml:19                                             |
+| ivate_erik                     |         |                                                              |
+| automation.engine_heater_deact | missing | recorder.yaml:20                                             |
+| ivate_sussa                    |         |                                                              |
+| light.kontoret                 | missing | recorder.yaml:21                                             |
+| sensor.house_energy_usage_cost | missing | recorder.yaml:29                                             |
+| sensor.radarr_movies           | missing | recorder.yaml:39                                             |
+| sensor.time_home               | missing | recorder.yaml:42                                             |
+| sensor.time_work               | missing | recorder.yaml:43                                             |
+| light.hallen_level_on_off      | missing | scenes.yaml:4,16                                             |
+| alarm_control_panel.house      | missing | scripts/alarm_script.yaml:4,8                                |
+| sensor.dark_sky_summary        | missing | scripts/jarvis_greeting.yaml:7                               |
+| sensor.dark_sky_temperature    | missing | scripts/jarvis_greeting.yaml:7                               |
+| sensor.dark_sky_hourly_summary | missing | scripts/jarvis_greeting.yaml:7                               |
+| sensor.dark_sky_daily_high_tem | missing | scripts/jarvis_greeting.yaml:7                               |
+| perature                       |         |                                                              |
+| sensor.patio_door              | missing | sensors/counter_sensors.yaml:11,29                           |
+| binary_sensor.attic_motion     | unavail | sensors/counter_sensors.yaml:55                              |
+| ('Attic Motion')               |         |                                                              |
+| sensor.netatmo_katrinelund_ute | missing | sensors/counter_sensors.yaml:70                              |
+| _temperature                   |         |                                                              |
+| sensor.lumi_lumi_weather_2899d | missing | sensors/counter_sensors.yaml:71                              |
+| 702_temperature                |         |                                                              |
+| sensor.erik_presence           | missing | sensors/distance_sensor.yaml:5                               |
+| sensor.sussa_presence          | missing | sensors/distance_sensor.yaml:10                              |
+| sensor.alectov3_30c7_bat       | unavail | sensors/rflink_sensors.yaml:5                                |
+| ('alectov3_30c7_bat')          |         |                                                              |
+| sensor.alectov3_30c7_hum       | unavail | sensors/rflink_sensors.yaml:7                                |
+| ('alectov3_30c7_hum')          |         |                                                              |
+| sensor.alectov3_30c7_update_ti | unavail | sensors/rflink_sensors.yaml:11                               |
+| me                             |         |                                                              |
+| ('alectov3_30c7_update_time')  |         |                                                              |
+| sensor.alectov3_30c8_bat       | unavail | sensors/rflink_sensors.yaml:14                               |
+| ('alectov3_30c8_bat')          |         |                                                              |
+| sensor.alectov3_30c8_temp      | unavail | sensors/rflink_sensors.yaml:16                               |
+| ('alectov3_30c8_temp')         |         |                                                              |
+| sensor.alectov3_30c8_update_ti | unavail | sensors/rflink_sensors.yaml:18                               |
+| me                             |         |                                                              |
+| ('alectov3_30c8_update_time')  |         |                                                              |
++--------------------------------+---------+--------------------------------------------------------------+
+
+-== Report created on 12 Feb 2026 14:46:57
+-== Parsed 159 files in 0.36s., ignored 0 files 
+-== Generated in: 0.02s. Validated in: 0.00s.

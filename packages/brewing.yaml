@@ -1,0 +1,192 @@
+#### BrewPi(Less) support in hass ####
+# In BPL setup your mqtt server in   #
+# Logs and take make sure you write  #
+# down the different topics.         #
+# Add your own topics to this package#
+# from the settings and your done    #
+# Big thanks to Pelle Windestam who  #
+# helped with parts of the code      #
+
+
+#Input selects:
+#Select fridge mode to work in
+input_select:
+  fridge_mode:
+    name: Fridge mode
+    options:
+      - 'Off'
+      - 'Fridge constant'
+      - 'Beer constant'
+      - 'Beer profile'
+    icon: mdi:beer
+
+# Either select a set beer temp or a set fridge temp.
+input_number:
+  beer_temp:
+    name: Beer temp
+    initial: 18
+    min: 2
+    max: 40
+    step: 1
+    unit_of_measurement: "ºC"
+  fridge_temp:
+    name: Fridge temp
+    initial: 18
+    min: 2
+    max: 40
+    step: 1
+    unit_of_measurement: "ºC"
+
+#And now some automations
+automation:
+#These set the selected mode
+  - alias: Adjust fridge mode
+    id: 5WGcgP2uqYmsKT7ChdU3yz
+    trigger:
+      platform: state
+      entity_id: input_select.fridge_mode
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: '/brewing/modeSet'
+        retain: true
+        payload_template: >-
+          {% if states('input_select.fridge_mode') == "Off" %} o
+          {% elif states('input_select.fridge_mode') == "Fridge temperature" %} f
+          {% elif states('input_select.fridge_mode') == "Beer temperature" %} b
+          {% elif states('input_select.fridge_mode') == "Beer profile" %} p
+          {%- endif %} (edited) 
+
+  - alias: Update fridge mode
+    id: dCQqvxatmKZA2HGgrPp4BU
+    trigger:
+      platform: mqtt
+      topic: '/brewpi/mode'
+    action:
+      service: input_select.set_options
+      data_template:
+        entity_id: input_select.fridge_mode
+        option: >-
+          {% set mydict = {
+             'f': 'Fridge constant',
+             'b': 'Beer constant',
+             'p': 'Beer profile',
+             'o': 'Off' } %}
+          {{ mydict.get(trigger.payload, 'o') }}
+#These sets temp based on the sliders above when used.    
+  - alias: Set beer temp 
+    id: ht89xZ7fgezDq5wYJyaS2E
+    trigger:
+      platform: state
+      entity_id: input_number.beer_temp
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "/brewing/beerSet/"
+          payload: '{{ states.input_number.beer_temp.state | int }}'
+  - alias: Set fridge temp
+    id: 89T2zwFMj67dAXuZgvNeUa
+    trigger:
+      platform: state
+      entity_id: input_number.fridge_temp
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "/brewing/fridgeSet"
+          payload: '{{ states.input_number.fridge_temp.state | int }}'
+
+#Import sensors from brewpiless
+mqtt:
+  sensor:
+    - name: "Fridge temp"
+      state_topic: "/brewing/fridgeTemp"
+      qos: 0
+      unit_of_measurement: "°C"
+
+    - name: "Fridge set temp"
+      state_topic: "/brewing/fridgeSet"
+      qos: 0
+      unit_of_measurement: "°C"
+
+    - name: "Beer temp"
+      state_topic: "/brewing/beerTemp"
+      qos: 0
+      unit_of_measurement: "°C"
+
+    - name: "Set beer temp"
+      state_topic: "/brewing/beerSet"
+      qos: 0
+      unit_of_measurement: "°C"
+
+    - name: "BPL state"
+      state_topic: "/brewing/state"
+      qos: 0
+#.    hidden: true
+      value_template: >-
+        {% if    value | int == 0 %} Idle
+        {% elif  value | int == 1 %} Off
+        {% elif  value | int == 2 %} Door open
+        {% elif  value | int == 3 %} Heating
+        {% elif  value | int == 4 %} Cooling 
+        {% elif  value | int == 5 %} Waiting to cool 
+        {% elif  value | int == 6 %} Waiting to heat
+        {% elif  value | int == 7 %} Waiting for peak detect
+        {% elif  value | int == 8 %} Cooling minimum time
+        {% elif  value | int == 9 %} Heating minimum time
+        {%- endif %}
+
+    - name: "BPL mode"
+      state_topic: "/brewing/mode"
+      qos: 0
+      value_template: >-
+        {% if value == "o" %} Off
+        {% elif value == "f" %} Fridge Constant
+        {% elif value == "b" %} Beer Constant
+        {% elif value == "p" %} Beer profile
+        {%- endif %}
+
+### iSpindel
+    - name: "iSpindel Voltage"
+      state_topic: "/brewing/voltage"
+      qos: 0
+      unit_of_measurement: "V"
+
+    - name: "iSpindel Temp"
+      state_topic: "/brewing/auxTemp"
+      qos: 0
+      unit_of_measurement: "°C"
+
+    - name: "iSpindel tilt"
+      state_topic: "/brewing/tilt"
+      qos: 0
+      unit_of_measurement: "°"
+
+    - name: "iSpindel Gravity"
+      state_topic: "/brewing/gravity"
+      qos: 0
+      unit_of_measurement: "SG"
+      value_template: '{{value | round(4) }}'
+
+    - name: "iSpindel Plato"
+      state_topic: "/brewing/plato"
+      qos: 0
+
+#Trying some templating.
+
+#Change the above templates to human form
+#  - platform: template
+#    sensors:
+#      bpl_state:
+#        friendly_name: "BPL state"
+#        icon_template: >-
+#          {% if  states('sensor.bpl_state_hidden') == 0 %}mdi:sleep
+#          {% elif states('sensor.bpl_state_hidden') == 1 %}mdi:close-circle-outline
+#          {% elif states('sensor.bpl_state_hidden') == 2 %}mdi:door-open
+#          {% elif states('sensor.bpl_state_hidden') == 3 %}mdi:radiator
+#          {% elif states('sensor.bpl_state_hidden') == 4 %}mdi:snowflake
+#          {% elif states('sensor.bpl_state_hidden') == 5 %}mdi:timer-sand-empty
+#          {% elif states('sensor.bpl_state_hidden') == 6 %}mdi:timer-sand-empty
+#          {% elif states('sensor.bpl_state_hidden') == 7 %}mdi:pulse
+#          {% elif states('sensor.bpl_state_hidden') == 8 %}mdi:snowflake-alert
+#          {% elif states('sensor.bpl_state_hidden') == 9 %}mdi:radiator
+#          {%- endif %}

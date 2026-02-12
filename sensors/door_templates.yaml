@@ -1,0 +1,33 @@
+template:
+  - sensor:
+      # Groventré
+      - name: "Dörr: Groventré"
+        unique_id: side_door_sensor
+        state: >-
+          {{ 'Open' if is_state('switch.dorr_groventre', 'on') else 'Closed' }}
+        icon: >-
+          {{ 'mdi:door-open' if is_state('switch.dorr_groventre', 'on') else 'mdi:door-closed' }}
+
+      # Altanen
+      - name: "Dörr: Altanen"
+        unique_id: patio_door_sensor
+        state: >-
+          {{ 'Open' if is_state('switch.dorr_altan', 'on') else 'Closed' }}
+        icon: >-
+          {{ 'mdi:door-open' if is_state('switch.dorr_altan', 'on') else 'mdi:door-closed' }}
+
+      # Badrummet
+      - name: "Dörr: Badrummet"
+        unique_id: bathroom_door_sensor
+        state: >-
+          {{ 'Open' if is_state('switch.bathroom_door', 'on') else 'Closed' }}
+        icon: >-
+          {{ 'mdi:door-open' if is_state('switch.bathroom_door', 'on') else 'mdi:door-closed' }}
+
+      # Altanen: Skjutdörrar
+      - name: "Altanen: Skjutdörrar"
+        unique_id: patio_sliding_sensor
+        state: >-
+          {{ 'Open' if is_state('switch.altan_skjutdorr', 'on') else 'Closed' }}
+        icon: >-
+          {{ 'mdi:door-open' if is_state('switch.altan_skjutdorr', 'on') else 'mdi:door-closed' }}

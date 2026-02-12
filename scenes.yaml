@@ -1,0 +1,102 @@
+- id: '1632508071609'
+  name: Hall ljus
+  entities:
+    light.hallen_level_on_off:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 254
+      off_brightness:
+      friendly_name: Hallen level, on_off
+      supported_features: 41
+      state: 'on'
+- id: '1632508127198'
+  name: Hall - Dimmad
+  entities:
+    light.hallen_level_on_off:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 26
+      off_brightness:
+      friendly_name: Hallen level, on_off
+      supported_features: 41
+      state: 'on'
+- id: '1728754252594'
+  name: Sänglampor red
+  entities:
+    light.sanglampor:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      - colorloop
+      - stop_colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: xy
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 9.231
+      - 66.275
+      rgb_color:
+      - 255
+      - 112
+      - 86
+      xy_color:
+      - 0.589
+      - 0.329
+      friendly_name: Sänglampor
+      supported_features: 44
+      state: 'on'
+  metadata: {}
+- id: '1728754300566'
+  name: Sänglampor White
+  entities:
+    light.sanglampor:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      - colorloop
+      - stop_colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      friendly_name: Sänglampor
+      supported_features: 44
+      state: 'on'
+  metadata: {}

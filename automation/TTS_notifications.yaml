@@ -1,0 +1,47 @@
+- alias: "Erik is Home TTS"
+  id: TCxwaBNHSPWfEqj2A6dhGD
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: person.erik
+      from: "not_home"
+      to: "home"
+  action:
+    - action: tts.google_translate_say
+      target:
+        entity_id: media_player.office # OBS: Se varning nedan
+      data:
+        message: "Erik kom just hem!"
+        language: "sv"
+
+- alias: "Sussa is Home TTS"
+  id: tXpUkm5BM7RCTA62uqzEjn
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: person.sussa
+      from: "not_home"
+      to: "home"
+  action:
+    - action: tts.google_translate_say
+      target:
+        entity_id: media_player.office
+      data:
+        message: "The queen just arrived!"
+        language: "en" # Ändrat till 'en' eftersom meddelandet är på engelska
+
+- alias: "Octoprint:Fail (TTS)"
+  id: 2vsp5dW9CZJATmhxr3gQKe
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.octoprint_printing_error
+      from: "off"
+      to: "on"
+  action:
+    - action: tts.google_translate_say
+      target:
+        entity_id: media_player.office
+      data:
+        message: "Något gick fel med din 3d utskrift."
+        language: "sv"

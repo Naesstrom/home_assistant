@@ -1,0 +1,25 @@
+switch.dorr_framsidan:
+  assumed_state: true
+  friendly_name: Framsidan
+  icon: mdi:glassdoor
+  sensor_class: 'opening'
+switch.dorr_altan:
+  assumed_state: true
+  friendly_name: Altandörren
+  icon: mdi:glassdoor
+  sensor_class: 'opening'
+switch.dorr_groventre:
+  assumed_state: true
+  friendly_name: Huvudentre
+  icon: mdi:glassdoor
+  sensor_class: 'opening'
+switch.bathroom_door:
+  assumed_state: true
+  friendly_name: Badrumsdörr
+  icon: mdi:glassdoor
+  sensor_class: 'opening'
+switch.altan_skjutdorr:
+  assumed_state: true
+  friendly_name: Skjutdörrar
+  icon: mdi:glassdoor
+  sensor_class: 'opening'

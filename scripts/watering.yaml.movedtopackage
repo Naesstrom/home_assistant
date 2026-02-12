@@ -1,0 +1,33 @@
+  water_greenhouse:
+    sequence:
+     - alias: 'Bed 1 ON'
+       service: switch.turn_on
+       entity_id: switch.waterbed_1
+     - delay: '00:60:00'
+     - alias: 'Bed 1 OFF'
+       service: switch.turn_off
+       entity_id: switch.waterbed_1
+     - alias: 'Bed 2 ON'
+       service: switch.turn_on
+       entity_id: switch.waterbed_2
+     - delay: '00:60:00'
+     - alias: 'Bed 2 OFF'
+       service: switch.turn_off
+       entity_id: switch.waterbed_2
+     - alias: 'Bed 3 ON'
+       service: switch.turn_on
+       entity_id: switch.waterbed_3
+     - delay: '00:60:00'
+     - alias: 'Bed 3 OFF'
+       service: switch.turn_off
+       entity_id: switch.waterbed_3
+     - alias: 'Bed 4 ON'
+       service: switch.turn_on
+       entity_id: switch.waterbed_4
+     - delay: '00:60:00'
+     - alias: 'Bed 4 OFF'
+       service: switch.turn_off
+       entity_id: switch.waterbed_4
+     - alias: 'Input bool to off'
+       service: state.turn_off
+       entity_id: input_boolean.water_greenhouse

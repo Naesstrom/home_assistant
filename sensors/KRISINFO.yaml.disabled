@@ -1,0 +1,16 @@
+  - platform: krisinformation
+    name: Krisinformation Växjö
+    county: "Kronobergs län"
+    latitude: !secret latitude
+    longitude: !secret longitude
+    radius: 100
+
+  - platform: krisinformation
+    name: "Krisinformation Ringvattnet"
+    county: "Jämtlands län"
+    latitude: !secret z_lat_coord
+    longitude: !secret z_long_coord
+    radius: 100
+
+  - platform: krisinformation
+    country: 'Sverige'

@@ -1,0 +1,160 @@
+- alias: Presence just arrived
+  id: JcUvFSRxVrAB9XymLnzd5b
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: group.erik
+      from: "not_home"
+      to: "home"
+    - platform: state
+      entity_id: group.sussa
+      from: "not_home"
+      to: "home"
+  action:
+    - service: input_select.select_option
+      data_template:
+        entity_id: >
+          {% if trigger.entity_id == "group.erik" %}
+            input_select.erik_status_dropdown
+          {% else %}
+            input_select.sussa_status_dropdown
+          {% endif %}
+        option: >
+          {% if trigger.entity_id == "group.erik" %}
+            {% if states.input_select.erik_status_dropdown.state == "Just Left" %}
+              Home
+            {% else %}
+              Just Arrived
+            {% endif %}
+          {% else %}
+            {% if states.input_select.sussa_status_dropdown.state == "Just Left" %}
+              Home
+            {% else %}
+              Just Arrived
+            {% endif %}
+          {% endif %}
+
+- alias: Presence home
+  id: UhDL2Va9nJNxTsybtAfYSm
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_select.erik_status_dropdown
+      to: "home"
+      for:
+        minutes: 10
+    - platform: state
+      entity_id: input_select.sussa_status_dropdown
+      to: "home"
+      for:
+        minutes: 10
+    - platform: state
+      entity_id: input_select.erik_status_dropdown
+      from: "Just Left"
+      to: "home"
+    - platform: state
+      entity_id: input_select.sussa_status_dropdown
+      from: "Just Left"
+      to: "home"
+  action:
+    - service: input_select.select_option
+      data_template:
+        entity_id: >
+          {% if trigger.entity_id == "input_select.erik_status_dropdown" %}
+            input_select.erik_status_dropdown
+          {% else %}
+            input_select.sussa_status_dropdown
+          {% endif %}
+        option: Home
+
+- alias: Presence just left
+  id: nvW9NcAtrDwdxK4zXgC7jS
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: group.erik
+      from: "home"
+      to: "not_home"
+    - platform: state
+      entity_id: group.sussa
+      from: "home"
+      to: "not_home"
+  action:
+    - service: input_select.select_option
+      data_template:
+        entity_id: >
+          {% if trigger.entity_id == "group.erik" %}
+            input_select.erik_status_dropdown
+          {% else %}
+            input_select.sussa_status_dropdown
+          {% endif %}
+        option: Just Left
+
+- alias: Presence away
+  id: 5pKjeaQrytMPFYx96RUCSJ
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_select.erik_status_dropdown
+      to: "Just Left"
+      for:
+        minutes: 10
+    - platform: state
+      entity_id: input_select.sussa_status_dropdown
+      to: "Just Left"
+      for:
+        minutes: 10
+  action:
+    - service: input_select.select_option
+      data_template:
+        entity_id: >
+          {% if trigger.entity_id == "input_select.erik_status_dropdown" %}
+            input_select.erik_status_dropdown
+          {% else %}
+            input_select.sussa_status_dropdown
+          {% endif %}
+        option: Away
+
+- alias: Presence extended away
+  id: sJq3wkZYv7XDyajzfbh9PU
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_select.erik_status_dropdown
+      to: "not_home"
+      for:
+        hours: 24
+    - platform: state
+      entity_id: input_select.sussa_status_dropdown
+      to: "not_home"
+      for:
+        hours: 24
+  action:
+    - service: input_select.select_option
+      data_template:
+        entity_id: >
+          {% if trigger.entity_id == "input_select.erik_status_dropdown" %}
+            input_select.erik_status_dropdown
+          {% else %}
+            input_select.sussa_status_dropdown
+          {% endif %}
+        option: Extended Away
+
+- alias: Presence update tracker
+  id: p483WLjQEguMvtPGdbKYXF
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_select.erik_status_dropdown
+    - platform: state
+      entity_id: input_select.sussa_status_dropdown
+  action:
+    - service: python_script.device_tracker
+      data_template:
+        entity_id: "{{trigger.entity_id}}"
+        meta_entity: >
+          {% if trigger.entity_id == "input_select.erik_status_dropdown" %}
+            erik
+          {% else %}
+            sussa
+          {% endif %}

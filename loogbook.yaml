@@ -1,0 +1,8 @@
+exclude:
+  entities:
+    - sensor.moon
+    - sensor.steam_76561198003750218
+    - sensor.steam_76561198126756526
+    - sensor.time
+    - sensor.date
+    - sensor.time_utc

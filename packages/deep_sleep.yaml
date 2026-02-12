@@ -1,0 +1,60 @@
+input_boolean:
+  deep_sleep:
+    name: ESP Deep Sleep
+    initial: true
+
+automation:
+  ##############################################################
+  # DEEP SLEEP FOR ESPHOME DEVICES
+  ##############################################################
+  - id: TurnOffDeepSleepForOTA
+    alias: Turn Off Deep Sleep For OTA
+    trigger:
+      platform: state
+      entity_id: input_boolean.deep_sleep
+      to: "off"
+    action:
+      - service: script.turn_on
+        entity_id: script.stop_deep_sleep_on_esphome_devices
+
+  ##############################################################
+  - id: TurnOnDeepSleepForOTA
+    alias: Turn On Deep Sleep For OTA
+    trigger:
+      platform: state
+      entity_id: input_boolean.deep_sleep
+      to: "on"
+    action:
+      - service: script.turn_on
+        entity_id: script.resume_deep_sleep_on_esphomedevices
+
+script:
+  ####################################################################
+  stop_deep_sleep_on_esphome_devices:
+    alias: Stop Deep Sleep
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: deep_sleep/ota_mode
+          payload: "ON"
+          qos: 2
+          retain: true
+      - service: notify.mobile_app_in2023
+        data:
+          title: Deep Sleep
+          message: Deep sleep turned off for OTA updates
+
+  ####################################################################
+  resume_deep_sleep_on_esphomedevices:
+    alias: Resume Deep Sleep
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: deep_sleep/ota_mode
+          payload: "OFF"
+          qos: 2
+          retain: true
+      - service: notify.mobile_app_in2023
+        data:
+          title: Deep Sleep
+          message: Deep sleep turned on

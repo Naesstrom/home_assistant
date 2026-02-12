@@ -1,0 +1,24 @@
+automation:
+  - alias: 'Sophämtning'
+    id: DxG59K7JFjZCUybugeEf3r
+    initial_state: true
+    trigger:
+      - platform: time
+        at: '20:00:00'
+    condition:
+      - condition: state
+        entity_id: 'sensor.karl_1'
+        state: '1'
+    action:
+      - service: tts.google_say
+        entity_id: media_player.google_home_group
+        data_template:
+          message: >
+            {% if is_state("sensor.karl_1", "1") and is_state("sensor.karl_2", "1") %}
+            I morgon är det tömning av båda kärlen.
+            {% elif is_state("sensor.karl_1", "1") and is_state("sensor.karl_2", "2") %}
+            I morgon är det tömning av Kärl 1.
+            {% else %}
+            Något gick fel med sophämtningen
+            {% endif %}
+          language: 'sv'

@@ -1,0 +1,12 @@
+- alias: 'Lamp: Turn off at midnight'
+  id: BRGwHWbe4nUFMgcdPxqCty
+  initial_state: true
+  trigger:
+    platform: time
+    at: '23:59:59'
+  action:
+    - service: light.turn_off
+      entity_id: light.livingroom_ambient_lights
+    - service: switch.turn_off
+      entity_id:
+        - switch.skapsbelysning

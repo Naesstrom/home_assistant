@@ -1,0 +1,18 @@
+erik_status_dropdown:
+  name: Erik
+  options:
+    - Home
+    - Just Arrived
+    - Just Left
+    - Away
+    - Extended Away
+  initial: Home
+sussa_status_dropdown:
+  name: Sussa
+  options:
+    - Home
+    - Just Arrived
+    - Just Left
+    - Away
+    - Extended Away
+  initial: Home

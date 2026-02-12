@@ -1,0 +1,13 @@
+shell_command:
+  #  temperatur_nu: "/usr/bin/curl http://www.temperatur.nu/rapportera.php?hash={{ state_attr('sensor.secrets', 'temp_hash_1') }}&t={{ states.sensor.outdoor.state }}"
+  temperatur_nu: "/usr/bin/curl http://www.temperatur.nu/rapportera.php?hash=c4199b6d38fc6fa03c6cfc5642cabdba&t={{ states.sensor.utomhus_temperature.state }}"
+
+automation:
+  - alias: Rapportera Temperatur
+    id: kpzHgu3TSPEJhDXfqx5cZU
+    initial_state: true
+    trigger:
+      - platform: time_pattern
+        minutes: "/3"
+    action:
+      service: shell_command.temperatur_nu

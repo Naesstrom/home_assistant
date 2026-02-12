@@ -1,0 +1,10 @@
+- alias: 'Lamp: Turn off at 2200'
+  id: h3zaMGcLgkvWUeY9QbADyV
+  initial_state: true
+  trigger:
+  - at: '22:00:00'
+    platform: time
+  action:
+    - service: light.turn_off
+      entity_id:
+        - light.blomlampa

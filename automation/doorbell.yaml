@@ -1,0 +1,12 @@
+- alias: Doorbell ringing
+  id: 4pVvatHSgQnFcXKzLjhRYs
+  initial_state: true
+  trigger:
+    platform: mqtt
+    topic: /front_door/doorbell/Doorbell
+    payload: '1'
+  action:
+    service: tts.google_say
+    entity_id: media_player.google_home_group
+    data:
+      message: There's someone at the door!

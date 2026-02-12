@@ -1,0 +1,47 @@
+#tibber:
+#  access_token: !secret tibber
+
+homeassistant:
+  customize:
+    sensor.accumulated_consumption_billa_katrinelund_1:
+      last_reset: "2021-07-30T00:00:00+00:00"
+      state_class: total_increasing
+
+template:
+  - sensor:
+      - name: "Elpris: Nuvarande"
+        unit_of_measurement: "SEK/kWh"
+        state: "{{ states('sensor.electricity_price_billa_katrinelund_1')}}"
+        device_class: monetary
+        state_class: measurement
+
+      - name: "Elpris: Medel"
+        unit_of_measurement: "SEK/kWh"
+        state: "{{ state_attr('sensor.electricity_price_billa_katrinelund_1' , 'avg_price')}}"
+        device_class: monetary
+        state_class: measurement
+
+      - name: "Elpris: Max"
+        unit_of_measurement: "SEK/kWh"
+        state: "{{ state_attr('sensor.electricity_price_billa_katrinelund_1' , 'max_price')}}"
+        device_class: monetary
+        state_class: measurement
+
+      - name: "Elpris: Min"
+        unit_of_measurement: "SEK/kWh"
+        state: "{{ state_attr('sensor.electricity_price_billa_katrinelund_1' , 'min_price')}}"
+        device_class: monetary
+        state_class: measurement
+
+      - name: "Elpris: Nivå"
+        state: "{{ state_attr('sensor.electricity_price_billa_katrinelund_1' , 'price_level')}}"
+#        state: >
+#          {% if is_state_attr('sensor.electricity_price_billa_katrinelund_1','price_level','VERY_EXPENSIVE') %}
+#            Jättedyrt
+#          {% elif state_attr('switch.kettle', 'W')|float < 1000 %}
+#            standby
+#          {% elif is_state('switch.kettle', 'on') %}
+#            on
+#          {% else %}
+#            failed
+#          {% endif %}

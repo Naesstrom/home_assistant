@@ -1,0 +1,6 @@
+template:
+  - sensor:
+      # Keep track how many days have past since a date
+      - name: "Server cost"
+        state: '{{ (states("sensor.server") | float | round(2)) * (states("sensor.electricity_price_billa_katrinelund_1") | float | round(2)) }}'
+#        unit_of_measurement: "Days"

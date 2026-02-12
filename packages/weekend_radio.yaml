@@ -1,0 +1,42 @@
+input_boolean:
+  weekend_radio:
+    name: Play radio on weekend
+    icon: mdi:radio
+
+automation:
+  - alias: play_weekend_radio
+    id: dKcvuMqr938zxfg4B7bEAJ
+    initial_state: true
+    # Should start playing at 09:00 on weekends.
+    trigger:
+      platform: time
+      at: '09:00:00'
+    # But only if it's not a workday and either of us is home
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: 'binary_sensor.arbetsdag'
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.weekend_radio
+          state: 'on'
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id:  person.erik
+              state: 'home'
+            - condition: state
+              entity_id:  person.sussa
+              state: 'home'
+    # Set volume of bedroom speakers and start playing the radio stream
+    action:
+      - service: media_player.volume_set
+        entity_id: media_player.bedroom_speakers
+        data:
+          volume_level: '0.1'
+      - service: media_player.play_media
+        entity_id: media_player.bedroom_speakers
+        data:
+          media_content_id: http://edge-bauersefm-06-gos2.sharp-stream.com/mixmegapol_instream_se_mp3
+          media_content_type: music

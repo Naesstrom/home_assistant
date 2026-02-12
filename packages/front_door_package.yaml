@@ -1,0 +1,153 @@
+# Den nya sektionen för templates
+template:
+  - sensor:
+      - name: "Dörr: Framsidan"
+        unique_id: front_door_sensor
+        state: >-
+          {{ 'Open' if is_state('switch.dorr_framsidan', 'on') else 'Closed' }}
+        icon: >-
+          {{ 'mdi:door-open' if is_state('switch.dorr_framsidan', 'on') else 'mdi:door-closed' }}
+
+      - name: "Lock: Framsidan"
+        unique_id: front_door_lock_sensor
+        state: >-
+          {{ 'Locked' if is_state('switch.front_door_lock', 'on') else 'Unlocked' }}
+        icon: >-
+          {{ 'mdi:lock' if is_state('switch.front_door_lock', 'on') else 'mdi:lock-open' }}
+
+# Din gamla sensor-sektion stannar kvar, men utan "platform: template"
+sensor:
+  - platform: history_stats
+    name: Front door opens today
+    entity_id: sensor.front_door
+    state: "Open"
+    type: count
+    start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: Front door open time today
+    entity_id: sensor.front_door
+    state: "Open"
+    type: time
+    start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+    end: "{{ now() }}"
+
+######################################################################
+##  Managing the magnetic door Locks
+######################################################################
+
+# Old version, using only GPIO commands
+#command_line:
+#  - switch:
+#      command_on: "/usr/bin/curl -X GET http://192.168.0.6/control?cmd=GPIO,5,1"
+#      command_off: "/usr/bin/curl -X GET http://192.168.0.6/control?cmd=GPIO,5,0"
+#      value_template: '{{ state == "1" }}'
+#      name: Front Door Lock
+mqtt:
+  switch:
+    - name: "Front Door Lock"
+      state_topic: "/front_door/gpio/5"
+      command_topic: "/front_door/gpio/5"
+      payload_on: "1"
+      payload_off: "0"
+      optimistic: false
+      qos: 0
+      retain: true
+
+homeassistant:
+  customize:
+    switch.front_door_lock:
+      assumed_state: False
+      icon: mdi:lock
+      senmsor_class: "lock"
+
+automation:
+  - alias: "Lock front door at night"
+    id: ze9RJuGCqZMgDV65QkhjNr
+    initial_state: true
+    trigger:
+      platform: time
+      at: "23:00:00"
+    condition:
+      condition: state
+      entity_id: sensor.front_door_lock
+      state: "Unlocked"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.front_door_lock
+
+  - alias: "Lock front door when away"
+    id: SJMemGvKDhXNu9cgA73a6Y
+    initial_state: true
+    trigger:
+      platform: state
+      entity_id: group.erik, group.sussa
+      # Optional
+      from: "home"
+      # Optional
+      to: "not_home"
+    condition:
+      - condition: state
+        entity_id: input_boolean.guestmode
+        state: "off"
+      - condition: state
+        entity_id: group.erik_device_trackers
+        state: "not_home"
+      - condition: state
+        entity_id: group.sussa
+        state: "not_home"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.front_door_lock
+
+  - alias: "Unlock front door when home"
+    id: t38MB7jDaNFnyxp9eUzXsk
+    initial_state: true
+    trigger:
+      - platform: template
+        value_template: "{% if is_state('group.erik', 'home') %}true{% endif %}"
+      - platform: template
+        value_template: "{% if is_state('group.sussa', 'home') %}true{% endif %}"
+    condition:
+      - condition: state
+        entity_id: input_boolean.guestmode
+        state: "off"
+      - condition: state
+        entity_id: group.erik
+        state: "home"
+      - condition: state
+        entity_id: group.sussa
+        state: "home"
+      - condition: time
+        after: "06:00:00"
+        before: "23:00:00"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.front_door_lock
+
+  - alias: Unlock front door
+    id: HquV4xX8DyAwGg36pj7JLb
+    initial_state: true
+    trigger:
+      - platform: mqtt
+        topic: "/front_door/code/CODE"
+        payload: "1"
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "/front_door/gpio/5"
+          payload: "0"
+
+  - alias: Relock front door
+    id: jwUQA5utPRGXxTVDna3bhB
+    initial_state: true
+    trigger:
+      - platform: mqtt
+        topic: "/front_door/code/CODE"
+        payload: "0"
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "/front_door/gpio/5"
+          payload: "1"

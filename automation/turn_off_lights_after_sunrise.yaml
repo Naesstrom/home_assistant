@@ -1,0 +1,12 @@
+- alias: 'Lamp: Turn off after sunrise'
+  id: tCSWezjdyckUxT5M37FQ4G
+  initial_state: true
+  trigger:
+  - event: sunrise
+    offset: +00:45:00
+    platform: sun
+  action:
+    - service: light.turn_off
+      entity_id:
+      - light.livingroom_ambient_lights
+      - light.blomlampa

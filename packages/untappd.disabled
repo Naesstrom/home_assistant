@@ -1,0 +1,62 @@
+sensor:
+  - platform: untappd
+    username: Naesstrom
+    id: !secret untappd_ID
+    secret: !secret untappd_Secret
+
+### Templating for the untappd lovelace card (https://sharethelove.io/picture-elements-cards/untappd-card)
+  - platform: template
+    sensors:
+      untappd_badge:
+       value_template: "Recent Badge: {{ states.sensor.untappd_last_badge_naesstrom.attributes.badge }} (Level {{ states.sensor.untappd_last_badge_naesstrom.attributes.level }})"
+
+  - platform: template
+    sensors:
+      untappd_beer:
+       value_template: "Recent Beer: {{ states.sensor.untappd_last_check_in_naesstrom.attributes.beer }} ({{ states.sensor.untappd_last_check_in_naesstrom.attributes.abv }})"
+
+  - platform: template
+    sensors:
+      untappd_followings:
+#       unit_of_measurement: followers
+       value_template: "{{ states.sensor.untappd_last_check_in_naesstrom.attributes.followings }}"
+       entity_picture_template: "https://www.shareicon.net/data/32x32/2016/09/23/833751_people_512x512.png"
+
+  - platform: template
+    sensors:
+      untappd_checked:
+#       unit_of_measurement: checkins
+       value_template: "{{ states.sensor.untappd_last_check_in_naesstrom.attributes.checkins }}"
+       entity_picture_template: "https://www.shareicon.net/data/128x128/2015/05/30/46550_check_32x32.png"
+
+  - platform: template
+    sensors:
+      untappd_total_beers:
+#       unit_of_measurement: beers
+       value_template: "{{ states.sensor.untappd_last_check_in_naesstrom.attributes.total_beers }}"
+       entity_picture_template: "https://www.shareicon.net/data/32x32/2016/09/26/834858_drink_512x512.png"
+
+
+  - platform: template
+    sensors:
+      untappd_total_badges:
+#       unit_of_measurement: badges
+       value_template: "{{ states.sensor.untappd_last_check_in_naesstrom.attributes.total_badges }}"
+       entity_picture_template: "https://www.shareicon.net/data/32x32/2016/07/10/794103_miscellaneous_512x512.png"
+
+automation:
+  - alias: Cheers
+    id: LRvWpV35MkEze86XyQBZhY
+    initial_state: on
+    trigger:
+      platform: state
+      entity_id: sensor.untappd_last_check_in_naesstrom
+    condition:
+      condition: state
+      entity_id: sensor.untappd_last_check_in_naesstrom
+      state: Today
+    action:
+      - delay: '00:01:30'
+      - service: notify.twitter
+        data_template:
+          message: "Skål! {{ states.sensor.untappd_last_check_in_naesstrom.attributes.beer }} från {{ states.sensor.untappd_last_check_in_naesstrom.attributes.brewery }} fick just betyget {{ states.sensor.untappd_last_check_in_naesstrom.attributes.score }}! (https://untappd.com/user/Naesstrom)"
